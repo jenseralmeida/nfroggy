@@ -7,8 +7,8 @@
     <ProjectGuid>{06D9B52F-9EC8-4A71-B529-B5DA7A124528}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NFroggy</RootNamespace>
-    <AssemblyName>NFroggy</AssemblyName>
+    <RootNamespace>Froggy</RootNamespace>
+    <AssemblyName>Froggy</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
