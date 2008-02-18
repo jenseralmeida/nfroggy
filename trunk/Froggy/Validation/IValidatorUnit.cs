@@ -8,7 +8,7 @@ namespace Froggy.Validation
     /// Represents a unit of validation. That unit will possue any validation necessary to represent a valid 
     /// and basic value
     /// </summary>
-    public interface IValidatorUnit
+    public interface IValidationUnit
     {
         /// <summary>
         /// Label injected in the template of a error message to represent the data being validated
@@ -29,6 +29,9 @@ namespace Froggy.Validation
             set;
         }
 
+        /// <summary>
+        /// List of validator to be applied int unit of validation
+        /// </summary>
         IValidator[] Validators
         {
             get;
