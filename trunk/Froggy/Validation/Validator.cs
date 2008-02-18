@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace NFroggy.Validation
+namespace Froggy.Validation
 {
     public static class Validator
     {
