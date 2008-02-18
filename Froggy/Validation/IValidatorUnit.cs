@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace NFroggy.Validation
+namespace Froggy.Validation
 {
     /// <summary>
     /// Represents a unit of validation. That unit will possue any validation necessary to represent a valid 

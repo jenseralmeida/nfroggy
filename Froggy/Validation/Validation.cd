@@ -1,35 +1,35 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Font Name="Tahoma" Size="8.25" />
-  <Interface Name="NFroggy.Validation.IValidator" Collapsed="true">
+  <Interface Name="Froggy.Validation.IValidator" Collapsed="true">
     <Position X="4.75" Y="1" Width="1.5" />
     <TypeIdentifier>
       <FileName>Validation\IValidator.cs</FileName>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="NFroggy.Validation.IValidatorUnit" Collapsed="true">
+  <Interface Name="Froggy.Validation.IValidatorUnit" Collapsed="true">
     <Position X="4.5" Y="3.5" Width="1.5" />
     <TypeIdentifier>
       <FileName>Validation\IValidatorUnit.cs</FileName>
       <HashCode>AAAAAAAAAAAAAAAAAAAFAAAAAAAAAAAAAAAAAAABAAA=</HashCode>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="NFroggy.Validation.ICompareValidator" Collapsed="true">
+  <Interface Name="Froggy.Validation.ICompareValidator" Collapsed="true">
     <Position X="2.75" Y="2.5" Width="1.5" />
     <TypeIdentifier>
       <FileName>Validation\ICompareValidator.cs</FileName>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="NFroggy.Validation.ILengthValidator" Collapsed="true">
+  <Interface Name="Froggy.Validation.ILengthValidator" Collapsed="true">
     <Position X="4.75" Y="2.5" Width="1.5" />
     <TypeIdentifier>
       <FileName>Validation\ILengthValidator.cs</FileName>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="NFroggy.Validation.IValueValidator" Collapsed="true">
+  <Interface Name="Froggy.Validation.IValueValidator" Collapsed="true">
     <Position X="6.5" Y="2.75" Width="1.5" />
     <TypeIdentifier>
       <FileName>Validation\IValueValidator.cs</FileName>
