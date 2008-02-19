@@ -8,10 +8,10 @@
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="Froggy.Validation.IValidatorUnit">
+  <Interface Name="Froggy.Validation.IValidationUnit">
     <Position X="0.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <FileName>Validation\IValidatorUnit.cs</FileName>
+      <FileName>Validation\IValidationUnit.cs</FileName>
       <HashCode>AAAAAAAAAAAAAAAAAAAFAAAAAAAAAAAAAAAAAAABAAA=</HashCode>
     </TypeIdentifier>
     <ShowAsAssociation>
