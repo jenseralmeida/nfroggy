@@ -49,7 +49,7 @@ namespace RhinoPost2
             //seting up the stage - retreival of the user would return null
             Expect.Call(_userRepository.GetUser(null))
                 .IgnoreArguments()
-                .Return(null);
+                .Return(new User());
 
             //stop recording
             _mockRepository.ReplayAll();
