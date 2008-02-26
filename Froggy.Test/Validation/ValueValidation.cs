@@ -9,9 +9,9 @@ namespace Froggy.Test.Validation
     {
         public static void IsValueValid()
         {
-            ValidationUnit validationUnit = new ValidationUnit();
-            validationUnit.ErrorMessageLabel = "test";
-            validationUnit.Validators
+            //ValidationUnit validationUnit = new ValidationUnit();
+            //validationUnit.ErrorMessageLabel = "test";
+            //validationUnit.Validators
         }
 
     }
