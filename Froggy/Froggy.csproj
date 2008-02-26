@@ -39,6 +39,7 @@
     <Compile Include="Validation\IValidatorUnit.cs" />
     <Compile Include="Validation\ValidateException.cs" />
     <Compile Include="Validation\ValidationDomain.Static.cs" />
+    <Compile Include="Validation\ValueValidatorUnit.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Validation\Validation.cd" />
