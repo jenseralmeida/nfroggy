@@ -14,7 +14,7 @@ namespace Froggy.Validation
 
         IValidator<T> SetCustomMessage(string customMessage);
 
-        IValidator<T> AddValidatorUnit(IValidatorUnit validatorUnit);
+        IValidator<T> AddValidatorUnit(IValidatorUnit<T> validatorUnit);
 
         /// <summary>
         /// Label injected in the template of a error message to represent the data being validated

@@ -4,7 +4,10 @@ using System.Text;
 
 namespace Froggy.Validation
 {
-    public interface IValidatorUnit
+    public interface IValidatorUnit<T>
     {
+        bool ExecuteWithConvert(object value, out T result);
+
+        bool Execute(T value);
     }
 }
