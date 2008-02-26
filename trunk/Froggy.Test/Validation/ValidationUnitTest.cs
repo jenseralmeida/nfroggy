@@ -11,28 +11,34 @@ namespace Froggy.Test.Validation
     public class ValidationUnitTest
     {
         private MockRepository _mockRepository;
-        private IValidationUnit _validationUnit;
                                            
         [SetUp]
         public void Init()
         {
             _mockRepository = new MockRepository();
-            _validationUnit = _mockRepository.DynamicMock<IValidationUnit>();
         }
 
         [Test]
         public void FirstMock()
         {
-            Expect.Call(_validationUnit.IsValid(0))
+            IValidator<int> validator;
+            validator = _mockRepository.DynamicMock<IValidator<int>>();
+            Expect.Call(validator.IsValid(0))
                 .Return(true);
-            Expect.Call(_validationUnit.IsValid(1))
+            Expect.Call(validator.IsValid(1))
                 .Return(false);
             _mockRepository.ReplayAll();
 
             //bool isValid = _validationUnit.IsValid(1);
-            Assert.IsTrue(_validationUnit.IsValid(0));
-            Assert.IsFalse(_validationUnit.IsValid(1));
+            Assert.IsTrue(validator.IsValid(0));
+            Assert.IsFalse(validator.IsValid(1));
             //_mockRepository.VerifyAll();
         }
+
+        public void DirectCall()
+        {
+            //ValidatorDomain<int>.SetUp().
+        }
+
     }
 }
