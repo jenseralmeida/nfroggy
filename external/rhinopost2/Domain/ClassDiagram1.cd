@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Font Name="Segoe UI" Size="9" />
+  <Class Name="Domain.ShoppingCart">
+    <Position X="0.75" Y="3.5" Width="6.5" />
+    <TypeIdentifier>
+      <FileName>ShoppingCart.cs</FileName>
+      <HashCode>AAAIAAAgAAAABAAAAAAAAACAAAAAAAABAQIAgAAAAAA=</HashCode>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_paymentProcessor" />
+      <Field Name="_userRepository" />
+    </ShowAsAssociation>
+    <AssociationLine Name="_paymentProcessor" Type="Domain.IPaymentProcessor">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.058" Y="0.352" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="_userRepository" Type="Domain.IUserRepository">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.079" Y="0.737" />
+      </MemberNameLabel>
+    </AssociationLine>
+  </Class>
+  <Class Name="Domain.User">
+    <Position X="7.5" Y="3.5" Width="2.5" />
+    <TypeIdentifier>
+      <FileName>User.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAEAAAAQAAAAAAAgAAAIAAgAAgAA=</HashCode>
+    </TypeIdentifier>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+  </Class>
+  <Interface Name="Domain.IPaymentProcessor">
+    <Position X="5.25" Y="0.75" Width="3.75" />
+    <TypeIdentifier>
+      <FileName>IPaymentProcessor.cs</FileName>
+      <HashCode>AAAIAAAAAAAAAAAAgAAAAAAAAAAAAAAIAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Domain.IUserRepository">
+    <Position X="0.5" Y="0.75" Width="4.5" />
+    <TypeIdentifier>
+      <FileName>IUserRepository.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAACA=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+</ClassDiagram>
