@@ -4,8 +4,7 @@ using System.Text;
 
 namespace Froggy.Validation
 {
-    public interface ITypeValidator<T>: IValidator
+    public interface IValidatorUnit
     {
-        bool TryParse(object value, out T result);
     }
 }
