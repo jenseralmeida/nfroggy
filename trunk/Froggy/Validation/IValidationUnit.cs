@@ -30,6 +30,15 @@ namespace Froggy.Validation
         }
 
         /// <summary>
+        /// Validate <paramref name="value"/> and returns a <see cref="ValidateException"/> if they dont follow the setup of the validation
+        /// </summary>
+        /// <param name="value"></param>
+        /// <exception cref="ValidateException"></exception>
+        void Validate(object value);
+
+        bool IsValid(object value);
+
+        /// <summary>
         /// List of validator to be applied int unit of validation
         /// </summary>
         List<IValidator> Validators
