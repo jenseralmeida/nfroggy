@@ -32,7 +32,7 @@ namespace Froggy.Validation
         /// <summary>
         /// List of validator to be applied int unit of validation
         /// </summary>
-        IValidator[] Validators
+        List<IValidator> Validators
         {
             get;
         }

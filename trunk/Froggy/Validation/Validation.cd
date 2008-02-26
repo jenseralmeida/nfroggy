@@ -14,14 +14,6 @@
       <FileName>Validation\IValidationUnit.cs</FileName>
       <HashCode>AAAAAAAAAAAAAAAAAAAFAAAAAAAAAAAAAAAAAAABAAA=</HashCode>
     </TypeIdentifier>
-    <ShowAsAssociation>
-      <Property Name="Validators" />
-    </ShowAsAssociation>
-    <AssociationLine Name="Validators" Type="Froggy.Validation.IValidator">
-      <MemberNameLabel ManuallyPlaced="true">
-        <Position X="1.016" Y="0.07" />
-      </MemberNameLabel>
-    </AssociationLine>
   </Interface>
   <Interface Name="Froggy.Validation.ICompareValidator" Collapsed="true">
     <Position X="2.75" Y="2.5" Width="1.5" />
@@ -41,7 +33,7 @@
     <Position X="6.5" Y="2.5" Width="1.5" />
     <TypeIdentifier>
       <FileName>Validation\ITypeValidator.cs</FileName>
-      <HashCode>AAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
     </TypeIdentifier>
   </Interface>
 </ClassDiagram>
