@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Froggy.Validation
 {
-    public interface IValidatorUnit
+    public interface IValidator
     {
     }
 }
