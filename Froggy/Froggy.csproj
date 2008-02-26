@@ -37,10 +37,10 @@
     <Compile Include="Validation\ICompareValidator.cs" />
     <Compile Include="Validation\ILengthValidator.cs" />
     <Compile Include="Validation\IValidator.cs" />
-    <Compile Include="Validation\IValidatorUnit.cs" />
-    <Compile Include="Validation\IValueValidator.cs" />
+    <Compile Include="Validation\IValidationUnit.cs" />
+    <Compile Include="Validation\ITypeValidator.cs" />
     <Compile Include="Validation\System\Int32Validator.cs" />
-    <Compile Include="Validation\Validator.cs" />
+    <Compile Include="Validation\ValidationUnit.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Validation\Validation.cd" />

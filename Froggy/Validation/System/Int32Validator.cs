@@ -4,19 +4,22 @@ using System.Text;
 
 namespace Froggy.Validation.System
 {
-    class Int32Validator: ITypeValidator<Int32?>
+    class NullableInt32Validator: ITypeValidator<Int32?>
     {
         #region ITypeValidator<T> Members
 
-        public int? Parse(object value)
+        public bool TryParse(object value, out int? result)
         {
             if ( (value == null) || (Convert.IsDBNull(value) ) )
             {
-                return null;
+                result = null;
+                return true;
             }
             else
             {
-                return Int32.Parse(value.ToString());
+                int temporaryResult;
+                bool suces = Int32.TryParse(value.ToString(), out temporaryResult);
+
             }
         }
 
