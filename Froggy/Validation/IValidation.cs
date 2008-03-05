@@ -14,7 +14,7 @@ namespace Froggy.Validation
 
         IValidation<T> SetUpCustomMessage(string customErrorMessage);
 
-        IValidation<T> SetUp(IValidator validator);
+        IValidation<T> SetUp(IValidatorTest<T> validatorTes);
 
         /// <summary>
         /// Label injected in the template of a error message to represent the data being validated

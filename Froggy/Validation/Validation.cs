@@ -10,17 +10,14 @@ namespace Froggy.Validation
         string _ErrorMessageLabel;
         string _CustomErrorMessage;
         TypeValidator<T> _TypeValidator;
-        
-        Dictionary<Type, bool> _SetUpValidatorsTest;
-        Dictionary<Type, bool> _SetUpValidatorsConvert;
 
-        List<IValidatorTest<T>> _ValidatorsTest;
-        List<IValidatorConvert<T>> _ValidatorsConvert;
+        Dictionary<Type, IValidatorTest<T>> _ValidatorsTest;
 
 
         private Validation()
         {
             _TypeValidator = new TypeValidator<T>();
+            _ValidatorsTest = new Dictionary<Type, IValidatorTest<T>>();
         }
 
         #region IValidation<T> Members
@@ -57,19 +54,23 @@ namespace Froggy.Validation
 
         public IValidation<T> SetUpInterval(T equal)
         {
-            throw new Exception("The method or operation is not implemented.");
-            return this;
+            return this.SetUp(new IntervalValidator<T>(equal));
         }
 
         public IValidation<T> SetUpInterval(T minimum, T maximum)
         {
-            throw new Exception("The method or operation is not implemented.");
-            return this;
+            return this.SetUp(new IntervalValidator<T>(minimum, maximum));
         }
 
-        public IValidation<T> SetUp(IValidator validator)
+        public IValidation<T> SetUpInterval(T minimum, T maximum, IntervalValidatorType intervalValidatorType)
         {
-            throw new Exception("The method or operation is not implemented.");
+            return this.SetUp(new IntervalValidator<T>(minimum, maximum, intervalValidatorType));
+        }
+
+        public IValidation<T> SetUp(IValidatorTest<T> validatorTest)
+        {
+            Type validatorType = validatorTest.GetType();
+            _ValidatorsTest[validatorType] = validatorTest;
             return this;
         }
 
