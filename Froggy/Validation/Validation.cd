@@ -10,32 +10,20 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="Froggy.Validation.Validation&lt;T&gt;">
-    <Position X="1.5" Y="2.75" Width="2.25" />
+    <Position X="1.5" Y="2.75" Width="2.5" />
     <TypeIdentifier>
       <FileName>Validation\Validation.cs</FileName>
-      <HashCode>AAAAAAQAAACAAAgAAIgEgYAAAAADIEAIQAAAAAAAAQA=</HashCode>
+      <HashCode>AAAAAAQAAACAAAgAAIgEgYAAAAAjAEBIAAAAAAAAAQA=</HashCode>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="TypeValidator" />
     </ShowAsAssociation>
-    <ShowAsCollectionAssociation>
-      <Field Name="_ValidatorsTest" />
-    </ShowAsCollectionAssociation>
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
-    <AssociationLine Name="_ValidatorsTest" Type="Froggy.Validation.ITestValidator&lt;T&gt;" FixedFromPoint="true">
-      <Path>
-        <Point X="3.75" Y="3.628" />
-        <Point X="5.5" Y="3.628" />
-      </Path>
-      <MemberNameLabel ManuallyPlaced="true">
-        <Position X="0.56" Y="0.11" />
-      </MemberNameLabel>
-    </AssociationLine>
     <AssociationLine Name="TypeValidator" Type="Froggy.Validation.IValidatorType&lt;T&gt;" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
       <Path>
-        <Point X="3.75" Y="4.5" />
+        <Point X="4" Y="4.5" />
         <Point X="4.162" Y="4.5" />
         <Point X="4.162" Y="4.5" />
         <Point X="5.5" Y="4.5" />

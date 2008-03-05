@@ -181,17 +181,17 @@ namespace Froggy.Validation
             return this.SetUp(new LengthValidator<T>(minimum, maximum, lengthValidatorType));
         }
 
-        public Validation<T> SetUpInterval(T equal)
+        public Validation<T> SetUpComparable(T equal)
         {
             return this.SetUp(new ComparableValidator<T>(equal));
         }
 
-        public Validation<T> SetUpInterval(T minimum, T maximum)
+        public Validation<T> SetUpComparable(T minimum, T maximum)
         {
             return this.SetUp(new ComparableValidator<T>(minimum, maximum));
         }
 
-        public Validation<T> SetUpInterval(T minimum, T maximum, ComparableValidatorType comparableValidatorType)
+        public Validation<T> SetUpComparable(T minimum, T maximum, ComparableValidatorType comparableValidatorType)
         {
             return this.SetUp(new ComparableValidator<T>(minimum, maximum, comparableValidatorType));
         }
