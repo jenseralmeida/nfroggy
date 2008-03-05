@@ -35,7 +35,7 @@ namespace Froggy.Validation
 
         private Validation()
         {
-            _ValidatorType = new SystemTypeValidator<T>();
+            _TypeValidator = new SystemTypeValidator<T>();
             _testValidators = new Dictionary<Type, ITestValidator<T>>();
         }
 
@@ -45,7 +45,7 @@ namespace Froggy.Validation
 
         string _ErrorMessageLabel;
         string _CustomErrorMessage;
-        IValidatorType<T> _ValidatorType;
+        ITypeValidator<T> _TypeValidator;
         Dictionary<Type, ITestValidator<T>> _testValidators;
 
         #endregion Fields
@@ -76,16 +76,16 @@ namespace Froggy.Validation
             }
         }
 
-        public IValidatorType<T> TypeValidator
+        public ITypeValidator<T> TypeValidator
         {
-            get { return _ValidatorType; }
+            get { return _TypeValidator; }
             set 
             {
                 if (value == null)
                 {
                     throw new ArgumentNullException("TypeValidator", "The validator type proport must not be null");
                 }
-                _ValidatorType = value; 
+                _TypeValidator = value; 
             }
         }
 
@@ -107,20 +107,20 @@ namespace Froggy.Validation
 
         public Validation<T> SetUpNullable(bool isNullable)
         {
-            _ValidatorType.IsNullable = isNullable;
+            _TypeValidator.IsNullable = isNullable;
             return this;
         }
 
         public Validation<T> SetUp(ITestValidator<T> testValidator)
         {
-            Type validatorType = testValidator.GetType();
-            _testValidators[validatorType] = testValidator;
+            Type typeOfTestValidator = testValidator.GetType();
+            _testValidators[typeOfTestValidator] = testValidator;
             return this;
         }
 
-        public Validation<T> SetUp(IValidatorType<T> validatorType)
+        public Validation<T> SetUp(ITypeValidator<T> typeValidator)
         {
-            _ValidatorType = validatorType;
+            _TypeValidator = typeValidator;
             return this;
         }
 
