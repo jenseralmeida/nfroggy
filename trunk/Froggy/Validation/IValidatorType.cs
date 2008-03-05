@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Froggy.Validation
 {
-    public interface IValidatorType<T>: IValidator
+    public interface IValidatorType<T>
     {
         bool IsNullable
         {
