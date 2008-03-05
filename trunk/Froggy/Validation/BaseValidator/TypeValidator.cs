@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Froggy.Validation.BaseValidator
 {
-    public class TypeValidator<T> : IValidatorConvert<T>, IValidatorTest<T>
+    public sealed class TypeValidator<T> : IValidatorConvert<T>, IValidatorTest<T>
     {
         #region IValidatorTest<T>
 

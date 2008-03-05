@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using System.Text;
 using Froggy.Validation.BaseValidator;
 
-namespace Froggy.Validation
+namespace Froggy.Validation.BaseValidator
 {
-    internal static class InternalValidationUtil
+    internal static class InternalBasicValidatorUtil
     {
-        public TypeValidator<T> GetInstanceOfTypeValidator()
+        public static TypeValidator<T> GetInstanceOfTypeValidator<T>()
         {
             return new TypeValidator<T>();
         }
 
-        public TypeValidator<T> GetInstanceOfTypeValidator(bool isNullable)
+        public static TypeValidator<T> GetInstanceOfTypeValidator<T>(bool isNullable)
         {
             return new TypeValidator<T>(isNullable);
         }
