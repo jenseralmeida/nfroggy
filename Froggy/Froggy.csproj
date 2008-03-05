@@ -38,7 +38,7 @@
     <Compile Include="Validation\IValidation.cs" />
     <Compile Include="Validation\IValidator.cs" />
     <Compile Include="Validation\ValidateException.cs" />
-    <Compile Include="Validation\ValidatorUnits\ValueValidator.cs" />
+    <Compile Include="Validation\ValidatorUnits\CLRValueValidator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Validation\Validation.cd" />

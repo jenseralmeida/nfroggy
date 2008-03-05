@@ -21,15 +21,15 @@ namespace Froggy.Test.Validation
         [Test]
         public void FirstMock()
         {
-            IValidator<int> validator = _mockRepository.DynamicMock<IValidator<int>>();
+            IValidation<int> validation = _mockRepository.DynamicMock<IValidation<int>>();
             // Record
-            Expect.Call(validator.IsValid(0)).Return(true);
-            Expect.Call(validator.IsValid(1)).Return(false);
+            Expect.Call(validation.IsValid(0)).Return(true);
+            Expect.Call(validation.IsValid(1)).Return(false);
             // Stop Record
             _mockRepository.ReplayAll();
             
-            Assert.IsTrue(validator.IsValid(0));
-            Assert.IsFalse(validator.IsValid(1));
+            Assert.IsTrue(validation.IsValid(0));
+            Assert.IsFalse(validation.IsValid(1));
             //_mockRepository.VerifyAll();
         }
 
