@@ -24,7 +24,7 @@ namespace Froggy.Validation
 
         IValidation<T> SetUpInterval(T minimum, T maximum);
 
-        IValidation<T> SetUp(IValidator<T> validator);
+        IValidation<T> SetUp(IValidator validator);
 
         /// <summary>
         /// Label injected in the template of a error message to represent the data being validated
