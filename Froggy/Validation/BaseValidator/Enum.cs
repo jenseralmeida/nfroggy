@@ -14,4 +14,15 @@ namespace Froggy.Validation.BaseValidator
         MaximumExclusive = 8,
         IntervalExclusive = MinimumExclusive | MaximumExclusive
     }
+
+    public enum LengthValidatorType
+    {
+        Equal = 0,
+        MinimumInclusive = 1,
+        MaximumInclusive = 2,
+        IntervalInclusive = MinimumInclusive | MaximumInclusive,
+        MinimumExclusive = 4,
+        MaximumExclusive = 8,
+        IntervalExclusive = MinimumExclusive | MaximumExclusive
+    }
 }
