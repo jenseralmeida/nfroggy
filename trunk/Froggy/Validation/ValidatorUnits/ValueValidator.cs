@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Froggy.Validation.ValidatorUnits
 {
-    public class ValueValidatorUnit<T> : IValidatorUnit<T>
+    public class ValueValidator<T> : IValidator<T>
     {
         public bool Execute(T value)
         {

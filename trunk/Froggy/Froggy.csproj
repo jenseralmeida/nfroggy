@@ -36,9 +36,9 @@
     <Compile Include="FroggyException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Validation\IValidation.cs" />
-    <Compile Include="Validation\IValidatorUnit.cs" />
+    <Compile Include="Validation\IValidator.cs" />
     <Compile Include="Validation\ValidateException.cs" />
-    <Compile Include="Validation\ValidatorUnits\ValueValidatorUnit.cs" />
+    <Compile Include="Validation\ValidatorUnits\ValueValidator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Validation\Validation.cd" />
