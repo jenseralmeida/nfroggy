@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Froggy.Validation.BaseValidator
 {
-    public enum IntervalValidatorType
+    public enum ComparableValidatorType
     {
         Equal = 0,
         MinimumInclusive = 1,

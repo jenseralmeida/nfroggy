@@ -4,22 +4,22 @@ using System.Text;
 
 namespace Froggy.Validation.BaseValidator
 {
-    public sealed class IntervalValidator<T> : IValidatorTest<T> 
+    public sealed class ComparableValidator<T> : IValidatorTest<T> 
     {
-        public IntervalValidator(T equal)
+        public ComparableValidator(T equal)
         {
             _Equal = equal;
-            _IntervalValidatorType = IntervalValidatorType.Equal;
+            _IntervalValidatorType = ComparableValidatorType.Equal;
         }
 
-        public IntervalValidator(T minimum, T maximum)
+        public ComparableValidator(T minimum, T maximum)
         {
             _Minimum = minimum;
             _Maximum = maximum;
-            _IntervalValidatorType = IntervalValidatorType.IntervalInclusive;
+            _IntervalValidatorType = ComparableValidatorType.IntervalInclusive;
         }
 
-        public IntervalValidator(T minimum, T maximum, IntervalValidatorType intervalValidatorType)
+        public ComparableValidator(T minimum, T maximum, ComparableValidatorType intervalValidatorType)
         {
             _Minimum = minimum;
             _Maximum = maximum;
@@ -29,7 +29,7 @@ namespace Froggy.Validation.BaseValidator
         T _Equal;
         T _Minimum;
         T _Maximum;
-        IntervalValidatorType _IntervalValidatorType;
+        ComparableValidatorType _IntervalValidatorType;
 
         public T Equal
         {
@@ -46,7 +46,7 @@ namespace Froggy.Validation.BaseValidator
             get { return _Maximum; }
         }
 
-        public IntervalValidatorType IntervalValidatorType
+        public ComparableValidatorType IntervalValidatorType
         {
             get { return _IntervalValidatorType; }
         }
@@ -55,53 +55,53 @@ namespace Froggy.Validation.BaseValidator
 
         public bool Execute(T value, out string errorMessageTemplate)
         {
-            IComparable comparer = (IComparable)value;
+            IComparable comparable = (IComparable)value;
             errorMessageTemplate = "";
-            if (BasicValidatorUtil.ContainsValueInEnum((int)IntervalValidatorType.Equal, (int)IntervalValidatorType))
+            if (BasicValidatorUtil.ContainsValueInEnum((int)ComparableValidatorType.Equal, (int)IntervalValidatorType))
             {
-                if (comparer.CompareTo(this.Equal) != 0)
+                if (comparable.CompareTo(this.Equal) != 0)
                 {
                     errorMessageTemplate = "The value of {0} is not equal";
                 }
             }
-            else if (BasicValidatorUtil.ContainsValueInEnum((int)IntervalValidatorType.IntervalInclusive, (int)IntervalValidatorType))
+            else if (BasicValidatorUtil.ContainsValueInEnum((int)ComparableValidatorType.IntervalInclusive, (int)IntervalValidatorType))
             {
-                if (comparer.CompareTo(_Minimum) < 0 || comparer.CompareTo(this._Maximum) > 0)
+                if (comparable.CompareTo(_Minimum) < 0 || comparable.CompareTo(this._Maximum) > 0)
                 {
                     errorMessageTemplate = "The value of {0} is not in the defined inclusive interval";
                 }
             }
-            else if (BasicValidatorUtil.ContainsValueInEnum((int)IntervalValidatorType.MinimumInclusive, (int)IntervalValidatorType))
+            else if (BasicValidatorUtil.ContainsValueInEnum((int)ComparableValidatorType.MinimumInclusive, (int)IntervalValidatorType))
             {
-                if (comparer.CompareTo(_Minimum) < 0)
+                if (comparable.CompareTo(_Minimum) < 0)
                 {
                     errorMessageTemplate = "The value of {0} is below inclusive minimal";
                 }
             }
-            else if (BasicValidatorUtil.ContainsValueInEnum((int)IntervalValidatorType.MaximumInclusive, (int)IntervalValidatorType))
+            else if (BasicValidatorUtil.ContainsValueInEnum((int)ComparableValidatorType.MaximumInclusive, (int)IntervalValidatorType))
             {
-                if (comparer.CompareTo(_Maximum) > 0)
+                if (comparable.CompareTo(_Maximum) > 0)
                 {
                     errorMessageTemplate = "The value of {0} is above inclusive maximum";
                 }
             }
-            else if (BasicValidatorUtil.ContainsValueInEnum((int)IntervalValidatorType.IntervalExclusive, (int)IntervalValidatorType))
+            else if (BasicValidatorUtil.ContainsValueInEnum((int)ComparableValidatorType.IntervalExclusive, (int)IntervalValidatorType))
             {
-                if (comparer.CompareTo(_Minimum) <= 0 || comparer.CompareTo(this._Maximum) >= 0)
+                if (comparable.CompareTo(_Minimum) <= 0 || comparable.CompareTo(this._Maximum) >= 0)
                 {
                     errorMessageTemplate = "The value of {0} is not in the defined exclusive interval";
                 }
             }
-            else if (BasicValidatorUtil.ContainsValueInEnum((int)IntervalValidatorType.MinimumExclusive, (int)IntervalValidatorType))
+            else if (BasicValidatorUtil.ContainsValueInEnum((int)ComparableValidatorType.MinimumExclusive, (int)IntervalValidatorType))
             {
-                if (comparer.CompareTo(_Minimum) <= 0)
+                if (comparable.CompareTo(_Minimum) <= 0)
                 {
                     errorMessageTemplate = "The value of {0} is below exclusive minimal";
                 }
             }
-            else if (BasicValidatorUtil.ContainsValueInEnum((int)IntervalValidatorType.MaximumExclusive, (int)IntervalValidatorType))
+            else if (BasicValidatorUtil.ContainsValueInEnum((int)ComparableValidatorType.MaximumExclusive, (int)IntervalValidatorType))
             {
-                if (comparer.CompareTo(_Maximum) >= 0)
+                if (comparable.CompareTo(_Maximum) >= 0)
                 {
                     errorMessageTemplate = "The value of {0} is above exclusive maximum";
                 }
