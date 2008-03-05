@@ -4,17 +4,17 @@ using System.Text;
 
 namespace Froggy.Validation.ValidatorUnits
 {
-    public class ValueValidator<T> : IValidator<T>
+    public class CLRSystemValueValidator<T> : IValidator<T>
     {
         public bool Execute(T value)
         {
             T result;
-            return ValueValidatorUnit<T>.TryChangeType(value, out result);
+            return CLRSystemValueValidator<T>.TryChangeType(value, out result);
         }
 
         public bool ExecuteWithConvert(object value, out T result)
         {
-            return ValueValidatorUnit<T>.TryChangeType(value, out result);
+            return CLRSystemValueValidator<T>.TryChangeType(value, out result);
         }
 
         public static bool TryChangeType(object value, out T result)
