@@ -8,7 +8,7 @@ using Froggy.Validation;
 namespace Froggy.Test.Validation
 {
     [TestFixture]
-    public class ValidationUnitTest
+    public class ValidationTest
     {
         private MockRepository _mockRepository;
                                            

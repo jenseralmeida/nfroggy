@@ -14,7 +14,17 @@ namespace Froggy.Validation
 
         IValidation<T> SetUpCustomMessage(string customMessage);
 
-        IValidation<T> SetUp(IValidatorTest<T> validator);
+        IValidation<T> SetUpNullable(bool isNullable);
+
+        IValidation<T> SetUpLength(int equalLength);
+
+        IValidation<T> SetUpLength(int minimumLength, int maximumLength);
+
+        IValidation<T> SetUpInterval(T equal);
+
+        IValidation<T> SetUpInterval(T minimum, T maximum);
+
+        IValidation<T> SetUp(IValidator<T> validator);
 
         /// <summary>
         /// Label injected in the template of a error message to represent the data being validated
