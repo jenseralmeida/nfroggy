@@ -54,17 +54,17 @@ namespace Froggy.Validation
 
         public IValidation<T> SetUpInterval(T equal)
         {
-            return this.SetUp(new IntervalValidator<T>(equal));
+            return this.SetUp(new ComparableValidator<T>(equal));
         }
 
         public IValidation<T> SetUpInterval(T minimum, T maximum)
         {
-            return this.SetUp(new IntervalValidator<T>(minimum, maximum));
+            return this.SetUp(new ComparableValidator<T>(minimum, maximum));
         }
 
-        public IValidation<T> SetUpInterval(T minimum, T maximum, IntervalValidatorType intervalValidatorType)
+        public IValidation<T> SetUpInterval(T minimum, T maximum, ComparableValidatorType intervalValidatorType)
         {
-            return this.SetUp(new IntervalValidator<T>(minimum, maximum, intervalValidatorType));
+            return this.SetUp(new ComparableValidator<T>(minimum, maximum, intervalValidatorType));
         }
 
         public IValidation<T> SetUp(IValidatorTest<T> validatorTest)

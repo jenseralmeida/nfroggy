@@ -20,10 +20,10 @@
     </Compartments>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="Froggy.Validation.BaseValidator.IntervalValidator&lt;T&gt;" Collapsed="true">
+  <Class Name="Froggy.Validation.BaseValidator.ComparableValidator&lt;T&gt;" Collapsed="true">
     <Position X="4.5" Y="0.75" Width="1.5" />
     <TypeIdentifier>
-      <FileName>Validation\BaseValidator\IntervalValidator.cs</FileName>
+      <FileName>Validation\BaseValidator\ComparableValidator.cs</FileName>
       <HashCode>gAAAIACAAAAAAAQAgACIAAAAAAAAAAAAABAAAAgAAAA=</HashCode>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
