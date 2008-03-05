@@ -12,7 +12,7 @@ namespace Froggy.Validation
     {
         IValidation<T> SetUpErrorMessageLabel(string errorMessageLabel);
 
-        IValidation<T> SetUpCustomMessage(string customMessage);
+        IValidation<T> SetUpCustomMessage(string customErrorMessage);
 
         IValidation<T> SetUpNullable(bool isNullable);
 
