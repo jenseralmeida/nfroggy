@@ -25,7 +25,6 @@ namespace Froggy.Test.Validation
 
             IValidation<int> validation = _mockRepository.DynamicMock<IValidation<int>>()
                 .SetUpErrorMessageLabel("teste")
-                .SetUpInterval(0)
                 .SetUp(customValidatorExample);
 
             string errorMessage;
