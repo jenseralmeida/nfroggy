@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Froggy.Validation
 {
-    public interface IValidatorTest<T>
+    public interface ITestValidator<T>
     {
         bool Execute(T value, out string errorMessageTemplate);
     }

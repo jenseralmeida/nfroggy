@@ -35,13 +35,12 @@ namespace Froggy.Validation
         string _CustomErrorMessage;
         IValidatorType<T> _ValidatorType;
 
-        Dictionary<Type, IValidatorTest<T>> _ValidatorsTest;
-
+        Dictionary<Type, ITestValidator<T>> _testValidators;
 
         private Validation()
         {
             _ValidatorType = new SystemTypeValidator<T>();
-            _ValidatorsTest = new Dictionary<Type, IValidatorTest<T>>();
+            _testValidators = new Dictionary<Type, ITestValidator<T>>();
         }
 
         #region Validation<T> Members
@@ -64,10 +63,10 @@ namespace Froggy.Validation
             return this;
         }
 
-        public Validation<T> SetUp(IValidatorTest<T> validatorTest)
+        public Validation<T> SetUp(ITestValidator<T> testValidator)
         {
-            Type validatorType = validatorTest.GetType();
-            _ValidatorsTest[validatorType] = validatorTest;
+            Type validatorType = testValidator.GetType();
+            _testValidators[validatorType] = testValidator;
             return this;
         }
 
@@ -101,14 +100,14 @@ namespace Froggy.Validation
             }
         }
 
-        public IValidatorType<T> ValidatorType
+        public IValidatorType<T> TypeValidator
         {
             get { return _ValidatorType; }
             set 
             {
                 if (value == null)
                 {
-                    throw new ArgumentNullException("ValidatorType", "The validator type proport must not be null");
+                    throw new ArgumentNullException("TypeValidator", "The validator type proport must not be null");
                 }
                 _ValidatorType = value; 
             }
@@ -116,37 +115,53 @@ namespace Froggy.Validation
 
         public void Validate(object value)
         {
-            throw new Exception("The method or operation is not implemented.");
+            this.Convert(value);
         }
 
         public bool IsValid(object value)
         {
-            throw new Exception("The method or operation is not implemented.");
+            string errorMessage;
+            return this.IsValid(value, out errorMessage);
         }
 
         public bool IsValid(object value, out string errorMessage)
         {
-            throw new Exception("The method or operation is not implemented.");
+            T result;
+            return this.TryConvert(value, out result, out errorMessage);
         }
 
         public T Convert(object value)
         {
-            throw new Exception("The method or operation is not implemented.");
-        }
-
-        public T Convert(object value, out string errorMessage)
-        {
-            throw new Exception("The method or operation is not implemented.");
+            T result;
+            string errorMessage;
+            if (!this.TryConvert(value, out result, out errorMessage))
+            {
+                throw new ValidateException(errorMessage);
+            }
+            return result;
         }
 
         public bool TryConvert(object value, out T result)
         {
-            throw new Exception("The method or operation is not implemented.");
+            string errorMessage;
+            return this.TryConvert(value, out result, out errorMessage);
         }
 
         public bool TryConvert(object value, out T result, out string errorMessage)
         {
-            throw new Exception("The method or operation is not implemented.");
+            bool sucess = TypeValidator.Execute(value, out result, out errorMessage);
+            if (!sucess)
+            {
+                return false;
+            }
+            foreach (ITestValidator<T> testsValidator in _testValidators.Values)
+            {
+                if (!testsValidator.Execute(result, out errorMessage))
+                {
+                    return false;
+                }
+            }
+            return true;
         }
 
         #endregion

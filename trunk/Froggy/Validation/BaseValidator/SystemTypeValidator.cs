@@ -80,12 +80,12 @@ namespace Froggy.Validation.BaseValidator
                 result = (T)Convert.ChangeType(value, realType);
                 return true;
             }
-            catch (InvalidCastException)
+            catch (ArgumentOutOfRangeException)
             {
                 result = default(T);
                 return false;
             }
-            catch (ArgumentNullException)
+            catch (FormatException)
             {
                 result = default(T);
                 return false;

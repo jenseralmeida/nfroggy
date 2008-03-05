@@ -21,7 +21,7 @@ namespace Froggy.Test.Validation
         [Test]
         public void FirstMock()
         {
-            //IValidatorTest<int> customValidatorExample = _mockRepository.DynamicMock<IValidatorTest<int>>();
+            //ITestValidator<int> customValidatorExample = _mockRepository.DynamicMock<ITestValidator<int>>();
 
             //Validation<int> validation = _mockRepository.DynamicMock<Validation<int>>()
             //    .SetUpErrorMessageLabel("teste")

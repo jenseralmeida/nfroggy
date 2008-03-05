@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Froggy.Validation.BaseValidator
 {
-    public sealed class ComparableValidator<T> : IValidatorTest<T> 
+    public sealed class ComparableValidator<T> : ITestValidator<T> 
     {
         public ComparableValidator(T equal)
         {
@@ -51,7 +51,7 @@ namespace Froggy.Validation.BaseValidator
             get { return _ComparableValidatorType; }
         }
 
-        #region IValidatorTest<T> Members
+        #region ITestValidator<T> Members
 
         public bool Execute(T value, out string errorMessageTemplate)
         {
