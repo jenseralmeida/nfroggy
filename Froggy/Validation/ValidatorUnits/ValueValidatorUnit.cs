@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Froggy.Validation
+namespace Froggy.Validation.ValidatorUnits
 {
     public class ValueValidatorUnit<T> : IValidatorUnit<T>
     {
