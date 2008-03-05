@@ -2,7 +2,7 @@
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Font Name="Tahoma" Size="8.25" />
   <Class Name="Froggy.Validation.BaseValidator.TypeValidator&lt;T&gt;" Collapsed="true">
-    <Position X="8" Y="4.75" Width="1.5" />
+    <Position X="7" Y="4.75" Width="1.5" />
     <TypeIdentifier>
       <FileName>Validation\BaseValidator\TypeValidator.cs</FileName>
       <HashCode>oQAAAAAAAAAAAAQAAAAAAAACAAAAAAAAAAAEgAAAMAA=</HashCode>
@@ -10,18 +10,21 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="Froggy.Validation.Validation&lt;T&gt;">
-    <Position X="3.25" Y="3.25" Width="1.5" />
+    <Position X="4" Y="2" Width="1.5" />
     <TypeIdentifier>
       <FileName>Validation\Validation.cs</FileName>
       <HashCode>AAAAAAAAAACAAAgAAIoFgYAAAAADIAAIQAAAAAAAAAA=</HashCode>
     </TypeIdentifier>
-    <Compartments>
-      <Compartment Name="Fields" Collapsed="true" />
-    </Compartments>
+    <ShowAsAssociation>
+      <Field Name="_TypeValidator" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Field Name="_ValidatorsTest" />
+    </ShowAsCollectionAssociation>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="Froggy.Validation.BaseValidator.ComparableValidator&lt;T&gt;" Collapsed="true">
-    <Position X="4.5" Y="0.75" Width="1.5" />
+    <Position X="9" Y="4.75" Width="2" />
     <TypeIdentifier>
       <FileName>Validation\BaseValidator\ComparableValidator.cs</FileName>
       <HashCode>gAAAIACAAAAAAAQAgACIAAAAAAAAAAAAABAAAAgAAAA=</HashCode>
@@ -29,10 +32,10 @@
     <Lollipop Position="0.2" />
   </Class>
   <Interface Name="Froggy.Validation.IValidation&lt;T&gt;">
-    <Position X="1.75" Y="0.5" Width="1.5" />
+    <Position X="2" Y="2" Width="1.5" />
     <TypeIdentifier>
       <FileName>Validation\IValidation.cs</FileName>
-      <HashCode>AAAAAAAAAACAAAgAAIgFgAAAAAACAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAACAAAgAAIkFgAAAAAACAAAAAAAAAAAAAAA=</HashCode>
     </TypeIdentifier>
   </Interface>
   <Interface Name="Froggy.Validation.IValidator" Collapsed="true">
@@ -43,7 +46,7 @@
     </TypeIdentifier>
   </Interface>
   <Interface Name="Froggy.Validation.IValidatorTest&lt;T&gt;" Collapsed="true">
-    <Position X="7" Y="2.75" Width="1.5" />
+    <Position X="7" Y="2.75" Width="1.75" />
     <TypeIdentifier>
       <FileName>Validation\IValidatorTest.cs</FileName>
       <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>

@@ -74,6 +74,12 @@ namespace Froggy.Validation
             return this;
         }
 
+        public IValidation<T> SetUp(IValidatorConvert<T> validatorConvert)
+        {
+            _ValidatorConvert[validatorType] = validatorTest;
+            return this;
+        }
+
         public string ErrorMessageLabel
         {
             get

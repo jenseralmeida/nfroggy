@@ -14,7 +14,9 @@ namespace Froggy.Validation
 
         IValidation<T> SetUpCustomMessage(string customErrorMessage);
 
-        IValidation<T> SetUp(IValidatorTest<T> validatorTes);
+        IValidation<T> SetUp(IValidatorConvert<T> validatorConvert);
+
+        IValidation<T> SetUp(IValidatorTest<T> validatorTest);
 
         /// <summary>
         /// Label injected in the template of a error message to represent the data being validated
@@ -30,6 +32,16 @@ namespace Froggy.Validation
         /// intercepted
         /// </summary>
         string CustomMessage
+        {
+            get;
+            set;
+        }
+
+
+        /// <summary>
+        /// Define the validator for conversion of the type
+        /// </summary>
+        IValidatorConvert<T> ValidatorConvert
         {
             get;
             set;

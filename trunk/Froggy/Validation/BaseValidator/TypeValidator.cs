@@ -4,13 +4,12 @@ using System.Text;
 
 namespace Froggy.Validation.BaseValidator
 {
-    public sealed class TypeValidator<T> : IValidatorConvert<T>, IValidatorTest<T>
+    public sealed class TypeValidator<T> : IValidatorConvert<T>
     {
-        #region IValidatorTest<T>
+        #region IValidatorConvert<T>
 
-        public bool Execute(T value, out string errorMessageTemplate)
+        public bool Execute(object value, out T result, out string errorMessageTemplate)
         {
-            T result;
             if (TypeValidator<T>.TryChangeType(value, out result))
             {
                 errorMessageTemplate = "";
@@ -21,15 +20,6 @@ namespace Froggy.Validation.BaseValidator
                 errorMessageTemplate = "Invalid data type";
                 return false;
             }
-        }
-
-        #endregion IValidatorTest<T>
-
-        #region IValidatorConvert<T>
-
-        public bool Execute(object value, out T result)
-        {
-            return TypeValidator<T>.TryChangeType(value, out result);
         }
 
         #endregion IValidatorConvert<T>
