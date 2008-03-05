@@ -31,11 +31,7 @@ namespace Froggy.Validation
 
         #endregion Class method
 
-        string _ErrorMessageLabel;
-        string _CustomErrorMessage;
-        IValidatorType<T> _ValidatorType;
-
-        Dictionary<Type, ITestValidator<T>> _testValidators;
+        #region Constructors
 
         private Validation()
         {
@@ -43,38 +39,18 @@ namespace Froggy.Validation
             _testValidators = new Dictionary<Type, ITestValidator<T>>();
         }
 
-        #region Validation<T> Members
+        #endregion Constructors
 
-        public Validation<T> SetUpErrorMessageLabel(string errorMessageLabel)
-        {
-            _ErrorMessageLabel = errorMessageLabel;
-            return this;
-        }
+        #region Fields
 
-        public Validation<T> SetUpCustomMessage(string customErrorMessage)
-        {
-            _CustomErrorMessage = customErrorMessage;
-            return this;
-        }
+        string _ErrorMessageLabel;
+        string _CustomErrorMessage;
+        IValidatorType<T> _ValidatorType;
+        Dictionary<Type, ITestValidator<T>> _testValidators;
 
-        public Validation<T> SetUpNullable(bool isNullable)
-        {
-            _ValidatorType.IsNullable = isNullable;
-            return this;
-        }
+        #endregion Fields
 
-        public Validation<T> SetUp(ITestValidator<T> testValidator)
-        {
-            Type validatorType = testValidator.GetType();
-            _testValidators[validatorType] = testValidator;
-            return this;
-        }
-
-        public Validation<T> SetUp(IValidatorType<T> validatorType)
-        {
-            _ValidatorType = validatorType;
-            return this;
-        }
+        #region Properties
 
         public string ErrorMessageLabel
         {
@@ -112,6 +88,79 @@ namespace Froggy.Validation
                 _ValidatorType = value; 
             }
         }
+
+        #endregion Properties
+
+        #region Basic SetUp
+
+        public Validation<T> SetUpErrorMessageLabel(string errorMessageLabel)
+        {
+            _ErrorMessageLabel = errorMessageLabel;
+            return this;
+        }
+
+        public Validation<T> SetUpCustomMessage(string customErrorMessage)
+        {
+            _CustomErrorMessage = customErrorMessage;
+            return this;
+        }
+
+        public Validation<T> SetUpNullable(bool isNullable)
+        {
+            _ValidatorType.IsNullable = isNullable;
+            return this;
+        }
+
+        public Validation<T> SetUp(ITestValidator<T> testValidator)
+        {
+            Type validatorType = testValidator.GetType();
+            _testValidators[validatorType] = testValidator;
+            return this;
+        }
+
+        public Validation<T> SetUp(IValidatorType<T> validatorType)
+        {
+            _ValidatorType = validatorType;
+            return this;
+        }
+
+        #endregion Basic SetUp
+
+        #region Advanced SetUp
+
+        public Validation<T> SetUpLength(int equal)
+        {
+            return this.SetUp(new LengthValidator<T>(equal));
+        }
+
+        public Validation<T> SetUpLength(int minimum, int maximum)
+        {
+            return this.SetUp(new LengthValidator<T>(minimum, maximum));
+        }
+
+        public Validation<T> SetUpLength(int minimum, int maximum, LengthValidatorType lengthValidatorType)
+        {
+            return this.SetUp(new LengthValidator<T>(minimum, maximum, lengthValidatorType));
+        }
+
+        public Validation<T> SetUpComparable(T equal)
+        {
+            return this.SetUp(new ComparableValidator<T>(equal));
+        }
+
+        public Validation<T> SetUpComparable(T minimum, T maximum)
+        {
+            return this.SetUp(new ComparableValidator<T>(minimum, maximum));
+        }
+
+        public Validation<T> SetUpComparable(T minimum, T maximum, ComparableValidatorType comparableValidatorType)
+        {
+            return this.SetUp(new ComparableValidator<T>(minimum, maximum, comparableValidatorType));
+        }
+
+        #endregion Advanced SetUp
+
+        #region Validation
 
         public void Validate(object value)
         {
@@ -164,37 +213,6 @@ namespace Froggy.Validation
             return true;
         }
 
-        #endregion
-
-        public Validation<T> SetUpLength(int equal)
-        {
-            return this.SetUp(new LengthValidator<T>(equal));
-        }
-
-        public Validation<T> SetUpLength(int minimum, int maximum)
-        {
-            return this.SetUp(new LengthValidator<T>(minimum, maximum));
-        }
-
-        public Validation<T> SetUpLength(int minimum, int maximum, LengthValidatorType lengthValidatorType)
-        {
-            return this.SetUp(new LengthValidator<T>(minimum, maximum, lengthValidatorType));
-        }
-
-        public Validation<T> SetUpComparable(T equal)
-        {
-            return this.SetUp(new ComparableValidator<T>(equal));
-        }
-
-        public Validation<T> SetUpComparable(T minimum, T maximum)
-        {
-            return this.SetUp(new ComparableValidator<T>(minimum, maximum));
-        }
-
-        public Validation<T> SetUpComparable(T minimum, T maximum, ComparableValidatorType comparableValidatorType)
-        {
-            return this.SetUp(new ComparableValidator<T>(minimum, maximum, comparableValidatorType));
-        }
-
+        #endregion Validation
     }
 }
