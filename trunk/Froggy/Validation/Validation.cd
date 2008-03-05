@@ -21,7 +21,7 @@
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
-    <AssociationLine Name="TypeValidator" Type="Froggy.Validation.IValidatorType&lt;T&gt;" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+    <AssociationLine Name="TypeValidator" Type="Froggy.Validation.ITypeValidator&lt;T&gt;" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
       <Path>
         <Point X="4" Y="4.5" />
         <Point X="4.162" Y="4.5" />
@@ -52,14 +52,14 @@
   <Interface Name="Froggy.Validation.ITestValidator&lt;T&gt;" Collapsed="true">
     <Position X="5.5" Y="3.25" Width="1.75" />
     <TypeIdentifier>
-      <FileName>Validation\IValidatorTest.cs</FileName>
+      <FileName>Validation\ITestValidator.cs</FileName>
       <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="Froggy.Validation.IValidatorType&lt;T&gt;" Collapsed="true">
+  <Interface Name="Froggy.Validation.ITypeValidator&lt;T&gt;" Collapsed="true">
     <Position X="5.5" Y="4.25" Width="1.75" />
     <TypeIdentifier>
-      <FileName>Validation\IValidatorType.cs</FileName>
+      <FileName>Validation\ITypeValidator.cs</FileName>
       <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAIAA=</HashCode>
     </TypeIdentifier>
   </Interface>
