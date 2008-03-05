@@ -7,6 +7,9 @@ namespace Froggy
     [Serializable]
     public class FroggyException: Exception
     {
-
+        public FroggyException(string message)
+            : base (message)
+        {
+        }
     }
 }

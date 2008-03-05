@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Froggy.Validation.BaseValidator
 {
-    public class LengthValidator<T> : IValidatorTest<T>
+    public class LengthValidator<T> : ITestValidator<T>
     {
         public LengthValidator(int equal)
         {
@@ -55,7 +55,7 @@ namespace Froggy.Validation.BaseValidator
             set { _LengthValidatorType = value; }
         }
 
-        #region IValidatorTest<T> Members
+        #region ITestValidator<T> Members
 
         public bool Execute(T value, out string errorMessageTemplate)
         {
