@@ -5,8 +5,32 @@ using Froggy.Validation.BaseValidator;
 
 namespace Froggy.Validation
 {
-    public class Validation<T> : IValidation<T>
+    public class Validation<T>
     {
+        #region Class method
+
+        public static Validation<T> SetUp(string errorMessageLabel)
+        {
+            return Validation<T>
+                .Create()
+                .SetUpErrorMessageLabel(errorMessageLabel);
+        }
+
+        public static Validation<T> SetUp(string errorMessageLabel, bool isNullable)
+        {
+            return Validation<T>
+                .Create()
+                .SetUpErrorMessageLabel(errorMessageLabel)
+                .SetUpNullable(isNullable);
+        }
+
+        public static Validation<T> Create()
+        {
+            return new Validation<T>();
+        }
+
+        #endregion Class method
+
         string _ErrorMessageLabel;
         string _CustomErrorMessage;
         IValidatorType<T> _ValidatorType;
@@ -20,34 +44,34 @@ namespace Froggy.Validation
             _ValidatorsTest = new Dictionary<Type, IValidatorTest<T>>();
         }
 
-        #region IValidation<T> Members
+        #region Validation<T> Members
 
-        public IValidation<T> SetUpErrorMessageLabel(string errorMessageLabel)
+        public Validation<T> SetUpErrorMessageLabel(string errorMessageLabel)
         {
             _ErrorMessageLabel = errorMessageLabel;
             return this;
         }
 
-        public IValidation<T> SetUpCustomMessage(string customErrorMessage)
+        public Validation<T> SetUpCustomMessage(string customErrorMessage)
         {
             _CustomErrorMessage = customErrorMessage;
             return this;
         }
 
-        public IValidation<T> SetUpNullable(bool isNullable)
+        public Validation<T> SetUpNullable(bool isNullable)
         {
             _ValidatorType.IsNullable = isNullable;
             return this;
         }
 
-        public IValidation<T> SetUp(IValidatorTest<T> validatorTest)
+        public Validation<T> SetUp(IValidatorTest<T> validatorTest)
         {
             Type validatorType = validatorTest.GetType();
             _ValidatorsTest[validatorType] = validatorTest;
             return this;
         }
 
-        public IValidation<T> SetUp(IValidatorType<T> validatorType)
+        public Validation<T> SetUp(IValidatorType<T> validatorType)
         {
             _ValidatorType = validatorType;
             return this;
@@ -127,33 +151,32 @@ namespace Froggy.Validation
 
         #endregion
 
-
-        public IValidation<T> SetUpLength(int equal)
+        public Validation<T> SetUpLength(int equal)
         {
             return this.SetUp(new LengthValidator<T>(equal));
         }
 
-        public IValidation<T> SetUpLength(int minimum, int maximum)
+        public Validation<T> SetUpLength(int minimum, int maximum)
         {
             return this.SetUp(new LengthValidator<T>(minimum, maximum));
         }
 
-        public IValidation<T> SetUpLength(int minimum, int maximum, LengthValidatorType lengthValidatorType)
+        public Validation<T> SetUpLength(int minimum, int maximum, LengthValidatorType lengthValidatorType)
         {
             return this.SetUp(new LengthValidator<T>(minimum, maximum, lengthValidatorType));
         }
 
-        public IValidation<T> SetUpInterval(T equal)
+        public Validation<T> SetUpInterval(T equal)
         {
             return this.SetUp(new ComparableValidator<T>(equal));
         }
 
-        public IValidation<T> SetUpInterval(T minimum, T maximum)
+        public Validation<T> SetUpInterval(T minimum, T maximum)
         {
             return this.SetUp(new ComparableValidator<T>(minimum, maximum));
         }
 
-        public IValidation<T> SetUpInterval(T minimum, T maximum, ComparableValidatorType comparableValidatorType)
+        public Validation<T> SetUpInterval(T minimum, T maximum, ComparableValidatorType comparableValidatorType)
         {
             return this.SetUp(new ComparableValidator<T>(minimum, maximum, comparableValidatorType));
         }
