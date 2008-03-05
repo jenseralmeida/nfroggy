@@ -8,10 +8,19 @@ namespace Froggy.Validation.BaseValidator
     {
         #region IValidatorTest<T>
 
-        public bool Execute(T value)
+        public bool Execute(T value, out string errorMessageTemplate)
         {
             T result;
-            return TypeValidator<T>.TryChangeType(value, out result);
+            if (TypeValidator<T>.TryChangeType(value, out result))
+            {
+                errorMessageTemplate = "";
+                return true;
+            }
+            else
+            {
+                errorMessageTemplate = "Invalid data type";
+                return false;
+            }
         }
 
         #endregion IValidatorTest<T>
@@ -103,7 +112,7 @@ namespace Froggy.Validation.BaseValidator
             {
                 realType = Nullable.GetUnderlyingType(realType);
             }
-            return realType;           
+            return realType;
         }
 
         private static bool IsNullableGeneric(Type type)

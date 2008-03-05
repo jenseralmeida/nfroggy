@@ -6,6 +6,6 @@ namespace Froggy.Validation
 {
     public interface IValidatorTest<T>: IValidator
     {
-        bool Execute(T value);
+        bool Execute(T value, out string errorMessageTemplate);
     }
 }
