@@ -13,18 +13,23 @@
     <Position X="1.5" Y="2.75" Width="2.5" />
     <TypeIdentifier>
       <FileName>Validation\Validation.cs</FileName>
-      <HashCode>AAAAAAQAAACAAAgAAIgEgYAAAAAjAEBIAAAAAAAAAQA=</HashCode>
+      <HashCode>AAAAAAQAAACgAAgAAIoEgYAAAAADAEBIAAAAAAAAAAA=</HashCode>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="TypeValidator" />
     </ShowAsAssociation>
-    <Compartments>
-      <Compartment Name="Fields" Collapsed="true" />
-    </Compartments>
+    <ShowAsCollectionAssociation>
+      <Field Name="_TestValidators" />
+    </ShowAsCollectionAssociation>
+    <Members>
+      <Field Name="_CustomErrorMessage" Hidden="true" />
+      <Field Name="_ErrorMessageLabel" Hidden="true" />
+      <Field Name="_TypeValidator" Hidden="true" />
+    </Members>
     <AssociationLine Name="TypeValidator" Type="Froggy.Validation.ITypeValidator&lt;T&gt;" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
       <Path>
-        <Point X="4" Y="4.5" />
-        <Point X="4.162" Y="4.5" />
+        <Point X="4" Y="4.193" />
+        <Point X="4.162" Y="4.193" />
         <Point X="4.162" Y="4.5" />
         <Point X="5.5" Y="4.5" />
       </Path>

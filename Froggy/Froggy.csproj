@@ -39,6 +39,7 @@
     <Compile Include="Validation\BaseValidator\BasicValidatorUtil.cs" />
     <Compile Include="Validation\BaseValidator\ComparableValidator.cs" />
     <Compile Include="Validation\BaseValidator\LengthValidator.cs" />
+    <Compile Include="Validation\BaseValidator\RegexValidator.cs" />
     <Compile Include="Validation\ITestValidator.cs" />
     <Compile Include="Validation\ITypeValidator.cs" />
     <Compile Include="Validation\ValidateException.cs" />
