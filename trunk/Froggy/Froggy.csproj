@@ -38,10 +38,11 @@
     <Compile Include="Validation\BaseValidator\Enum.cs" />
     <Compile Include="Validation\BaseValidator\InternalBasicValidatorUtil.cs" />
     <Compile Include="Validation\BaseValidator\ComparableValidator.cs" />
+    <Compile Include="Validation\BaseValidator\LengthValidator.cs" />
     <Compile Include="Validation\IValidation.cs" />
     <Compile Include="Validation\IValidator.cs" />
     <Compile Include="Validation\IValidatorTest.cs" />
-    <Compile Include="Validation\IValidatorConvert.cs" />
+    <Compile Include="Validation\IValidatorType.cs" />
     <Compile Include="Validation\ValidateException.cs" />
     <Compile Include="Validation\BaseValidator\TypeValidator.cs" />
     <Compile Include="Validation\Validation.cs" />

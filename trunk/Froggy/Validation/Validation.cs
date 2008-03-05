@@ -9,14 +9,14 @@ namespace Froggy.Validation
     {
         string _ErrorMessageLabel;
         string _CustomErrorMessage;
-        TypeValidator<T> _TypeValidator;
+        IValidatorType<T> _ValidatorType;
 
         Dictionary<Type, IValidatorTest<T>> _ValidatorsTest;
 
 
         private Validation()
         {
-            _TypeValidator = new TypeValidator<T>();
+            _ValidatorType = new SystemTypeValidator<T>();
             _ValidatorsTest = new Dictionary<Type, IValidatorTest<T>>();
         }
 
@@ -36,35 +36,8 @@ namespace Froggy.Validation
 
         public IValidation<T> SetUpNullable(bool isNullable)
         {
-            _TypeValidator.IsNullable = isNullable;
+            _ValidatorType.IsNullable = isNullable;
             return this;
-        }
-
-        public IValidation<T> SetUpLength(int equalLength)
-        {
-            throw new Exception("The method or operation is not implemented.");
-            return this;
-        }
-
-        public IValidation<T> SetUpLength(int minimumLength, int maximumLength)
-        {
-            throw new Exception("The method or operation is not implemented.");
-            return this;
-        }
-
-        public IValidation<T> SetUpInterval(T equal)
-        {
-            return this.SetUp(new ComparableValidator<T>(equal));
-        }
-
-        public IValidation<T> SetUpInterval(T minimum, T maximum)
-        {
-            return this.SetUp(new ComparableValidator<T>(minimum, maximum));
-        }
-
-        public IValidation<T> SetUpInterval(T minimum, T maximum, ComparableValidatorType intervalValidatorType)
-        {
-            return this.SetUp(new ComparableValidator<T>(minimum, maximum, intervalValidatorType));
         }
 
         public IValidation<T> SetUp(IValidatorTest<T> validatorTest)
@@ -74,9 +47,9 @@ namespace Froggy.Validation
             return this;
         }
 
-        public IValidation<T> SetUp(IValidatorConvert<T> validatorConvert)
+        public IValidation<T> SetUp(IValidatorType<T> validatorType)
         {
-            _ValidatorConvert[validatorType] = validatorTest;
+            _ValidatorType = validatorType;
             return this;
         }
 
@@ -84,23 +57,36 @@ namespace Froggy.Validation
         {
             get
             {
-                throw new Exception("The method or operation is not implemented.");
+                return _ErrorMessageLabel;
             }
             set
             {
-                throw new Exception("The method or operation is not implemented.");
+                _ErrorMessageLabel = value;
             }
         }
 
-        public string CustomMessage
+        public string CustomErrorMessage
         {
             get
             {
-                throw new Exception("The method or operation is not implemented.");
+                return _CustomErrorMessage;
             }
             set
             {
-                throw new Exception("The method or operation is not implemented.");
+                _CustomErrorMessage = value;
+            }
+        }
+
+        public IValidatorType<T> ValidatorType
+        {
+            get { return _ValidatorType; }
+            set 
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException("ValidatorType", "The validator type proport must not be null");
+                }
+                _ValidatorType = value; 
             }
         }
 
@@ -140,5 +126,37 @@ namespace Froggy.Validation
         }
 
         #endregion
+
+
+        public IValidation<T> SetUpLength(int equal)
+        {
+            return this.SetUp(new LengthValidator<T>(equal));
+        }
+
+        public IValidation<T> SetUpLength(int minimum, int maximum)
+        {
+            return this.SetUp(new LengthValidator<T>(minimum, maximum));
+        }
+
+        public IValidation<T> SetUpLength(int minimum, int maximum, LengthValidatorType lengthValidatorType)
+        {
+            return this.SetUp(new LengthValidator<T>(minimum, maximum, lengthValidatorType));
+        }
+
+        public IValidation<T> SetUpInterval(T equal)
+        {
+            return this.SetUp(new ComparableValidator<T>(equal));
+        }
+
+        public IValidation<T> SetUpInterval(T minimum, T maximum)
+        {
+            return this.SetUp(new ComparableValidator<T>(minimum, maximum));
+        }
+
+        public IValidation<T> SetUpInterval(T minimum, T maximum, ComparableValidatorType comparableValidatorType)
+        {
+            return this.SetUp(new ComparableValidator<T>(minimum, maximum, comparableValidatorType));
+        }
+
     }
 }

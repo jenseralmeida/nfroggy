@@ -4,13 +4,13 @@ using System.Text;
 
 namespace Froggy.Validation.BaseValidator
 {
-    public sealed class TypeValidator<T> : IValidatorConvert<T>
+    public sealed class SystemTypeValidator<T> : IValidatorType<T>
     {
-        #region IValidatorConvert<T>
+        #region IvalidatorType<T>
 
         public bool Execute(object value, out T result, out string errorMessageTemplate)
         {
-            if (TypeValidator<T>.TryChangeType(value, out result))
+            if (SystemTypeValidator<T>.TryChangeType(value, out result))
             {
                 errorMessageTemplate = "";
                 return true;
@@ -22,7 +22,7 @@ namespace Froggy.Validation.BaseValidator
             }
         }
 
-        #endregion IValidatorConvert<T>
+        #endregion IvalidatorType<T>
         private Type _RealType;
         private bool _IsNullable;
 
@@ -37,12 +37,12 @@ namespace Froggy.Validation.BaseValidator
             set { _IsNullable = value; }
         }
 
-        public TypeValidator()
+        public SystemTypeValidator()
         {
             _RealType = GetRealTypeOfGenericParameter(out _IsNullable);
         }
 
-        public TypeValidator(bool isNullable)
+        public SystemTypeValidator(bool isNullable)
             : this()
         {
             IsNullable = isNullable;
