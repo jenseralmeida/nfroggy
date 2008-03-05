@@ -21,12 +21,12 @@ namespace Froggy.Test.Validation
         [Test]
         public void FirstMock()
         {
-            IValidator validator = _mockRepository.DynamicMock<IValidator>();
+            IValidator customValidatorExample = _mockRepository.DynamicMock<IValidator>();
 
             IValidation<int> validation = _mockRepository.DynamicMock<IValidation<int>>()
                 .SetUpErrorMessageLabel("teste")
                 .SetUpInterval(0)
-                .SetUp(validator);
+                .SetUp(customValidatorExample);
 
             string errorMessage;
             validation.IsValid(10);

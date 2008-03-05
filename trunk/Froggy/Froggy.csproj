@@ -35,12 +35,14 @@
   <ItemGroup>
     <Compile Include="FroggyException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Validation\InternalValidationUtil.cs" />
     <Compile Include="Validation\IValidation.cs" />
     <Compile Include="Validation\IValidator.cs" />
     <Compile Include="Validation\IValidatorTest.cs" />
     <Compile Include="Validation\IValidatorConvert.cs" />
     <Compile Include="Validation\ValidateException.cs" />
     <Compile Include="Validation\BaseValidator\TypeValidator.cs" />
+    <Compile Include="Validation\Validation.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Validation\Validation.cd" />
