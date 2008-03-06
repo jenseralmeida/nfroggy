@@ -10,13 +10,14 @@ namespace Froggy.Test.Validation
     public class SystemTypeValidatorTest
     {
         [Test]
-        public void SimpleTypeTest()
+        public void SimpleIsValidTypeTest()
         {
-            bool result;
-            result = Validation<int>.Create().IsValid("14");
-            Assert.IsTrue(result);
-            result = Validation<int>.Create().IsValid("a");
-            Assert.IsFalse(result);
+            Assert.IsTrue(Validation<int>.Create().IsValid("14"), "string 14");
+            Assert.IsTrue(Validation<int>.Create().IsValid('1'), "char 1");
+            Assert.IsTrue(Validation<int>.Create().IsValid(16), "Int32");
+            Assert.IsFalse(Validation<int>.Create().IsValid("a"), "string a");
+            Assert.IsFalse(Validation<int>.Create().IsValid('a'), "char a");
+            Assert.IsFalse(Validation<int>.Create().IsValid(16.5), "double 16.5");
         }
     }
 }
