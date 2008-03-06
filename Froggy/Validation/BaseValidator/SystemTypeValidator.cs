@@ -64,7 +64,7 @@ namespace Froggy.Validation.BaseValidator
                 return true;
             }
             // For char type convert it for string, so the behaviour for business is more consistent
-            if (realType == typeof(char))
+            if (value.GetType() == typeof(char))
             {
                 value = value.ToString();
             }

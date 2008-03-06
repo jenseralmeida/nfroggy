@@ -29,9 +29,9 @@
     <AssociationLine Name="TypeValidator" Type="Froggy.Validation.ITypeValidator&lt;T&gt;" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
       <Path>
         <Point X="4" Y="4.193" />
-        <Point X="4.162" Y="4.193" />
-        <Point X="4.162" Y="4.5" />
-        <Point X="5.5" Y="4.5" />
+        <Point X="4.375" Y="4.193" />
+        <Point X="4.375" Y="4.25" />
+        <Point X="5.5" Y="4.25" />
       </Path>
       <MemberNameLabel ManuallyPlaced="true">
         <Position X="0.391" Y="0.112" />
@@ -62,7 +62,7 @@
     </TypeIdentifier>
   </Interface>
   <Interface Name="Froggy.Validation.ITypeValidator&lt;T&gt;" Collapsed="true">
-    <Position X="5.5" Y="4.25" Width="1.75" />
+    <Position X="5.5" Y="4" Width="1.75" />
     <TypeIdentifier>
       <FileName>Validation\ITypeValidator.cs</FileName>
       <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAIAA=</HashCode>

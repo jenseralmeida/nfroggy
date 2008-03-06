@@ -27,6 +27,7 @@ namespace Froggy.Validation.BaseValidator
                 }
                 _Regex = value; 
             }
+
         }
 
         public RegexValidator(Regex regex)
