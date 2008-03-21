@@ -8,3 +8,5 @@ Start wiki page for the froggy-project
 = Sessions =
 
  * [Validation]
+
+In the references page there is some usefull links for this project [ReferencePage]
