@@ -9,4 +9,4 @@ Start wiki page for the froggy-project
 
  * [Validation]
 
-In the references page there is some usefull links for this project [ReferencePage]
+In the [ReferencesPage references page] there is some usefull links for this project
