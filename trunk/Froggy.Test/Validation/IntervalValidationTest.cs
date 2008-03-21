@@ -12,7 +12,7 @@ namespace Froggy.Test.Validation
         [Test]
         public void SimpleDefaultInterval()
         {
-            Validation<int> validation = Validation<int>.Create()
+            Validator<int> validation = Validator<int>.Create()
                 .SetUpComparable(0, 10);
 
             Assert.IsTrue(validation.IsValid(0));
@@ -29,7 +29,7 @@ namespace Froggy.Test.Validation
         [Test]
         public void SimpleDefaultEqual()
         {
-            Validation<int> validation = Validation<int>.Create()
+            Validator<int> validation = Validator<int>.Create()
                 .SetUpComparable(5);
 
             Assert.IsTrue(validation.IsValid(5));
