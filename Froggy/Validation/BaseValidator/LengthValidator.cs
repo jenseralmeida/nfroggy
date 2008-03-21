@@ -9,17 +9,17 @@ namespace Froggy.Validation.BaseValidator
         public LengthValidator(int equal)
         {
             _Equal = equal;
-            _LengthValidatorType = LengthValidatorType.Equal;
+            _LengthValidatorType = IntervalValidatorType.Equal;
         }
 
         public LengthValidator(int minimum, int maximum)
         {
             _Minimum = minimum;
             _Maximum = maximum;
-            _LengthValidatorType = LengthValidatorType.IntervalInclusive;
+            _LengthValidatorType = IntervalValidatorType.IntervalInclusive;
         }
 
-        public LengthValidator(int minimum, int maximum, LengthValidatorType LengthValidatorType)
+        public LengthValidator(int minimum, int maximum, IntervalValidatorType LengthValidatorType)
         {
             _Minimum = minimum;
             _Maximum = maximum;
@@ -29,7 +29,7 @@ namespace Froggy.Validation.BaseValidator
         int _Equal;
         int _Minimum;
         int _Maximum;
-        LengthValidatorType _LengthValidatorType;
+        IntervalValidatorType _LengthValidatorType;
 
         public int Equal
         {
@@ -49,7 +49,7 @@ namespace Froggy.Validation.BaseValidator
             set { _Maximum = value; }
         }
 
-        public LengthValidatorType LengthValidatorType
+        public IntervalValidatorType LengthValidatorType
         {
             get { return _LengthValidatorType; }
             set { _LengthValidatorType = value; }
@@ -61,49 +61,49 @@ namespace Froggy.Validation.BaseValidator
         {
             IComparable comparable = (IComparable)value;
             errorMessageTemplate = "";
-            if (BasicValidatorUtil.ContainsValueInEnum((int)LengthValidatorType.Equal, (int)LengthValidatorType))
+            if (BasicValidatorUtil.ContainsValueInEnum((int)IntervalValidatorType.Equal, (int)LengthValidatorType))
             {
                 if (comparable.CompareTo(this.Equal) != 0)
                 {
                     errorMessageTemplate = "The value of {0} is not equal";
                 }
             }
-            else if (BasicValidatorUtil.ContainsValueInEnum((int)LengthValidatorType.IntervalInclusive, (int)LengthValidatorType))
+            else if (BasicValidatorUtil.ContainsValueInEnum((int)IntervalValidatorType.IntervalInclusive, (int)LengthValidatorType))
             {
                 if (comparable.CompareTo(_Minimum) < 0 || comparable.CompareTo(this._Maximum) > 0)
                 {
                     errorMessageTemplate = "The value of {0} is not in the defined inclusive interval";
                 }
             }
-            else if (BasicValidatorUtil.ContainsValueInEnum((int)LengthValidatorType.MinimumInclusive, (int)LengthValidatorType))
+            else if (BasicValidatorUtil.ContainsValueInEnum((int)IntervalValidatorType.MinimumInclusive, (int)LengthValidatorType))
             {
                 if (comparable.CompareTo(_Minimum) < 0)
                 {
                     errorMessageTemplate = "The value of {0} is below inclusive minimal";
                 }
             }
-            else if (BasicValidatorUtil.ContainsValueInEnum((int)LengthValidatorType.MaximumInclusive, (int)LengthValidatorType))
+            else if (BasicValidatorUtil.ContainsValueInEnum((int)IntervalValidatorType.MaximumInclusive, (int)LengthValidatorType))
             {
                 if (comparable.CompareTo(_Maximum) > 0)
                 {
                     errorMessageTemplate = "The value of {0} is above inclusive maximum";
                 }
             }
-            else if (BasicValidatorUtil.ContainsValueInEnum((int)LengthValidatorType.IntervalExclusive, (int)LengthValidatorType))
+            else if (BasicValidatorUtil.ContainsValueInEnum((int)IntervalValidatorType.IntervalExclusive, (int)LengthValidatorType))
             {
                 if (comparable.CompareTo(_Minimum) <= 0 || comparable.CompareTo(this._Maximum) >= 0)
                 {
                     errorMessageTemplate = "The value of {0} is not in the defined exclusive interval";
                 }
             }
-            else if (BasicValidatorUtil.ContainsValueInEnum((int)LengthValidatorType.MinimumExclusive, (int)LengthValidatorType))
+            else if (BasicValidatorUtil.ContainsValueInEnum((int)IntervalValidatorType.MinimumExclusive, (int)LengthValidatorType))
             {
                 if (comparable.CompareTo(_Minimum) <= 0)
                 {
                     errorMessageTemplate = "The value of {0} is below exclusive minimal";
                 }
             }
-            else if (BasicValidatorUtil.ContainsValueInEnum((int)LengthValidatorType.MaximumExclusive, (int)LengthValidatorType))
+            else if (BasicValidatorUtil.ContainsValueInEnum((int)IntervalValidatorType.MaximumExclusive, (int)LengthValidatorType))
             {
                 if (comparable.CompareTo(_Maximum) >= 0)
                 {

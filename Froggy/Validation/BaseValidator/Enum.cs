@@ -4,25 +4,14 @@ using System.Text;
 
 namespace Froggy.Validation.BaseValidator
 {
-    public enum ComparableValidatorType
+    public enum IntervalValidatorType
     {
-        Equal = 0,
-        MinimumInclusive = 1,
-        MaximumInclusive = 2,
+        Equal = 1,
+        MinimumInclusive = 2,
+        MaximumInclusive = 4,
         IntervalInclusive = MinimumInclusive | MaximumInclusive,
-        MinimumExclusive = 4,
-        MaximumExclusive = 8,
-        IntervalExclusive = MinimumExclusive | MaximumExclusive
-    }
-
-    public enum LengthValidatorType
-    {
-        Equal = 0,
-        MinimumInclusive = 1,
-        MaximumInclusive = 2,
-        IntervalInclusive = MinimumInclusive | MaximumInclusive,
-        MinimumExclusive = 4,
-        MaximumExclusive = 8,
+        MinimumExclusive = 8,
+        MaximumExclusive = 16,
         IntervalExclusive = MinimumExclusive | MaximumExclusive
     }
 }
