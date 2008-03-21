@@ -44,7 +44,7 @@
     <Compile Include="Validation\ITypeValidator.cs" />
     <Compile Include="Validation\ValidateException.cs" />
     <Compile Include="Validation\BaseValidator\SystemTypeValidator.cs" />
-    <Compile Include="Validation\Validation.cs" />
+    <Compile Include="Validation\Validator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Validation\Validation.cd" />

@@ -39,7 +39,7 @@ namespace Froggy.Test.Validation
         [Test]
         public void WorksTest()
         {
-            Validation<string> worksValidation = Validation<string>.Create()
+            Validator<string> worksValidation = Validator<string>.Create()
                   .SetUpErrorMessageLabel("works label")
                   .SetUp(new WorksTestValidator<string>());
             string message;

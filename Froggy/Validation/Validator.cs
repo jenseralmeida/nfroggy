@@ -5,35 +5,35 @@ using Froggy.Validation.BaseValidator;
 
 namespace Froggy.Validation
 {
-    public class Validation<T>
+    public class Validator<T>
     {
         #region Class method
 
-        public static Validation<T> SetUp(string errorMessageLabel)
+        public static Validator<T> SetUp(string errorMessageLabel)
         {
-            return Validation<T>
+            return Validator<T>
                 .Create()
                 .SetUpErrorMessageLabel(errorMessageLabel);
         }
 
-        public static Validation<T> SetUp(string errorMessageLabel, bool isNullable)
+        public static Validator<T> SetUp(string errorMessageLabel, bool isNullable)
         {
-            return Validation<T>
+            return Validator<T>
                 .Create()
                 .SetUpErrorMessageLabel(errorMessageLabel)
                 .SetUpNullable(isNullable);
         }
 
-        public static Validation<T> Create()
+        public static Validator<T> Create()
         {
-            return new Validation<T>();
+            return new Validator<T>();
         }
 
         #endregion Class method
 
         #region Constructors
 
-        private Validation()
+        private Validator()
         {
             _TypeValidator = new SystemTypeValidator<T>();
             _TestValidators = new Dictionary<Type, ITestValidator<T>>();
@@ -93,32 +93,32 @@ namespace Froggy.Validation
 
         #region Basic SetUp
 
-        public Validation<T> SetUpErrorMessageLabel(string errorMessageLabel)
+        public Validator<T> SetUpErrorMessageLabel(string errorMessageLabel)
         {
             _ErrorMessageLabel = errorMessageLabel;
             return this;
         }
 
-        public Validation<T> SetUpCustomMessage(string customErrorMessage)
+        public Validator<T> SetUpCustomMessage(string customErrorMessage)
         {
             _CustomErrorMessage = customErrorMessage;
             return this;
         }
 
-        public Validation<T> SetUpNullable(bool isNullable)
+        public Validator<T> SetUpNullable(bool isNullable)
         {
             _TypeValidator.IsNullable = isNullable;
             return this;
         }
 
-        public Validation<T> SetUp(ITestValidator<T> testValidator)
+        public Validator<T> SetUp(ITestValidator<T> testValidator)
         {
             Type typeOfTestValidator = testValidator.GetType();
             _TestValidators[typeOfTestValidator] = testValidator;
             return this;
         }
 
-        public Validation<T> SetUp(ITypeValidator<T> typeValidator)
+        public Validator<T> SetUp(ITypeValidator<T> typeValidator)
         {
             _TypeValidator = typeValidator;
             return this;
@@ -128,32 +128,32 @@ namespace Froggy.Validation
 
         #region Advanced SetUp
 
-        public Validation<T> SetUpLength(int equal)
+        public Validator<T> SetUpLength(int equal)
         {
             return this.SetUp(new LengthValidator<T>(equal));
         }
 
-        public Validation<T> SetUpLength(int minimum, int maximum)
+        public Validator<T> SetUpLength(int minimum, int maximum)
         {
             return this.SetUp(new LengthValidator<T>(minimum, maximum));
         }
 
-        public Validation<T> SetUpLength(int minimum, int maximum, IntervalValidatorType lengthValidatorType)
+        public Validator<T> SetUpLength(int minimum, int maximum, IntervalValidatorType lengthValidatorType)
         {
             return this.SetUp(new LengthValidator<T>(minimum, maximum, lengthValidatorType));
         }
 
-        public Validation<T> SetUpComparable(T equal)
+        public Validator<T> SetUpComparable(T equal)
         {
             return this.SetUp(new ComparableValidator<T>(equal));
         }
 
-        public Validation<T> SetUpComparable(T minimum, T maximum)
+        public Validator<T> SetUpComparable(T minimum, T maximum)
         {
             return this.SetUp(new ComparableValidator<T>(minimum, maximum));
         }
 
-        public Validation<T> SetUpComparable(T minimum, T maximum, IntervalValidatorType comparableValidatorType)
+        public Validator<T> SetUpComparable(T minimum, T maximum, IntervalValidatorType comparableValidatorType)
         {
             return this.SetUp(new ComparableValidator<T>(minimum, maximum, comparableValidatorType));
         }
