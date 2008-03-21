@@ -40,14 +40,20 @@ namespace Froggy.Test.Validation
         public void WorksTest()
         {
             Validation<string> worksValidation = Validation<string>.Create()
+                  .SetUpErrorMessageLabel("works label")
                   .SetUp(new WorksTestValidator<string>());
             string message;
 
             bool thisWork = worksValidation.IsValid("works", out message);
+            Console.WriteLine(message);
             Assert.IsTrue(thisWork, message);
+            
             bool thisDoesNotWork = worksValidation.IsValid("does not works", out message);
+            Console.WriteLine(message);
             Assert.IsFalse(thisDoesNotWork, message);
+
             bool nullDoesNotWork = worksValidation.IsValid(null);
+            Console.WriteLine(message);
             Assert.IsFalse(nullDoesNotWork, message);
         }
     }
