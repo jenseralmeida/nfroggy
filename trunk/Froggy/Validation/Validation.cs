@@ -138,7 +138,7 @@ namespace Froggy.Validation
             return this.SetUp(new LengthValidator<T>(minimum, maximum));
         }
 
-        public Validation<T> SetUpLength(int minimum, int maximum, LengthValidatorType lengthValidatorType)
+        public Validation<T> SetUpLength(int minimum, int maximum, IntervalValidatorType lengthValidatorType)
         {
             return this.SetUp(new LengthValidator<T>(minimum, maximum, lengthValidatorType));
         }
@@ -153,7 +153,7 @@ namespace Froggy.Validation
             return this.SetUp(new ComparableValidator<T>(minimum, maximum));
         }
 
-        public Validation<T> SetUpComparable(T minimum, T maximum, ComparableValidatorType comparableValidatorType)
+        public Validation<T> SetUpComparable(T minimum, T maximum, IntervalValidatorType comparableValidatorType)
         {
             return this.SetUp(new ComparableValidator<T>(minimum, maximum, comparableValidatorType));
         }
