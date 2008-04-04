@@ -12,8 +12,12 @@ namespace Froggy.Test.Validation
         [Test]
         public void SimpleIsValidTypeTest()
         {
-            Assert.IsTrue(Validator<int>.Create().IsValid("14"), "string 14");
-            Assert.IsTrue(Validator<int>.Create().IsValid('1'), "char 1");
+            bool isValid;
+
+            isValid = Validator<int>.Create().IsValid("14");
+            Assert.IsTrue(isValid, "string 14");
+            isValid = Validator<int>.Create().IsValid('1');
+            Assert.IsTrue(isValid, "char 1");
             Assert.IsTrue(Validator<int>.Create().IsValid(16), "Int32");
             Assert.IsFalse(Validator<int>.Create().IsValid("a"), "string a");
             Assert.IsFalse(Validator<int>.Create().IsValid('a'), "char a");
