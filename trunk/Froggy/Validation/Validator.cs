@@ -24,6 +24,13 @@ namespace Froggy.Validation
                 .SetUpNullable(isNullable);
         }
 
+        public static Validator<T> Create(string errorMessageLabel)
+        {
+            return Validator<T>
+                .Create()
+                .SetUpErrorMessageLabel(errorMessageLabel);
+        }
+
         public static Validator<T> Create()
         {
             return new Validator<T>();
