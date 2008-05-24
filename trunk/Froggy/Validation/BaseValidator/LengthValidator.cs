@@ -19,11 +19,11 @@ namespace Froggy.Validation.BaseValidator
             _LengthValidatorType = IntervalValidatorType.IntervalInclusive;
         }
 
-        public LengthValidator(int minimum, int maximum, IntervalValidatorType LengthValidatorType)
+        public LengthValidator(int minimum, int maximum, IntervalValidatorType lengthValidatorType)
         {
             _Minimum = minimum;
             _Maximum = maximum;
-            _LengthValidatorType = LengthValidatorType;
+            _LengthValidatorType = lengthValidatorType;
         }
 
         int _Equal;
