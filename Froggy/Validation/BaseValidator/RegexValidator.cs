@@ -21,9 +21,9 @@ namespace Froggy.Validation.BaseValidator
             get { return _Regex; }
             set 
             {
-                if (value == null)
+            	if (value == null)
                 {
-                    throw new ArgumentNullException("Regex", "Null is not allowed");
+                    throw new ArgumentNullException("value", "Null is not allowed");
                 }
                 _Regex = value; 
             }

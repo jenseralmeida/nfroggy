@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 
 namespace Froggy.Validation.BaseValidator
@@ -77,7 +78,7 @@ namespace Froggy.Validation.BaseValidator
 
             try
             {
-                result = (T)Convert.ChangeType(value, realType);
+                result = (T)Convert.ChangeType(value, realType, CultureInfo.CurrentCulture);
                 return true;
             }
             catch (ArgumentOutOfRangeException)
