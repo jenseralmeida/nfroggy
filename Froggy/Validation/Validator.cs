@@ -133,40 +133,6 @@ namespace Froggy.Validation
 
 		#endregion Basic SetUp
 
-		#region Advanced SetUp
-
-		public Validator<T> SetUpLength(int equal)
-		{
-			return this.SetUp(new LengthValidator<T>(equal));
-		}
-
-		public Validator<T> SetUpLength(int minimum, int maximum)
-		{
-			return this.SetUp(new LengthValidator<T>(minimum, maximum));
-		}
-
-		public Validator<T> SetUpLength(int minimum, int maximum, IntervalValidatorType lengthValidatorType)
-		{
-			return this.SetUp(new LengthValidator<T>(minimum, maximum, lengthValidatorType));
-		}
-
-		public Validator<T> SetUpComparable(T equal)
-		{
-			return this.SetUp(new ComparableValidator<T>(equal));
-		}
-
-		public Validator<T> SetUpComparable(T minimum, T maximum)
-		{
-			return this.SetUp(new ComparableValidator<T>(minimum, maximum));
-		}
-
-		public Validator<T> SetUpComparable(T minimum, T maximum, IntervalValidatorType comparableValidatorType)
-		{
-			return this.SetUp(new ComparableValidator<T>(minimum, maximum, comparableValidatorType));
-		}
-
-		#endregion Advanced SetUp
-
 		#region Validation
 
 		public void Validate(object value)

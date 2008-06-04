@@ -6,6 +6,13 @@ using NUnit.Framework;
 
 namespace Froggy.Test.Validation
 {
+	public static class WorksTestValidatorExtension
+	{
+		public static Validator<T> SetUpWorksTest<T>(this Validator<T> validator)
+		{
+			return validator.SetUp(new WorksTestValidator<T>());
+		}
+	}
     public class WorksTestValidator<T> : ITestValidator<T>
     {
 
@@ -41,7 +48,7 @@ namespace Froggy.Test.Validation
         {
             Validator<string> worksValidation = Validator<string>
                 .Create("works label")
-                .SetUp(new WorksTestValidator<string>());
+            	.SetUpWorksTest();
             string message;
 
             bool thisWork = worksValidation.IsValid("works", out message);
