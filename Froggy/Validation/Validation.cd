@@ -1,0 +1,119 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Comment CommentText="Basic extension Validators">
+    <Position X="0.5" Y="5.75" Height="0.417" Width="7.372" />
+  </Comment>
+  <Class Name="Froggy.Validation.Validator&lt;T&gt;">
+    <Position X="1" Y="2.25" Width="2" />
+    <Members>
+      <Field Name="_CustomErrorMessage" Hidden="true" />
+      <Field Name="_ErrorMessageLabel" Hidden="true" />
+      <Field Name="_TypeValidator" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAQAAACgAAgAAIoEgYAAAAACAEAIAAAAAAAAAAA=</HashCode>
+      <FileName>Validation\Validator.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="TypeValidator" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Field Name="_TestValidators" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Froggy.Validation.BaseValidator.ComparableValidator&lt;T&gt;" BaseTypeListCollapsed="true">
+    <Position X="3" Y="9.5" Width="2.5" />
+    <Members>
+      <Field Name="_ComparableValidatorType" Hidden="true" />
+      <Field Name="_Equal" Hidden="true" />
+      <Field Name="_Maximum" Hidden="true" />
+      <Field Name="_Minimum" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>kAAAIACAAAAAAAQAgAAIAAAAAAAAAAAAABAgAAAAAAA=</HashCode>
+      <FileName>Validation\BaseValidator\ComparableValidator.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Froggy.Validation.BaseValidator.LengthValidator&lt;T&gt;" BaseTypeListCollapsed="true">
+    <Position X="0.5" Y="9.5" Width="2.25" />
+    <Members>
+      <Field Name="_Equal" Hidden="true" />
+      <Field Name="_LengthValidatorType" Hidden="true" />
+      <Field Name="_Maximum" Hidden="true" />
+      <Field Name="_Minimum" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>gAAAIACAAAAAAAQAgAAIAAAAAAAAAAAAABCAAAAAgAA=</HashCode>
+      <FileName>Validation\BaseValidator\LengthValidator.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Froggy.Validation.BaseValidator.SystemTypeValidator&lt;T&gt;" BaseTypeListCollapsed="true">
+    <Position X="0.5" Y="6.5" Width="2.5" />
+    <Members>
+      <Field Name="_IsNullable" Hidden="true" />
+      <Field Name="_RealType" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>oQAAAAAAAAAAAAQAAAAAAAACAAAAAAAAAAAEgAAAMAA=</HashCode>
+      <FileName>Validation\BaseValidator\SystemTypeValidator.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Froggy.Validation.BaseValidator.RegexValidator&lt;T&gt;" BaseTypeListCollapsed="true">
+    <Position X="3.25" Y="6.5" Width="2.25" />
+    <Members>
+      <Field Name="_Regex" Hidden="true" />
+      <Field Name="_RegexTemplateMessage" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAQAAAAAAAAAgAAAAAAAAAgACAAAAAA=</HashCode>
+      <FileName>Validation\BaseValidator\RegexValidator.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Froggy.Validation.BaseValidator.BasicValidatorUtil">
+    <Position X="8.75" Y="6.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Validation\BaseValidator\BasicValidatorUtil.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Froggy.Validation.ComparableValidatorExtension">
+    <Position X="5" Y="2.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAA=</HashCode>
+      <FileName>Validation\ComparableValidatorExtension.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Froggy.Validation.LengthValidatorExtension">
+    <Position X="5" Y="3.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Validation\LengthValidatorExtension.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="Froggy.Validation.ITestValidator&lt;T&gt;" Collapsed="true">
+    <Position X="2.5" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Validation\ITestValidator.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Froggy.Validation.ITypeValidator&lt;T&gt;" Collapsed="true">
+    <Position X="0.5" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAIAA=</HashCode>
+      <FileName>Validation\ITypeValidator.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="Froggy.Validation.BaseValidator.IntervalValidatorType">
+    <Position X="5.75" Y="9.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAAAAAAAEgAAAAAQAAAAAAAAAQAAAACEACAA=</HashCode>
+      <FileName>Validation\BaseValidator\Enum.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Tahoma" Size="8.25" />
+</ClassDiagram>
