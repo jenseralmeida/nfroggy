@@ -81,17 +81,24 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Froggy.Validation.ComparableValidatorExtension">
-    <Position X="5" Y="2.25" Width="2.5" />
+    <Position X="5" Y="3" Width="2.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAA=</HashCode>
       <FileName>Validation\ComparableValidatorExtension.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Froggy.Validation.LengthValidatorExtension">
-    <Position X="5" Y="3.5" Width="2.25" />
+    <Position X="5" Y="4.25" Width="2.25" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Validation\LengthValidatorExtension.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Froggy.Validation.ValidateException" Collapsed="true">
+    <Position X="5" Y="2.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Validation\ValidateException.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Interface Name="Froggy.Validation.ITestValidator&lt;T&gt;" Collapsed="true">
