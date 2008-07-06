@@ -40,7 +40,7 @@ namespace Froggy.Validation
 
 		#region Constructors
 
-		private Validator()
+		public Validator()
 		{
 			_TypeValidator = new SystemTypeValidator<T>();
 			_TestValidators = new Dictionary<Type, ITestValidator<T>>();
