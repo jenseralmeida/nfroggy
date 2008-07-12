@@ -11,7 +11,7 @@ namespace Froggy.Validation.BaseValidator
 
         public bool Execute(object value, out T result, out string errorMessageTemplate)
         {
-            if (SystemTypeValidator<T>.TryChangeType(value, out result))
+            if (SystemTypeValidator<T>.TryChangeType(value, IsNullable, out result))
             {
                 errorMessageTemplate = "";
                 return true;
@@ -49,20 +49,39 @@ namespace Froggy.Validation.BaseValidator
             IsNullable = isNullable;
         }
 
+        /// <summary>
+        /// Try change type, with the restriction of null value of the type
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="result"></param>
+        /// <returns></returns>
         public static bool TryChangeType(object value, out T result)
         {
-            bool isNullValue;
-            Type realType = GetRealTypeOfGenericParameter(out isNullValue);
-            return PrivateTryChangeType(value, realType, out isNullValue, out result);
+            bool isNullableType;
+            Type realType = GetRealTypeOfGenericParameter(out isNullableType);
+            return PrivateTryChangeType(value, realType, isNullableType, out result);
         }
 
-        private static bool PrivateTryChangeType(object value, Type realType, out bool isNullValue, out T result)
+        /// <summary>
+        /// Try change type, validating if the value is null, with a custom restriction of null value
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="result"></param>
+        /// <returns></returns>
+        public static bool TryChangeType(object value, bool isNullable, out T result)
         {
-            isNullValue = (value == null) || Convert.IsDBNull(value);
+            bool isNullableType;
+            Type realType = GetRealTypeOfGenericParameter(out isNullableType);
+            return PrivateTryChangeType(value, realType, isNullable, out result);
+        }
+
+        private static bool PrivateTryChangeType(object value, Type realType, bool isNullable, out T result)
+        {
+            bool isNullValue = (value == null) || Convert.IsDBNull(value);
             if (isNullValue)
             {
                 result = default(T);
-                return true;
+                return isNullable;
             }
             // For char type convert it for string, so the behaviour for business is more consistent
             if (value.GetType() == typeof(char))

@@ -8,7 +8,7 @@ using Froggy.Validation.Object;
 namespace Froggy.Test.Validation.Object
 {
     [TestFixture]
-    class StubTest
+    public class StubTest
     {
         [Test]
         public void Validar()
@@ -16,6 +16,8 @@ namespace Froggy.Test.Validation.Object
             ObjectValidatorUtil ovu = new ObjectValidatorUtil(typeof(Stub));
             Stub stub = new Stub();
             Assert.IsFalse(ovu.IsValid(stub));
+            stub.Name = "joao";
+            Assert.IsTrue(ovu.IsValid(stub));
         }
 
     }

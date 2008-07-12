@@ -10,7 +10,7 @@ namespace Froggy.Validation.Object
     public class ObjectValidatorUtil: IValidation
     {
         Type objType;
-        Dictionary<MemberInfo, IValidation> validationsByMemberInfo = new Dictionary<MemberInfo, IValidation>();
+        Dictionary<PropertyInfo, IValidation> validationsByPropertyInfo = new Dictionary<PropertyInfo, IValidation>();
         Dictionary<string, IValidation> validationsByName = new Dictionary<string, IValidation>();
 
         public ObjectValidatorUtil(Type objType)
@@ -21,77 +21,98 @@ namespace Froggy.Validation.Object
                 .SetUpNullable(false)
                 .Validate(objType);
 
-            foreach (var memberInfo in objType.GetMembers())
+            foreach (var propertyInfo in objType.GetProperties())
             {
-                var validatorAttributes = memberInfo.GetCustomAttributes(typeof(ValidatorAttribute), true);
+                var validatorAttributes = propertyInfo.GetCustomAttributes(typeof(ValidatorAttribute), true);
                 foreach (ValidatorAttribute validatorAttrib in validatorAttributes )
                 {
                     // Inicialmente apenas um validator por membro é suportado. ver se vale a pena criar estrutura pra ter mais de um validator por membro
-                    validationsByMemberInfo.Add(memberInfo, validatorAttrib.Validator);
-                    validationsByName.Add(memberInfo.Name, validatorAttrib.Validator);
+                    validationsByPropertyInfo.Add(propertyInfo, validatorAttrib.Validator);
+                    validationsByName.Add(propertyInfo.Name, validatorAttrib.Validator);
                 }
             }
 
             this.objType = objType;
         }
 
-        public bool IsValid(string memberName)
+        public bool IsValid(object value, string memberName)
         {
-            PropertyInfo memberInfo = validationsByName[memberName];
-            return IsMemberInfoValid(memberInfo);
+            IValidation validation = validationsByName[memberName];
+            if (validation != null)
+            {
+                return validation.IsValid(value);
+            }
+            else
+            {
+                return true;
+            }
         }
 
         #region IValidation Members
 
         public bool IsValid(object obj)
         {
-            foreach (PropertyInfo memberInfo in validationsByMemberInfo.Keys)
+            foreach (PropertyInfo propertyInfo in validationsByPropertyInfo.Keys)
             {
-                bool isMemberInfoValid = IsMemberInfoValid(memberInfo);
-                if (!isMemberInfoValid)
+                bool existsValidator;
+                object value = GetValueOfProperty(obj, propertyInfo, out existsValidator);
+                if (existsValidator)
                 {
-                    return false;
+                    bool isValueOfPropertyValid = validationsByPropertyInfo[propertyInfo].IsValid(value);
+                    if (!isValueOfPropertyValid)
+                    {
+                        return false;
+                    }
                 }
             }
             return true;
         }
 
-        public bool IsValid(object value, out string errorMessage)
+        public bool IsValid(object obj, out string errorMessage)
         {
-            IValidation validation;
-            string errorMessages = "";
-            foreach (PropertyInfo memberInfo in validationsByMemberInfo.Keys)
+            errorMessage = "";
+            foreach (PropertyInfo propertyInfo in validationsByPropertyInfo.Keys)
             {
-                validation = validationsByMemberInfo[(MemberInfo)memberInfo];
-                object value = memberInfo.GetValue(obj, null);
-                string tempErrorMessage;
-                bool isMemberInfoValid = validation.IsValid(value, out tempErrorMessage);
-                if (!isMemberInfoValid)
+                bool existsValidator;
+                object value = GetValueOfProperty(obj, propertyInfo, out existsValidator);
+                if (existsValidator)
                 {
-                    errorMessages += tempErrorMessage + "\n";
+                    string tempErrorMessage;
+                    bool isValueOfPropertyValid = validationsByPropertyInfo[propertyInfo].IsValid(value, out tempErrorMessage);
+                    if (!isValueOfPropertyValid)
+                    {
+                        errorMessage += tempErrorMessage + "\n";
+                    }
                 }
             }
             return String.IsNullOrEmpty(errorMessage);
         }
 
-        public void Validate(object value)
+        public void Validate(object obj)
         {
-            foreach (PropertyInfo memberInfo in validationsByMemberInfo.Keys)
+            foreach (PropertyInfo propertyInfo in validationsByPropertyInfo.Keys)
             {
-                IValidation validation = validationsByMemberInfo[(MemberInfo)memberInfo];
-                object value = memberInfo.GetValue(obj, null);
-                validation.Validate(value);
+                bool existsValidator;
+                object value = GetValueOfProperty(obj, propertyInfo, out existsValidator);
+                if (existsValidator)
+                {
+                    IValidation validation = validationsByPropertyInfo[propertyInfo];
+                    validation.Validate(value);
+                }
             }
-            return true;
         }
 
         #endregion
 
-        private bool IsMemberInfoValid(PropertyInfo memberInfo)
+        private object GetValueOfProperty(object obj, PropertyInfo propertyInfo, out bool existsValidator)
         {
-            IValidation validation = validationsByMemberInfo[(MemberInfo)memberInfo];
-            object value = memberInfo.GetValue(obj, null);
-            return validation.IsValid(value);
+            IValidation validation = validationsByPropertyInfo[(PropertyInfo)propertyInfo];
+            existsValidator = validation != null;
+            if (!existsValidator)
+            {
+                return null;
+            }
+            return propertyInfo.GetValue(obj, null);
         }
     }
 }
