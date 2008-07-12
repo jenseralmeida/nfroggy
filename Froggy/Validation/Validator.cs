@@ -5,7 +5,7 @@ using Froggy.Validation.BaseValidator;
 
 namespace Froggy.Validation
 {
-	public class Validator<T>
+	public class Validator<T>: IValidation
 	{
 		#region Class method
 
@@ -133,7 +133,7 @@ namespace Froggy.Validation
 
 		#endregion Basic SetUp
 
-		#region Validation
+		#region IValidation
 
 		public void Validate(object value)
 		{
@@ -152,40 +152,44 @@ namespace Froggy.Validation
 			return this.TryConvert(value, out result, out errorMessage);
 		}
 
-		public T Convert(object value)
-		{
-			T result;
-			string errorMessage;
-			if (!this.TryConvert(value, out result, out errorMessage))
-			{
-				throw new ValidateException(errorMessage);
-			}
-			return result;
-		}
+		#endregion IValidation
 
-		public bool TryConvert(object value, out T result)
-		{
-			string errorMessage;
-			return this.TryConvert(value, out result, out errorMessage);
-		}
+        #region Conversion
 
-		public bool TryConvert(object value, out T result, out string errorMessage)
-		{
-			bool sucess = TypeValidator.Execute(value, out result, out errorMessage);
-			if (!sucess)
-			{
-				return false;
-			}
-			foreach (ITestValidator<T> testsValidator in _TestValidators.Values)
-			{
-				if (!testsValidator.Execute(result, out errorMessage))
-				{
-					return false;
-				}
-			}
-			return true;
-		}
+        public T Convert(object value)
+        {
+            T result;
+            string errorMessage;
+            if (!this.TryConvert(value, out result, out errorMessage))
+            {
+                throw new ValidateException(errorMessage);
+            }
+            return result;
+        }
 
-		#endregion Validation
-	}
+        public bool TryConvert(object value, out T result)
+        {
+            string errorMessage;
+            return this.TryConvert(value, out result, out errorMessage);
+        }
+
+        public bool TryConvert(object value, out T result, out string errorMessage)
+        {
+            bool sucess = TypeValidator.Execute(value, out result, out errorMessage);
+            if (!sucess)
+            {
+                return false;
+            }
+            foreach (ITestValidator<T> testsValidator in _TestValidators.Values)
+            {
+                if (!testsValidator.Execute(result, out errorMessage))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        #endregion Conversion
+    }
 }
