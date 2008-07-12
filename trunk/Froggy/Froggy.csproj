@@ -79,7 +79,6 @@
     <Compile Include="Validation\IValidation.cs" />
     <Compile Include="Validation\LengthValidatorExtension.cs" />
     <Compile Include="Validation\Object\ObjectValidatorUtil.cs" />
-    <Compile Include="Validation\Object\PropertyAttribute.cs" />
     <Compile Include="Validation\Object\ValidatorAttribute.cs" />
     <Compile Include="Validation\ValidateException.cs" />
     <Compile Include="Validation\BaseValidator\SystemTypeValidator.cs" />

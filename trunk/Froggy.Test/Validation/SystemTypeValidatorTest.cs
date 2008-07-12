@@ -10,6 +10,17 @@ namespace Froggy.Test.Validation
     public class SystemTypeValidatorTest
     {
         [Test]
+        public void SimpleIsValidNullabeWithNullableTypeTest()
+        {
+            Validator<int?> validationNullable = Validator<int?>.Create().SetUpNullable(true);
+            Assert.IsTrue(validationNullable.IsValid(14), "14");
+            Assert.IsTrue(validationNullable.IsValid(null), "null");
+            Validator<int?> validation = Validator<int?>.Create().SetUpNullable(false);
+            Assert.IsTrue(validation.IsValid(14), "14");
+            Assert.IsFalse(validation.IsValid(null), "null");
+        }
+
+        [Test]
         public void SimpleIsValidTypeTest()
         {
             bool isValid;

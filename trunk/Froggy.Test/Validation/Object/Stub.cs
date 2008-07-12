@@ -11,7 +11,7 @@ namespace Froggy.Test.Validation.Object
     {
         string name;
 
-        [Validator(false, new StupNameTestValidator())]
+        [Validator(false)]
         public string Name
         {
             get { return name; }
@@ -32,9 +32,10 @@ namespace Froggy.Test.Validation.Object
                     case "o":
                     case "u":
                         errorMessageTemplate = "";
-                        break;
+                        return true;
                     default:
                         errorMessageTemplate = "o valor para {0} não é uma vogal";
+                        return false;
                 }
             }
 
