@@ -11,7 +11,7 @@
       <Field Name="_TypeValidator" Hidden="true" />
     </Members>
     <TypeIdentifier>
-      <HashCode>AAAAAAQAAACgAAgAAIIEgYAAAAACAAAIAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAQAAACgAAgAAIoEgYAAAAACAEAIAAAAAAAAAAA=</HashCode>
       <FileName>Validation\Validator.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -114,6 +114,13 @@
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAIAA=</HashCode>
       <FileName>Validation\ITypeValidator.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Froggy.Validation.IValidation">
+    <Position X="5.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Validation\IValidation.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Enum Name="Froggy.Validation.BaseValidator.IntervalValidatorType">
