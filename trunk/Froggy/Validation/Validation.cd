@@ -11,7 +11,7 @@
       <Field Name="_TypeValidator" Hidden="true" />
     </Members>
     <TypeIdentifier>
-      <HashCode>AAAAAAQAAACgAAgAAIoEgYAAAAACAEAIAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAQAAACgAAgAAIIEgYAAAAACAAAIAAAAAAAAAAA=</HashCode>
       <FileName>Validation\Validator.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -20,6 +20,7 @@
     <ShowAsCollectionAssociation>
       <Field Name="_TestValidators" />
     </ShowAsCollectionAssociation>
+    <Lollipop Position="0.2" />
   </Class>
   <Class Name="Froggy.Validation.BaseValidator.ComparableValidator&lt;T&gt;" BaseTypeListCollapsed="true">
     <Position X="3" Y="9.5" Width="2.5" />

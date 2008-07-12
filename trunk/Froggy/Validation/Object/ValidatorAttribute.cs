@@ -5,7 +5,8 @@ using System.Text;
 
 namespace Froggy.Validation.Object
 {
-    public class ValidatorAttribute: Attribute
+    [AttributeUsage(AttributeTargets.Property)]
+    public class ValidatorAttribute : Attribute
     {
         Validator<object> validator;
 
