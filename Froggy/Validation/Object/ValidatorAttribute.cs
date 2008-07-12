@@ -13,7 +13,6 @@ namespace Froggy.Validation.Object
         public Validator<object> Validator
         {
             get { return validator; }
-            set { validator = value; }
         }
 
         public ValidatorAttribute(bool isNullable)
