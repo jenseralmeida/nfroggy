@@ -18,13 +18,13 @@ namespace Froggy.Test.Validation.Object
             set { name = value; }
         }
 
-        class StupNameTestValidator : ITestValidator<string>
+        class StupNameTestValidator : ITestValidator
         {
-            #region ITestValidator<string> Members
+            #region ITestValidator Members
 
-            public bool Execute(string value, out string errorMessageTemplate)
+            public bool Execute<T>(T value, out string errorMessageTemplate)
             {
-                switch (value)
+                switch (value.ToString())
                 {
                     case "a":
                     case "e":

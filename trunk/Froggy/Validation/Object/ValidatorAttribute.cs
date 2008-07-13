@@ -8,17 +8,36 @@ namespace Froggy.Validation.Object
     [AttributeUsage(AttributeTargets.Property)]
     public class ValidatorAttribute : Attribute
     {
-        Validator<object> validator;
+        string _ErrorMessageLabel;
+        string _CustomErrorMessage;
 
-        public Validator<object> Validator
+        public string ErrorMessageLabel
         {
-            get { return validator; }
+            get
+            {
+                return _ErrorMessageLabel;
+            }
+            set
+            {
+                _ErrorMessageLabel = value;
+            }
         }
+
+        public string CustomErrorMessage
+        {
+            get
+            {
+                return _CustomErrorMessage;
+            }
+            set
+            {
+                _CustomErrorMessage = value;
+            }
+        }
+
 
         public ValidatorAttribute(bool isNullable)
         {
-            validator = new Validator<object>();
-            validator.SetUpNullable(isNullable);
         }
     }
 }

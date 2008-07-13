@@ -11,6 +11,7 @@ namespace Froggy.Validation
             get;
             set;
         }
+
         bool Execute(object value, out T result, out string errorMessageTemplate);
     }
 }

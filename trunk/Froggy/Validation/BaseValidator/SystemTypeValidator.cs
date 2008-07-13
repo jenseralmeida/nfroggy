@@ -7,7 +7,7 @@ namespace Froggy.Validation.BaseValidator
 {
     public sealed class SystemTypeValidator<T> : ITypeValidator<T>
     {
-        #region IvalidatorType<T>
+        #region ITypeValidator
 
         public bool Execute(object value, out T result, out string errorMessageTemplate)
         {
@@ -23,7 +23,7 @@ namespace Froggy.Validation.BaseValidator
             }
         }
 
-        #endregion IvalidatorType<T>
+        #endregion ITypeValidator
         private Type _RealType;
         private bool _IsNullable;
 

@@ -10,15 +10,15 @@ namespace Froggy.Test.Validation
 	{
 		public static Validator<T> SetUpWorksTest<T>(this Validator<T> validator)
 		{
-			return validator.SetUp(new WorksTestValidator<T>());
+			return validator.SetUp(new WorksTestValidator());
 		}
 	}
-    public class WorksTestValidator<T> : ITestValidator<T>
+    public class WorksTestValidator : ITestValidator
     {
 
-        #region ITestValidator<T> Members
+        #region ITestValidator Members
 
-        public bool Execute(T value, out string errorMessageTemplate)
+        public bool Execute<T>(T value, out string errorMessageTemplate)
         {
             if (value == null)
             {
