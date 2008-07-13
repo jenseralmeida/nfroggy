@@ -11,7 +11,7 @@ namespace Froggy.Test.Validation.Object
     {
         string _Name;
 
-        //[Validator(CustomTestValidators={ new StubNameTestValidator() })]
+        //[Validator(new ITestValidator{ new StubNameTestValidator() })]
         public string Name
         {
             get { return _Name; }
