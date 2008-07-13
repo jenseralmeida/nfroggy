@@ -5,11 +5,13 @@ using System.Text;
 
 namespace Froggy.Validation.Object
 {
-    [AttributeUsage(AttributeTargets.Property)]
+    [AttributeUsage(AttributeTargets.Property, AllowMultiple=false, Inherited=true)]
     public class ValidatorAttribute : Attribute
     {
         string _ErrorMessageLabel;
         string _CustomErrorMessage;
+        bool _IsNullable;
+        ITestValidator[] _CustomTestValidators;
 
         public string ErrorMessageLabel
         {
@@ -35,8 +37,19 @@ namespace Froggy.Validation.Object
             }
         }
 
+        public bool IsNullable
+        {
+            get { return _IsNullable; }
+            set { _IsNullable = value; }
+        }
 
-        public ValidatorAttribute(bool isNullable)
+        public ITestValidator[] CustomTestValidators
+        {
+            get { return _CustomTestValidators; }
+            set { _CustomTestValidators = value; }
+        } 
+
+        public ValidatorAttribute()
         {
         }
     }

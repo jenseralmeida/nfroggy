@@ -9,37 +9,21 @@ namespace Froggy.Test.Validation.Object
 {
     class Stub
     {
-        string name;
+        string _Name;
+        string _Vogal;
 
-        [Validator(false)]
+        [Validator(IsNullable=false)]
         public string Name
         {
-            get { return name; }
-            set { name = value; }
+            get { return _Name; }
+            set { _Name = value; }
         }
 
-        class StupNameTestValidator : ITestValidator
+        //[Validator(CustomTestValidators={new StubNameTestValidator()})]
+        public string Vogal
         {
-            #region ITestValidator Members
-
-            public bool Execute<T>(T value, out string errorMessageTemplate)
-            {
-                switch (value.ToString())
-                {
-                    case "a":
-                    case "e":
-                    case "i":
-                    case "o":
-                    case "u":
-                        errorMessageTemplate = "";
-                        return true;
-                    default:
-                        errorMessageTemplate = "o valor para {0} não é uma vogal";
-                        return false;
-                }
-            }
-
-            #endregion
+            get { return _Vogal; }
+            set { _Vogal = value; }
         }
     }
 }

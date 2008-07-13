@@ -5,7 +5,7 @@ using Froggy.Validation.BaseValidator;
 
 namespace Froggy.Validation
 {
-	public class Validator<T>: IValidation
+	public class Validator<T>: IValidation, IValidatorConfiguration
 	{
 		#region Class method
 
@@ -48,16 +48,12 @@ namespace Froggy.Validation
 
 		#endregion Constructors
 
-		#region Fields
+		#region IValidatorConfiguration
 
 		string _ErrorMessageLabel;
 		string _CustomErrorMessage;
 		ITypeValidator<T> _TypeValidator;
 		Dictionary<Type, ITestValidator> _TestValidators;
-
-		#endregion Fields
-
-		#region Properties
 
 		public string ErrorMessageLabel
 		{
@@ -83,20 +79,38 @@ namespace Froggy.Validation
 			}
 		}
 
-		public ITypeValidator<T> TypeValidator
-		{
-			get { return _TypeValidator; }
-			set
-			{
-				if (value == null)
-				{
-					throw new ArgumentNullException("value", "The validator type proport must not be null");
-				}
-				_TypeValidator = value;
-			}
-		}
+        public bool IsNullable
+        {
+            get
+            {
+                return _TypeValidator.IsNullable;
+            }
+            set
+            {
+                _TypeValidator.IsNullable = value;
+            }
+        }
 
-		#endregion Properties
+        public void AddTestValidator(ITestValidator testValidator)
+        {
+            Type typeOfTestValidator = testValidator.GetType();
+            _TestValidators[typeOfTestValidator] = testValidator;
+        }
+        
+        #endregion
+
+        public ITypeValidator<T> TypeValidator
+        {
+            get { return _TypeValidator; }
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException("value", "The validator type proport must not be null");
+                }
+                _TypeValidator = value;
+            }
+        }
 
 		#region Basic SetUp
 
@@ -120,14 +134,13 @@ namespace Froggy.Validation
 
 		public Validator<T> SetUp(ITestValidator testValidator)
 		{
-			Type typeOfTestValidator = testValidator.GetType();
-			_TestValidators[typeOfTestValidator] = testValidator;
+            AddTestValidator(testValidator);
 			return this;
 		}
 
         public Validator<T> SetUp(ITypeValidator<T> typeValidator)
 		{
-			_TypeValidator = typeValidator;
+			TypeValidator = typeValidator;
 			return this;
 		}
 

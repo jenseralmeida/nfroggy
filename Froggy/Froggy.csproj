@@ -77,6 +77,7 @@
     <Compile Include="Validation\ITestValidator.cs" />
     <Compile Include="Validation\ITypeValidator.cs" />
     <Compile Include="Validation\IValidation.cs" />
+    <Compile Include="Validation\IValidatorConfiguration.cs" />
     <Compile Include="Validation\LengthValidatorExtension.cs" />
     <Compile Include="Validation\Object\ObjectValidatorUtil.cs" />
     <Compile Include="Validation\Object\ValidatorAttribute.cs" />
@@ -85,6 +86,7 @@
     <Compile Include="Validation\Validator.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Froggy.snk" />
     <None Include="Validation\Validation.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

@@ -117,17 +117,26 @@ namespace Froggy.Validation.BaseValidator
         private static Type GetRealTypeOfGenericParameter(out bool isNullable)
         {
             Type realType = typeof(T);
-            isNullable = IsNullableGeneric(realType);
-            if (isNullable)
+            bool isGeneric;
+            isNullable = IsNullValueAllowedForType(realType, out isGeneric);
+            if (isNullable && isGeneric)
             {
                 realType = Nullable.GetUnderlyingType(realType);
             }
             return realType;
         }
 
-        private static bool IsNullableGeneric(Type type)
+        private static bool IsNullValueAllowedForType(Type type, out bool isGeneric)
         {
-            return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>);
+            isGeneric = type.IsGenericType;
+            if (isGeneric)
+            {
+                return type.GetGenericTypeDefinition() == typeof(Nullable<>);
+            }
+            else
+            {
+                return !type.IsValueType;
+            }
         }
 
         #endregion ChangeType

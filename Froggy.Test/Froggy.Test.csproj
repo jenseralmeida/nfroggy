@@ -56,6 +56,7 @@
     <Compile Include="Validation\CustomValidatorTest.cs" />
     <Compile Include="Validation\IntervalValidationTest.cs" />
     <Compile Include="Validation\Object\Stub.cs" />
+    <Compile Include="Validation\Object\StubCustom.cs" />
     <Compile Include="Validation\Object\StubTest.cs" />
     <Compile Include="Validation\SystemTypeValidatorTest.cs" />
   </ItemGroup>
