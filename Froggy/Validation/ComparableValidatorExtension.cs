@@ -18,18 +18,18 @@ namespace Froggy.Validation
 	public static class ComparableValidatorExtension
 	{
 
-		public static Validator<T> SetUpComparable<T>(this Validator<T> validator, T equal)
+		public static Validator<T> SetUpComparable<T>(this Validator<T> validator, T equal) where T: IComparable
 		{
-			return validator.SetUp(new ComparableValidator<T>(equal));
+			return validator.SetUp(new ComparableValidator(equal));
 		}
 
-		public static Validator<T> SetUpComparable<T>(this Validator<T> validator, T minimum, T maximum)
+        public static Validator<T> SetUpComparable<T>(this Validator<T> validator, T minimum, T maximum) where T : IComparable
 		{
-			return validator.SetUp(new ComparableValidator<T>(minimum, maximum));
+			return validator.SetUp(new ComparableValidator(minimum, maximum));
 		}
 
-		public static Validator<T> SetUpComparable<T>(this Validator<T> validator, T minimum, T maximum, IntervalValidatorType comparableValidatorType)
+        public static Validator<T> SetUpComparable<T>(this Validator<T> validator, T minimum, T maximum, IntervalValidatorType comparableValidatorType) where T : IComparable
 		{
-			return validator.SetUp(new ComparableValidator<T>(minimum, maximum, comparableValidatorType));
+			return validator.SetUp(new ComparableValidator(minimum, maximum, comparableValidatorType));
 		}	}
 }

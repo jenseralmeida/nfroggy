@@ -19,17 +19,17 @@ namespace Froggy.Validation
 	{
 		public static Validator<T> SetUpLength<T>(this Validator<T> validator, int equal)
 		{
-			return validator.SetUp(new LengthValidator<T>(equal));
+			return validator.SetUp(new LengthValidator(equal));
 		}
 
 		public static Validator<T> SetUpLength<T>(this Validator<T> validator, int minimum, int maximum)
 		{
-			return validator.SetUp(new LengthValidator<T>(minimum, maximum));
+			return validator.SetUp(new LengthValidator(minimum, maximum));
 		}
 
 		public static Validator<T> SetUpLength<T>(this Validator<T> validator, int minimum, int maximum, IntervalValidatorType lengthValidatorType)
 		{
-			return validator.SetUp(new LengthValidator<T>(minimum, maximum, lengthValidatorType));
+			return validator.SetUp(new LengthValidator(minimum, maximum, lengthValidatorType));
 		}
 	}
 }

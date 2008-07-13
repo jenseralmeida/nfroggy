@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 
 namespace Froggy.Validation.BaseValidator
 {
-    public class RegexValidator<T> : ITestValidator<T>
+    public class RegexValidator : ITestValidator
     {
         Regex _Regex;
         string _RegexTemplateMessage;
@@ -41,9 +41,9 @@ namespace Froggy.Validation.BaseValidator
             RegexTemplateMessage = regexTemplateMessage;
         }
 
-        #region ITestValidator<T> Members
+        #region ITestValidator Members
 
-        public bool Execute(T value, out string errorMessageTemplate)
+        public bool Execute<T>(T value, out string errorMessageTemplate)
         {
             if (_Regex.IsMatch(value.ToString()))
             {

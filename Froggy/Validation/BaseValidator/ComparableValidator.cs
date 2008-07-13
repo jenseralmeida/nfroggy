@@ -4,44 +4,44 @@ using System.Text;
 
 namespace Froggy.Validation.BaseValidator
 {
-    public sealed class ComparableValidator<T> : ITestValidator<T> 
+    public sealed class ComparableValidator : ITestValidator
     {
-        public ComparableValidator(T equal)
+        public ComparableValidator(IComparable equal)
         {
             _Equal = equal;
             _ComparableValidatorType = IntervalValidatorType.Equal;
         }
 
-        public ComparableValidator(T minimum, T maximum)
+        public ComparableValidator(IComparable minimum, IComparable maximum)
         {
             _Minimum = minimum;
             _Maximum = maximum;
             _ComparableValidatorType = IntervalValidatorType.IntervalInclusive;
         }
 
-        public ComparableValidator(T minimum, T maximum, IntervalValidatorType comparableValidatorType)
+        public ComparableValidator(IComparable minimum, IComparable maximum, IntervalValidatorType comparableValidatorType)
         {
             _Minimum = minimum;
             _Maximum = maximum;
             _ComparableValidatorType = comparableValidatorType;
         }
 
-        T _Equal;
-        T _Minimum;
-        T _Maximum;
+        IComparable _Equal;
+        IComparable _Minimum;
+        IComparable _Maximum;
         IntervalValidatorType _ComparableValidatorType;
 
-        public T Equal
+        public IComparable Equal
         {
             get { return _Equal; }
         }
 
-        public T Minimum
+        public IComparable Minimum
         {
             get { return _Minimum; }
         }
 
-        public T Maximum
+        public IComparable Maximum
         {
             get { return _Maximum; }
         }
@@ -51,9 +51,9 @@ namespace Froggy.Validation.BaseValidator
             get { return _ComparableValidatorType; }
         }
 
-        #region ITestValidator<T> Members
+        #region ITestValidator Members
 
-        public bool Execute(T value, out string errorMessageTemplate)
+        public bool Execute<T>(T value, out string errorMessageTemplate)
         {
             IComparable comparable = (IComparable)value;
             errorMessageTemplate = "";

@@ -42,8 +42,8 @@ namespace Froggy.Validation
 
 		public Validator()
 		{
-			_TypeValidator = new SystemTypeValidator<T>();
-			_TestValidators = new Dictionary<Type, ITestValidator<T>>();
+            _TypeValidator = new SystemTypeValidator<T>();
+			_TestValidators = new Dictionary<Type, ITestValidator>();
 		}
 
 		#endregion Constructors
@@ -53,7 +53,7 @@ namespace Froggy.Validation
 		string _ErrorMessageLabel;
 		string _CustomErrorMessage;
 		ITypeValidator<T> _TypeValidator;
-		Dictionary<Type, ITestValidator<T>> _TestValidators;
+		Dictionary<Type, ITestValidator> _TestValidators;
 
 		#endregion Fields
 
@@ -118,14 +118,14 @@ namespace Froggy.Validation
 			return this;
 		}
 
-		public Validator<T> SetUp(ITestValidator<T> testValidator)
+		public Validator<T> SetUp(ITestValidator testValidator)
 		{
 			Type typeOfTestValidator = testValidator.GetType();
 			_TestValidators[typeOfTestValidator] = testValidator;
 			return this;
 		}
 
-		public Validator<T> SetUp(ITypeValidator<T> typeValidator)
+        public Validator<T> SetUp(ITypeValidator<T> typeValidator)
 		{
 			_TypeValidator = typeValidator;
 			return this;
@@ -180,9 +180,9 @@ namespace Froggy.Validation
             {
                 return false;
             }
-            foreach (ITestValidator<T> testsValidator in _TestValidators.Values)
+            foreach (ITestValidator testsValidator in _TestValidators.Values)
             {
-                if (!testsValidator.Execute(result, out errorMessage))
+                if (!testsValidator.Execute<T>(result, out errorMessage))
                 {
                     return false;
                 }

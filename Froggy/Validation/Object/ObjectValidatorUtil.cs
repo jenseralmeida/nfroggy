@@ -27,8 +27,8 @@ namespace Froggy.Validation.Object
                 foreach (ValidatorAttribute validatorAttrib in validatorAttributes )
                 {
                     // Inicialmente apenas um validator por membro é suportado. ver se vale a pena criar estrutura pra ter mais de um validator por membro
-                    validationsByPropertyInfo.Add(propertyInfo, validatorAttrib.Validator);
-                    validationsByName.Add(propertyInfo.Name, validatorAttrib.Validator);
+                    //validationsByPropertyInfo.Add(propertyInfo, validatorAttrib.Validator);
+                    //validationsByName.Add(propertyInfo.Name, validatorAttrib.Validator);
                 }
             }
 
