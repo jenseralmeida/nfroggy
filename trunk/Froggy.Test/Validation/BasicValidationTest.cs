@@ -4,6 +4,7 @@ using System.Text;
 using NUnit.Framework;
 using Rhino.Mocks;
 using Froggy.Validation;
+using Froggy.Validation.BaseValidator;
 
 namespace Froggy.Test.Validation
 {
