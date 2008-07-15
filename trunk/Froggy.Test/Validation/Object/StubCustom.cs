@@ -13,8 +13,8 @@ namespace Froggy.Test.Validation.Object
 
         //[Validator(new ITestValidator{ new StubNameTestValidator() })]
         [SystemTypeValidator(IsNullable=false)]
-        [ComparableValidator(Minimum=1, Maximum=10)]
-        [Rotulo(ErrorMessageLabel="name of etc")]
+        //[ComparableValidator(Minimum=1, Maximum=10)]
+        //[Rotulo(ErrorMessageLabel="name of etc")]
         public string Name
         {
             get { return _Name; }

@@ -7,7 +7,7 @@ namespace Froggy.Validation.Object
 {
     [Serializable]
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
-    public class MessageValidatorAttribute : Attribute, IMessageValidator
+    public sealed class MessageValidatorAttribute : Attribute, IMessageValidator, IValidatorAttribute
     {
         private string _CustomErrorMessage;
         private string _ErrorMessageLabel;
