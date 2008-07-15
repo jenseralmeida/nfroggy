@@ -12,7 +12,7 @@ namespace Froggy.Test.Validation.Object
         string _Name;
         string _Vogal;
 
-        [Validator(IsNullable=false)]
+        [SystemTypeValidator(IsNullable=false)]
         public string Name
         {
             get { return _Name; }

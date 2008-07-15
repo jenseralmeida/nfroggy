@@ -81,13 +81,15 @@
     <Compile Include="Validation\IValidation.cs" />
     <Compile Include="Validation\IValidatorConfiguration.cs" />
     <Compile Include="Validation\LengthValidatorExtension.cs" />
+    <Compile Include="Validation\Object\ComparableValidatorAttribute.cs" />
+    <Compile Include="Validation\Object\LengthValidatorAttribute.cs" />
+    <Compile Include="Validation\Object\RegexValidatorAttribute.cs" />
     <Compile Include="Validation\Object\TestValidatorAttribute.cs" />
     <Compile Include="Validation\Object\IValidatorAttribute.cs" />
     <Compile Include="Validation\Object\MessageValidatorAttribute.cs" />
     <Compile Include="Validation\Object\ObjectValidatorUtil.cs" />
     <Compile Include="Validation\Object\SystemTypeValidatorAttribute.cs" />
     <Compile Include="Validation\Object\TypeValidatorAttribute.cs" />
-    <Compile Include="Validation\Object\ValidatorAttribute.cs" />
     <Compile Include="Validation\ValidateException.cs" />
     <Compile Include="Validation\BaseValidator\SystemTypeValidator.cs" />
     <Compile Include="Validation\Validator.cs" />
