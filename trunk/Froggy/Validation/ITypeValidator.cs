@@ -4,14 +4,12 @@ using System.Text;
 
 namespace Froggy.Validation
 {
-    public interface ITypeValidator<T>
+    public interface ITypeValidator
     {
         bool IsNullable
         {
             get;
             set;
         }
-
-        bool Execute(object value, out T result, out string errorMessageTemplate);
     }
 }
