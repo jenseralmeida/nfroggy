@@ -8,11 +8,11 @@ namespace Froggy.Validation.Object
 {
     public class ObjectValidatorUtil: IValidation
     {
-        private static Type _ValidatorType;
+        private static Type _ValidatorBaseGenericType;
 
         static ObjectValidatorUtil()
         {
-            _ValidatorType = typeof(Validator<>);
+            _ValidatorBaseGenericType = typeof(Validator<>);
         }
 
         Type objType;
@@ -21,7 +21,7 @@ namespace Froggy.Validation.Object
 
         public ObjectValidatorUtil(Type objType)
         {
-            // verify nullable type
+            // verify if the type is nullable
             Validator<Type>
                 .Create("object type")
                 .SetUpNullable(false)
@@ -29,26 +29,31 @@ namespace Froggy.Validation.Object
 
             foreach (var propertyInfo in objType.GetProperties())
             {
-                Type validatorType = _ValidatorType.MakeGenericType(propertyInfo.PropertyType);
-                IValidation validation = (IValidation)Activator.CreateInstance(validatorType);
-                var validatorAttributes = propertyInfo.GetCustomAttributes(typeof(ValidatorAttribute), true);
-                switch (validatorAttributes.Length)
+                var validatorAttributes = propertyInfo.GetCustomAttributes(typeof(IValidatorAttribute), true);
+                if (validatorAttributes.Length == 0)
                 {
-                    case 0:
-                        AddValidation(propertyInfo, validation);
-                        break;
-                    case 1:
-                        AddValidation(propertyInfo, validation, (ValidatorAttribute)validatorAttributes[0]);
-                        break;
-                    default:
-                        throw new InvalidOperationException("Only one validator is allowed for one property");
+                    CreateValidator(propertyInfo);
+                }
+                else
+                {
+                    IValidatorConfiguration validatorConfiguration = CreateValidator(propertyInfo);
+                    foreach (IValidatorAttribute attribute in validatorAttributes)
+                    {
+                        ConfigValidator(validation, attribute);
+                    }
                 }
             }
             this.objType = objType;
         }
 
+        private void ConfigValidator(IValidatorConfiguration validatorConfiguration, IValidatorAttribute attribute)
+        {
+            throw new NotImplementedException();
+        }
+
         private void AddValidation(PropertyInfo propertyInfo, IValidation validation, ValidatorAttribute validatorAttrib)
         {
+            CreateValidator(propertyInfo);
             IValidatorConfiguration config = (IValidatorConfiguration)validation;
             config.ErrorMessageLabel = validatorAttrib.ErrorMessageLabel;
             config.CustomErrorMessage = validatorAttrib.CustomErrorMessage;
@@ -57,13 +62,16 @@ namespace Froggy.Validation.Object
             {
                 Array.ForEach<ITestValidator>(validatorAttrib.CustomTestValidators, t => config.AddTestValidator(t));
             }
-            AddValidation(propertyInfo, validation);
+            CreateValidator(propertyInfo);
         }
 
-        private void AddValidation(PropertyInfo propertyInfo, IValidation validation)
+        private IValidatorConfiguration CreateValidator(PropertyInfo propertyInfo)
         {
-            validationsByPropertyInfo.Add(propertyInfo, validation);
-            validationsByName.Add(propertyInfo.Name, validation);
+            Type validatorType = _ValidatorBaseGenericType.MakeGenericType(propertyInfo.PropertyType);
+            IValidatorConfiguration validatorConfiguration = (IValidatorConfiguration)Activator.CreateInstance(validatorType);
+            validationsByPropertyInfo.Add(propertyInfo, (IValidation)validatorConfiguration);
+            validationsByName.Add(propertyInfo.Name, (IValidation)validatorConfiguration);
+            return validatorConfiguration;
         }
 
         public bool IsValid(object value, string memberName)
