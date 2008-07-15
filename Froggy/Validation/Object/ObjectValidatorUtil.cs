@@ -16,9 +16,9 @@ namespace Froggy.Validation.Object
         static ObjectValidatorUtil()
         {
             _ValidatorBaseGenericType = typeof(Validator<>);
-            _MessageValidatorAttributeType = typeof(IMessageValidator);
-            _TypeValidatorAttributeType = typeof(ITypeValidator);
-            _TestValidatorAttributeType = typeof(ITestValidator);
+            _MessageValidatorAttributeType = typeof(MessageValidatorAttribute);
+            _TypeValidatorAttributeType = typeof(TypeValidatorAttribute);
+            _TestValidatorAttributeType = typeof(TestValidatorAttribute);
         }
 
         Type objType;
@@ -74,18 +74,18 @@ namespace Froggy.Validation.Object
             Type attributeType = attribute.GetType();
             if (attributeType.IsSubclassOf(_MessageValidatorAttributeType) )
             {
-                IMessageValidator message = (IMessageValidator)attribute;
+                MessageValidatorAttribute message = (MessageValidatorAttribute)attribute;
                 validatorConfiguration.ErrorMessageLabel = message.ErrorMessageLabel;
                 validatorConfiguration.CustomErrorMessage = message.CustomErrorMessage;
             }
             else if (attributeType.IsSubclassOf(_TypeValidatorAttributeType))
             {
-                ITypeValidator type = (ITypeValidator)attribute;
+                TypeValidatorAttribute type = (TypeValidatorAttribute)attribute;
                 validatorConfiguration.IsNullable = type.IsNullable;
             }
             else if (attributeType.IsSubclassOf(_TestValidatorAttributeType))
             {
-                ITestValidatorAttribute test = (ITestValidatorAttribute)attribute;
+                TestValidatorAttribute test = (TestValidatorAttribute)attribute;
                 validatorConfiguration.AddTestValidator(test.Create());
             }
             else
