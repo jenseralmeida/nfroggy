@@ -6,13 +6,19 @@ using System.Collections;
 
 namespace Froggy.Validation.Object
 {
-    public class ObjectValidatorUtil: IValidation
+    public class ObjectValidatorUtil : IValidation
     {
         private static Type _ValidatorBaseGenericType;
+        private static readonly Type _MessageValidatorAttributeType;
+        private static readonly Type _TypeValidatorAttributeType;
+        private static readonly Type _TestValidatorAttributeType;
 
         static ObjectValidatorUtil()
         {
             _ValidatorBaseGenericType = typeof(Validator<>);
+            _MessageValidatorAttributeType = typeof(IMessageValidator);
+            _TypeValidatorAttributeType = typeof(ITypeValidator);
+            _TestValidatorAttributeType = typeof(ITestValidator);
         }
 
         Type objType;
@@ -39,39 +45,53 @@ namespace Froggy.Validation.Object
                     IValidatorConfiguration validatorConfiguration = CreateValidator(propertyInfo);
                     foreach (IValidatorAttribute attribute in validatorAttributes)
                     {
-                        ConfigValidator(validation, attribute);
+                        ConfigureValidator(validatorConfiguration, attribute);
                     }
                 }
             }
             this.objType = objType;
         }
 
-        private void ConfigValidator(IValidatorConfiguration validatorConfiguration, IValidatorAttribute attribute)
-        {
-            throw new NotImplementedException();
-        }
-
-        private void AddValidation(PropertyInfo propertyInfo, IValidation validation, ValidatorAttribute validatorAttrib)
-        {
-            CreateValidator(propertyInfo);
-            IValidatorConfiguration config = (IValidatorConfiguration)validation;
-            config.ErrorMessageLabel = validatorAttrib.ErrorMessageLabel;
-            config.CustomErrorMessage = validatorAttrib.CustomErrorMessage;
-            config.IsNullable = validatorAttrib.IsNullable;
-            if (validatorAttrib.CustomTestValidators != null)
-            {
-                Array.ForEach<ITestValidator>(validatorAttrib.CustomTestValidators, t => config.AddTestValidator(t));
-            }
-            CreateValidator(propertyInfo);
-        }
-
+        /// <summary>
+        /// Create a new instance of a <see cref="Validator´1"/> extract from the <see cref="PropertyInfo"/>
+        /// </summary>
+        /// <param name="propertyInfo"></param>
+        /// <returns></returns>
         private IValidatorConfiguration CreateValidator(PropertyInfo propertyInfo)
         {
             Type validatorType = _ValidatorBaseGenericType.MakeGenericType(propertyInfo.PropertyType);
             IValidatorConfiguration validatorConfiguration = (IValidatorConfiguration)Activator.CreateInstance(validatorType);
+            // TODO: Change default name to a more smart rule for extract of the property name
+            validatorConfiguration.ErrorMessageLabel = propertyInfo.Name.ToLower();
             validationsByPropertyInfo.Add(propertyInfo, (IValidation)validatorConfiguration);
             validationsByName.Add(propertyInfo.Name, (IValidation)validatorConfiguration);
             return validatorConfiguration;
+        }
+
+        private void ConfigureValidator(IValidatorConfiguration validatorConfiguration, IValidatorAttribute attribute)
+        {
+
+            Type attributeType = attribute.GetType();
+            if (attributeType.IsSubclassOf(_MessageValidatorAttributeType) )
+            {
+                IMessageValidator message = (IMessageValidator)attribute;
+                validatorConfiguration.ErrorMessageLabel = message.ErrorMessageLabel;
+                validatorConfiguration.CustomErrorMessage = message.CustomErrorMessage;
+            }
+            else if (attributeType.IsSubclassOf(_TypeValidatorAttributeType))
+            {
+                ITypeValidator type = (ITypeValidator)attribute;
+                validatorConfiguration.IsNullable = type.IsNullable;
+            }
+            else if (attributeType.IsSubclassOf(_TestValidatorAttributeType))
+            {
+                ITestValidatorAttribute test = (ITestValidatorAttribute)attribute;
+                validatorConfiguration.AddTestValidator(test.Create());
+            }
+            else
+            {
+                throw new InvalidProgramException("The validator attribute must be of the types: MessageValidatorAttribute, TypeValidatorValidator or TestValidatorAttribute");
+            }
         }
 
         public bool IsValid(object value, string memberName)

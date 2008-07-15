@@ -7,7 +7,7 @@ namespace Froggy.Validation.Object
 {
     [Serializable]
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
-    public sealed class SystemTypeValidatorAttribute : ITypeValidatorAttribute
+    public sealed class SystemTypeValidatorAttribute : Attribute, ITypeValidatorAttribute
     {
         private bool _IsNullable;
 
