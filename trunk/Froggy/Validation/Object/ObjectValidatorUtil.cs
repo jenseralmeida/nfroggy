@@ -6,14 +6,14 @@ using System.Collections;
 
 namespace Froggy.Validation.Object
 {
-    public class ObjectValidatorUtil : IValidation
+    public class ObjectValidator : IValidation
     {
         private static Type _ValidatorBaseGenericType;
         private static readonly Type _MessageValidatorAttributeType;
         private static readonly Type _TypeValidatorAttributeType;
         private static readonly Type _TestValidatorAttributeType;
 
-        static ObjectValidatorUtil()
+        static ObjectValidator()
         {
             _ValidatorBaseGenericType = typeof(Validator<>);
             _MessageValidatorAttributeType = typeof(MessageValidatorAttribute);
@@ -25,7 +25,7 @@ namespace Froggy.Validation.Object
         Dictionary<PropertyInfo, IValidation> validationsByPropertyInfo = new Dictionary<PropertyInfo, IValidation>();
         Dictionary<string, IValidation> validationsByName = new Dictionary<string, IValidation>();
 
-        public ObjectValidatorUtil(Type objType)
+        public ObjectValidator(Type objType)
         {
             // verify if the type is nullable
             Validator<Type>
