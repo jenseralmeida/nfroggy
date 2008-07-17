@@ -1,7 +1,7 @@
 ﻿using System;
 namespace Froggy.Validation
 {
-    interface IValidation
+    public interface IValidation
     {
         bool IsValid(object value);
         bool IsValid(object value, out string errorMessage);
