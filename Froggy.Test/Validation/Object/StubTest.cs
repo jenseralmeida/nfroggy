@@ -13,7 +13,7 @@ namespace Froggy.Test.Validation.Object
         [Test]
         public void Validar()
         {
-            ObjectValidatorUtil ovu = new ObjectValidatorUtil(typeof(Stub));
+            ObjectValidator ovu = new ObjectValidator(typeof(Stub));
             Stub stub = new Stub();
             Assert.IsFalse(ovu.IsValid(stub));
             stub.Name = "joao";

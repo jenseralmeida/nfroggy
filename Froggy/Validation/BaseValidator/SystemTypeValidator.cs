@@ -83,8 +83,13 @@ namespace Froggy.Validation.BaseValidator
                 result = default(T);
                 return isNullable;
             }
+            else if ((value is String) && (value.ToString() == ""))
+            {
+                result = default(T);
+                return isNullable;
+            }
             // For char type convert it for string, so the behaviour for business is more consistent
-            if (value.GetType() == typeof(char))
+            if (value is char)
             {
                 value = value.ToString();
             }
