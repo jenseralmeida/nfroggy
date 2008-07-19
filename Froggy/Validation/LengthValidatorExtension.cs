@@ -15,6 +15,7 @@ namespace Froggy.Validation
 	/// <summary>
 	/// Description of LengthValidatorExtension.
 	/// </summary>
+    [Serializable]
 	public static class LengthValidatorExtension
 	{
 		public static Validator<T> SetUpLength<T>(this Validator<T> validator, int equal)

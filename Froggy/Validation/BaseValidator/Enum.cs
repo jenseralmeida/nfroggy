@@ -5,6 +5,7 @@ using System.Text;
 namespace Froggy.Validation.BaseValidator
 {
 	[Flags]
+	[Serializable]
     public enum IntervalValidatorType
     {
     	None = 0,

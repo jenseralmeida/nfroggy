@@ -5,6 +5,7 @@ using System.Text;
 
 namespace Froggy.Validation.BaseValidator
 {
+	[Serializable]
     public sealed class SystemTypeValidator<T> : ITypeValidator<T>
     {
         #region ITypeValidator

@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 
 namespace Froggy.Validation.BaseValidator
 {
+	[Serializable]
     public class RegexValidator : ITestValidator
     {
         Regex _Regex;

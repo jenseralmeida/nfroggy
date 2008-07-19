@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using NUnit.Framework;
 using Froggy.Validation;
+using Db4objects.Db4o.Events;
 
 namespace Froggy.Data.Db4o.Test
 {
@@ -24,7 +25,7 @@ namespace Froggy.Data.Db4o.Test
                 DbUtil.Db.Store(fooError1);
                 DbUtil.Db.Commit();
             }
-            catch (Exception ex)
+            catch (EventException ex)
             {
                 Assert.IsInstanceOfType(typeof(ValidateException), ex.InnerException);
             }
