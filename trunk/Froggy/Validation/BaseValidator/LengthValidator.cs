@@ -4,6 +4,7 @@ using System.Text;
 
 namespace Froggy.Validation.BaseValidator
 {
+	[Serializable]
     public class LengthValidator : ITestValidator
     {
         public LengthValidator(int equal)

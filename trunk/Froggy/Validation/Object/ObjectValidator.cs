@@ -6,6 +6,7 @@ using System.Collections;
 
 namespace Froggy.Validation.Object
 {
+    [Serializable]
     public class ObjectValidator : IValidation
     {
         private static Type _ValidatorBaseGenericType;

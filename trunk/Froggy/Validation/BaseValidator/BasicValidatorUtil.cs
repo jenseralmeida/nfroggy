@@ -5,6 +5,7 @@ using Froggy.Validation.BaseValidator;
 
 namespace Froggy.Validation.BaseValidator
 {
+	[Serializable]
     internal static class BasicValidatorUtil
     {
         /// <summary>

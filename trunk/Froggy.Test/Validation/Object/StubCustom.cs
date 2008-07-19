@@ -11,7 +11,7 @@ namespace Froggy.Test.Validation.Object
     {
         string _Name;
 
-        //[Validator(new ITestValidator{ new StubNameTestValidator() })]
+        [StubNameTestValidator]
         [SystemTypeValidator(IsNullable=false)]
         //[ComparableValidator(Minimum=1, Maximum=10)]
         //[Rotulo(ErrorMessageLabel="name of etc")]
@@ -19,6 +19,14 @@ namespace Froggy.Test.Validation.Object
         {
             get { return _Name; }
             set { _Name = value; }
+        }
+    }
+
+    internal class StubNameTestValidatorAttribute : TestValidatorAttribute
+    {
+        public override ITestValidator Create()
+        {
+            return new StubNameTestValidator();
         }
     }
 

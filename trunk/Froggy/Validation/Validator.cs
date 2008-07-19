@@ -5,6 +5,7 @@ using Froggy.Validation.BaseValidator;
 
 namespace Froggy.Validation
 {
+    [Serializable]
 	public class Validator<T>: IValidation, IValidatorConfiguration
 	{
 		#region Class method

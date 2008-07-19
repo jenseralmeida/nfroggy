@@ -15,6 +15,7 @@ namespace Froggy.Validation
 	/// <summary>
 	/// Description of ComparableValidatorExtension.
 	/// </summary>
+    [Serializable]
 	public static class ComparableValidatorExtension
 	{
 

@@ -4,6 +4,7 @@ using System.Text;
 
 namespace Froggy.Validation.BaseValidator
 {
+	[Serializable]
     public sealed class ComparableValidator : ITestValidator
     {
         public ComparableValidator(IComparable equal)
