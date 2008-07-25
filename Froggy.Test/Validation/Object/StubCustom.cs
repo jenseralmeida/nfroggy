@@ -1,23 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Froggy.Validation.Object;
+﻿using Froggy.Validation.Object;
 using Froggy.Validation;
 
 namespace Froggy.Test.Validation.Object
 {
     class StubCustom
     {
-        string _Name;
-
         [StubNameTestValidator]
-        [SystemTypeValidator(IsNullable=false)]
-        public string Name
-        {
-            get { return _Name; }
-            set { _Name = value; }
-        }
+        [SystemTypeValidator(IsNullable = false)]
+        public string Name { get; set; }
     }
 
     internal class StubNameTestValidatorAttribute : TestValidatorAttribute
