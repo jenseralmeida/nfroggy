@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Text;
 using Froggy.Validation;
 using NUnit.Framework;
@@ -30,11 +29,8 @@ namespace Froggy.Test.Validation
                 errorMessageTemplate = "";
                 return true;
             }
-            else
-            {
-                errorMessageTemplate = "The value of {0} does not works";
-                return false;
-            }
+            errorMessageTemplate = "The value of {0} does not works";
+            return false;
         }
 
         #endregion
