@@ -113,7 +113,7 @@
     <Position X="4.25" Y="4.75" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAIAA=</HashCode>
-      <FileName>Validation\ITypeValidator´.cs</FileName>
+      <FileName>Validation\ITypeValidator´1.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="Froggy.Validation.IValidation">
