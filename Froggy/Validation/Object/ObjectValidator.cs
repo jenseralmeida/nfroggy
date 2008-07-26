@@ -95,9 +95,9 @@ namespace Froggy.Validation.Object
             }
         }
 
-        public bool IsValid(object value, string memberName)
+        public bool IsPropertyValid(object value, string propertyName)
         {
-            IValidation validation = validationsByName[memberName];
+            IValidation validation = validationsByName[propertyName];
             if (validation != null)
             {
                 return validation.IsValid(value);
