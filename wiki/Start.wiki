@@ -7,6 +7,6 @@ Start wiki page for the froggy-project
 
 = Sessions =
 
- * [Validation]
+ * [Validator]
 
 In the [ReferencesPage references page] there is some usefull links for this project
