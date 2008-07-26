@@ -75,7 +75,7 @@
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
   <Class Name="Froggy.Validation.BaseValidator.BasicValidatorUtil">
-    <Position X="7.5" Y="6.5" Width="1.75" />
+    <Position X="5.75" Y="11.75" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Validation\BaseValidator\BasicValidatorUtil.cs</FileName>
@@ -96,7 +96,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Froggy.Validation.ValidateException" Collapsed="true">
-    <Position X="6.5" Y="0.75" Width="2.25" />
+    <Position X="4.25" Y="1" Width="2.25" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Validation\ValidateException.cs</FileName>
