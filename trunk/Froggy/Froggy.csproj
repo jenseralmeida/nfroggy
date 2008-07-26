@@ -75,7 +75,6 @@
     <Compile Include="Validation\BaseValidator\RegexValidator.cs" />
     <Compile Include="Validation\ComparableValidatorExtension.cs" />
     <Compile Include="Validation\IMessageValidator.cs" />
-    <Compile Include="Validation\ITypeValidator.cs" />
     <Compile Include="Validation\ITestValidator.cs" />
     <Compile Include="Validation\ITypeValidator´.cs" />
     <Compile Include="Validation\IValidation.cs" />
