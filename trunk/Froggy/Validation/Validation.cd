@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Comment CommentText="Basic extension Validators">
-    <Position X="0.5" Y="5.75" Height="0.417" Width="8.83" />
+    <Position X="0.5" Y="5.75" Height="0.417" Width="6.799" />
   </Comment>
   <Class Name="Froggy.Validation.Validator&lt;T&gt;">
     <Position X="1" Y="1" Width="2" />
