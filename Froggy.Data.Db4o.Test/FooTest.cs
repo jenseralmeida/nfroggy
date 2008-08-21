@@ -13,14 +13,14 @@ namespace Froggy.Data.Db4o.Test
         {
             // Create a valid obj
             var fooOk = new Foo() { Name = "guga", Age = 32 };
-            DbUtil.Db.Store(fooOk);
-            DbUtil.Db.Commit();
+            Db.Get.Store(fooOk);
+            Db.Get.Commit();
             // Create a invalid obj
             try
             {
                 var fooError1 = new Foo() { Name = "", Age = 32 };
-                DbUtil.Db.Store(fooError1);
-                DbUtil.Db.Commit();
+                Db.Get.Store(fooError1);
+                Db.Get.Commit();
             }
             catch (EventException ex)
             {

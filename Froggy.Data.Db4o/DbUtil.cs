@@ -10,20 +10,25 @@ using Froggy.Validation;
 
 namespace Froggy.Data.Db4o
 {
-    public static class DbUtil
+    public static class Db
     {
-        private static IObjectContainer _Db;
+        private static IObjectContainer _Current;
 
-        public static IObjectContainer Db
+        public static IObjectContainer Get
         {
-            get { return DbUtil._Db; }
+            get { return Db._Current; }
         }
 
         private static IDictionary<Type, ObjectValidator> _Validators;
-        static DbUtil()
+        static Db()
         {
-            _Db = Db4oFactory.OpenFile("yapFile.yap");
-            IEventRegistry eventRegistry = EventRegistryFactory.ForObjectContainer(_Db);
+            Open();
+        }
+
+        public static void Open()
+        {
+            _Current = Db4oFactory.OpenFile("yapFile.yap");
+            IEventRegistry eventRegistry = EventRegistryFactory.ForObjectContainer(_Current);
             eventRegistry.Creating += new CancellableObjectEventHandler(eventRegistry_Validate);
             eventRegistry.Updating += new CancellableObjectEventHandler(eventRegistry_Validate);
             eventRegistry.Committing += new CommitEventHandler(eventRegistry_Committing);
@@ -71,7 +76,7 @@ namespace Froggy.Data.Db4o
 
         private static ObjectValidator AddNewObjectValidator(Type objType)
         {
-            lock (typeof(DbUtil))
+            lock (typeof(Db))
             {
                 if (_Validators.Keys.Contains(objType))
                 {
