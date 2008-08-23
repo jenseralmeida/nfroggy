@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Db4objects.Db4o;
+using Db4objects.Db4o.Config;
 using Db4objects.Db4o.Events;
 using Froggy.Validation.Object;
 using System.Collections;
@@ -27,11 +28,12 @@ namespace Froggy.Data.Db4o
 
         public static void Open()
         {
+            Db4oFactory.Configure().Queries().EvaluationMode(QueryEvaluationMode.Snapshot);
             _Current = Db4oFactory.OpenFile("yapFile.yap");
             IEventRegistry eventRegistry = EventRegistryFactory.ForObjectContainer(_Current);
-            eventRegistry.Creating += new CancellableObjectEventHandler(eventRegistry_Validate);
-            eventRegistry.Updating += new CancellableObjectEventHandler(eventRegistry_Validate);
-            eventRegistry.Committing += new CommitEventHandler(eventRegistry_Committing);
+            eventRegistry.Creating += eventRegistry_Validate;
+            eventRegistry.Updating += eventRegistry_Validate;
+            eventRegistry.Committing += eventRegistry_Committing;
             _Validators = new Dictionary<Type, ObjectValidator>();
         }
 
