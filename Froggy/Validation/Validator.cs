@@ -6,79 +6,61 @@ using Froggy.Validation.BaseValidator;
 namespace Froggy.Validation
 {
     [Serializable]
-	public class Validator<T>: IValidation, IValidatorConfiguration
-	{
-		#region Class method
+    public class Validator<T> : IValidation, IValidatorConfiguration
+    {
+        #region Constructors
 
-		public static Validator<T> SetUp(string errorMessageLabel)
-		{
-			return Validator<T>
-				.Create()
-				.SetUpErrorMessageLabel(errorMessageLabel);
-		}
-
-		public static Validator<T> SetUp(string errorMessageLabel, bool isNullable)
-		{
-			return Validator<T>
-				.Create()
-				.SetUpErrorMessageLabel(errorMessageLabel)
-				.SetUpNullable(isNullable);
-		}
-
-		public static Validator<T> Create(string errorMessageLabel)
-		{
-			return Validator<T>
-				.Create()
-				.SetUpErrorMessageLabel(errorMessageLabel);
-		}
-
-		public static Validator<T> Create()
-		{
-			return new Validator<T>();
-		}
-
-		#endregion Class method
-
-		#region Constructors
-
-		public Validator()
-		{
+        public Validator()
+        {
             _TypeValidator = new SystemTypeValidator<T>();
-			_TestValidators = new Dictionary<Type, ITestValidator>();
-		}
+            _TestValidators = new Dictionary<Type, ITestValidator>();
+        }
 
-		#endregion Constructors
+        public Validator(string errorMessageLabel)
+            : this()
+        {
+            SetUpErrorMessageLabel(errorMessageLabel);
+        }
 
-		#region IValidatorConfiguration
-
-		string _ErrorMessageLabel;
-		string _CustomErrorMessage;
-		ITypeValidator<T> _TypeValidator;
-		Dictionary<Type, ITestValidator> _TestValidators;
-
-		public string ErrorMessageLabel
+        public Validator(string errorMessageLabel, bool isNullable)
+            : this()
 		{
-			get
-			{
-				return _ErrorMessageLabel;
-			}
-			set
-			{
-				_ErrorMessageLabel = value;
-			}
+            SetUpErrorMessageLabel(errorMessageLabel);
+            SetUpNullable(isNullable);
 		}
 
-		public string CustomErrorMessage
-		{
-			get
-			{
-				return _CustomErrorMessage;
-			}
-			set
-			{
-				_CustomErrorMessage = value;
-			}
-		}
+        #endregion Constructors
+
+        #region IValidatorConfiguration
+
+        string _ErrorMessageLabel;
+        string _CustomErrorMessage;
+        ITypeValidator<T> _TypeValidator;
+        readonly Dictionary<Type, ITestValidator> _TestValidators;
+
+        public string ErrorMessageLabel
+        {
+            get
+            {
+                return _ErrorMessageLabel;
+            }
+            set
+            {
+                _ErrorMessageLabel = value;
+            }
+        }
+
+        public string CustomErrorMessage
+        {
+            get
+            {
+                return _CustomErrorMessage;
+            }
+            set
+            {
+                _CustomErrorMessage = value;
+            }
+        }
 
         public bool IsNullable
         {
@@ -97,7 +79,7 @@ namespace Froggy.Validation
             Type typeOfTestValidator = testValidator.GetType();
             _TestValidators[typeOfTestValidator] = testValidator;
         }
-        
+
         #endregion
 
         public ITypeValidator<T> TypeValidator
@@ -113,60 +95,60 @@ namespace Froggy.Validation
             }
         }
 
-		#region Basic SetUp
+        #region Basic SetUp
 
-		public Validator<T> SetUpErrorMessageLabel(string errorMessageLabel)
-		{
-			_ErrorMessageLabel = errorMessageLabel;
-			return this;
-		}
+        public Validator<T> SetUpErrorMessageLabel(string errorMessageLabel)
+        {
+            _ErrorMessageLabel = errorMessageLabel;
+            return this;
+        }
 
-		public Validator<T> SetUpCustomMessage(string customErrorMessage)
-		{
-			_CustomErrorMessage = customErrorMessage;
-			return this;
-		}
+        public Validator<T> SetUpCustomMessage(string customErrorMessage)
+        {
+            _CustomErrorMessage = customErrorMessage;
+            return this;
+        }
 
-		public Validator<T> SetUpNullable(bool isNullable)
-		{
-			_TypeValidator.IsNullable = isNullable;
-			return this;
-		}
+        public Validator<T> SetUpNullable(bool isNullable)
+        {
+            _TypeValidator.IsNullable = isNullable;
+            return this;
+        }
 
-		public Validator<T> SetUp(ITestValidator testValidator)
-		{
+        public Validator<T> SetUp(ITestValidator testValidator)
+        {
             AddTestValidator(testValidator);
-			return this;
-		}
+            return this;
+        }
 
         public Validator<T> SetUp(ITypeValidator<T> typeValidator)
-		{
-			TypeValidator = typeValidator;
-			return this;
-		}
+        {
+            TypeValidator = typeValidator;
+            return this;
+        }
 
-		#endregion Basic SetUp
+        #endregion Basic SetUp
 
-		#region IValidation
+        #region IValidation
 
-		public void Validate(object value)
-		{
-			this.Convert(value);
-		}
+        public void Validate(object value)
+        {
+            this.Convert(value);
+        }
 
-		public bool IsValid(object value)
-		{
-			string errorMessage;
-			return this.IsValid(value, out errorMessage);
-		}
+        public bool IsValid(object value)
+        {
+            string errorMessage;
+            return this.IsValid(value, out errorMessage);
+        }
 
-		public bool IsValid(object value, out string errorMessage)
-		{
-			T result;
-			return this.TryConvert(value, out result, out errorMessage);
-		}
+        public bool IsValid(object value, out string errorMessage)
+        {
+            T result;
+            return this.TryConvert(value, out result, out errorMessage);
+        }
 
-		#endregion IValidation
+        #endregion IValidation
 
         #region Conversion
 

@@ -29,8 +29,7 @@ namespace Froggy.Validation.Object
         public ObjectValidator(Type objType)
         {
             // verify if the type is nullable
-            Validator<Type>
-                .Create("object type")
+            new Validator<Type>("object type")
                 .SetUpNullable(false)
                 .Validate(objType);
 
@@ -73,7 +72,7 @@ namespace Froggy.Validation.Object
         {
 
             Type attributeType = attribute.GetType();
-            if (attributeType.IsSubclassOf(_MessageValidatorAttributeType) )
+            if (attributeType.IsSubclassOf(_MessageValidatorAttributeType))
             {
                 MessageValidatorAttribute message = (MessageValidatorAttribute)attribute;
                 validatorConfiguration.ErrorMessageLabel = message.ErrorMessageLabel;
