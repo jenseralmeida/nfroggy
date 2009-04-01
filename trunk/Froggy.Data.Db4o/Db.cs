@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Db4objects.Db4o;
 using Db4objects.Db4o.Config;
 using Db4objects.Db4o.Events;
 using Froggy.Validation.Object;
 using System.Collections;
-using Froggy.Validation;
 
 namespace Froggy.Data.Db4o
 {
@@ -17,7 +14,7 @@ namespace Froggy.Data.Db4o
 
         public static IObjectContainer Get
         {
-            get { return Db._Current; }
+            get { return _Current; }
         }
 
         private static IDictionary<Type, ObjectValidator> _Validators;

@@ -42,8 +42,7 @@ namespace Froggy.Test.Validation
         [Test]
         public void WorksTest()
         {
-            Validator<string> worksValidation = Validator<string>
-                .Create("works label")
+            Validator<string> worksValidation = new Validator<string>("works label")
             	.SetUpWorksTest();
             string message;
 
