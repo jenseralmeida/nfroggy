@@ -7,9 +7,37 @@ namespace Froggy
 {
     public class TransactionScopeElement : ScopeElement
     {
+        public static ScopeElement SetUp()
+        {
+            return new TransactionScopeElement();
+        }
+
+        public static ScopeElement SetUp(TransactionNeed transactionNeed)
+        {
+            return new TransactionScopeElement(transactionNeed);
+        }
+
+        private TransactionNeed transactionNeed;
+
+        public TransactionScopeElement()
+        {
+            
+            
+        }
+
+        public TransactionScopeElement(TransactionNeed transactionNeed)
+        {
+            this.transactionNeed = transactionNeed;
+        }
 
         #region ScopeElement
-        public override bool VoteRequireNewScope
+        public override bool NewScopeElementIsCompatible(ScopeElement newScopeElement)
+        {
+            throw new System.NotImplementedException(); 
+        }
+
+
+        public override bool RequireNewScope
         {
             get { throw new System.NotImplementedException(); }
         }
@@ -30,19 +58,5 @@ namespace Froggy
         }
 
         #endregion ScopeElement
-    }
-
-    [Serializable]
-    public static class TransactionScopeElementExtension
-    {
-        public static Scope SetTransactionNeed(this Scope scope, TransactionNeed transactionNeed)
-        {
-            return scope;
-        }
-
-        public static Scope SetTransactionNeed(this Scope scope)
-        {
-            return SetTransactionNeed(scope, TransactionNeed.Required);
-        }
     }
 }

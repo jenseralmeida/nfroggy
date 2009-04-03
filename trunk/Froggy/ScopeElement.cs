@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Froggy
 {
@@ -11,7 +8,13 @@ namespace Froggy
         /// Indicate if this scope element vote for a new scope
         /// </summary>
         /// <returns></returns>
-        public abstract bool VoteRequireNewScope { get; }
+        public abstract bool NewScopeElementIsCompatible(ScopeElement newScopeElement);
+
+        /// <summary>
+        /// Indicate if this scope element vote for a new scope
+        /// </summary>
+        /// <returns></returns>
+        public abstract bool RequireNewScope { get; }
 
         /// <summary>
         /// Indicate if a new scope can be created
@@ -21,7 +24,7 @@ namespace Froggy
 
         /// <summary>
         /// Code used when a Scope is setted as completed. The scope class will call the SetCompleted of all ScopeElements, only when
-        /// the last SetCompleted call is made
+        /// the last SetCompleted call is madeS
         /// </summary>
         public abstract void SetCompleted();
 
