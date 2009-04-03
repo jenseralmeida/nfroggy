@@ -28,12 +28,17 @@ namespace Froggy
 
         #endregion Class Elements
 
-        public Scope()
+        public Scope(params ScopeElement[] elements)
         {
+
             scopeElements = new Dictionary<Type, ScopeElement>();
             if (IsNewScopeRequired())
             {
                 PushInstanceInStack();
+            }
+            foreach (var element in elements)
+            {
+                AddScopeElement(element);
             }
         }
 
@@ -47,9 +52,15 @@ namespace Froggy
 
         private readonly Dictionary<Type, ScopeElement> scopeElements;
 
-        internal void AddScopeElement(ScopeElement scopeElement)
+        private void AddScopeElement(ScopeElement newScopeElement)
         {
-            scopeElements.Add(typeof(ScopeElement), scopeElement);
+            var scopeElementType = typeof (ScopeElement);
+            if (scopeElements.ContainsKey(scopeElementType))
+            {
+                var currentScopeElement = scopeElements[scopeElementType];
+                currentScopeElement.NewScopeElementIsCompatible(newScopeElement);
+            }
+            scopeElements.Add(scopeElementType, newScopeElement);
         }
 
         internal T GetScopeElement<T>() where T: ScopeElement
@@ -70,7 +81,7 @@ namespace Froggy
                 return true;
             }
             // Verify if any scope element vote for a new scope
-            bool anyElementVoteForNewScope = new List<ScopeElement>(scopeElements.Values).Exists(se => se.VoteRequireNewScope);
+            bool anyElementVoteForNewScope = new List<ScopeElement>(scopeElements.Values).Exists(se => se.RequireNewScope);
             if (anyElementVoteForNewScope)
             {
                 bool anyElementsRefuseNewScope = new List<ScopeElement>(scopeElements.Values).Exists(se => se.RefuseNewScope);

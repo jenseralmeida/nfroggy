@@ -9,9 +9,9 @@ namespace Froggy.Test
     {
         public void BasicScope()
         {
-            using(var scope = new Scope())
+
+            using(var scope = new Scope(new TransactionScopeElement()))
             {
-                scope.SetTransactionNeed();
                 // Operations
                 scope.SetCompleted();
             }
