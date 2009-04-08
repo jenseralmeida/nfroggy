@@ -23,8 +23,8 @@ namespace Froggy
         public abstract bool RefuseNewScope { get; }
 
         /// <summary>
-        /// Code used when a Scope is setted as completed. The scope class will call the SetCompleted of all ScopeElements, only when
-        /// the last SetCompleted call is madeS
+        /// Code used when a Scope is setted as completed. The scope class will call the Complete of all ScopeElements, only when
+        /// the last Complete call is madeS
         /// </summary>
         public abstract void SetCompleted();
 

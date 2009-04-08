@@ -1,29 +1,20 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
 using NUnit.Framework;
 using Rhino.Mocks;
-using Froggy.Validation;
-using Froggy.Validation.BaseValidator;
 
 namespace Froggy.Test.Validation
 {
     [TestFixture]
     public class BasicValidationTest
     {
-        private MockRepository _mockRepository;
-
         [SetUp]
         public void Init()
         {
-            _mockRepository = new MockRepository();
+            new MockRepository();
         }
 
         [Test]
         public void FirstMock()
         {
-            ITestValidator[] t;
-            t = new ITestValidator[] { new LengthValidator(10) };
             //ITestValidator<int> customValidatorExample = _mockRepository.DynamicMock<ITestValidator<int>>();
 
             //Validation<int> validation = _mockRepository.DynamicMock<Validation<int>>()

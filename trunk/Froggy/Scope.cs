@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 
 namespace Froggy
 {
-    public class Scope: IDisposable
+    public class Scope : IDisposable
     {
         #region Class Elements
 
@@ -16,7 +16,7 @@ namespace Froggy
         {
             get
             {
-                return scopeStack.Peek() ?? CreateScopeIfNoneExists();
+                return scopeStack.Count > 0 ? scopeStack.Peek() : null;
             }
         }
 
@@ -30,19 +30,26 @@ namespace Froggy
 
         public Scope(params ScopeElement[] elements)
         {
-
             scopeElements = new Dictionary<Type, ScopeElement>();
             if (IsNewScopeRequired())
             {
                 PushInstanceInStack();
             }
+            else
+            {
+                Current._InstanceCount++;
+            }
+
             foreach (var element in elements)
             {
                 AddScopeElement(element);
             }
         }
 
-        public void SetCompleted()
+        private readonly Dictionary<Type, ScopeElement> scopeElements;
+        private int _InstanceCount;
+
+        public void Complete()
         {
             foreach (var scopeElement in scopeElements.Values)
             {
@@ -50,11 +57,10 @@ namespace Froggy
             }
         }
 
-        private readonly Dictionary<Type, ScopeElement> scopeElements;
 
         private void AddScopeElement(ScopeElement newScopeElement)
         {
-            var scopeElementType = typeof (ScopeElement);
+            var scopeElementType = typeof(ScopeElement);
             if (scopeElements.ContainsKey(scopeElementType))
             {
                 var currentScopeElement = scopeElements[scopeElementType];
@@ -63,9 +69,9 @@ namespace Froggy
             scopeElements.Add(scopeElementType, newScopeElement);
         }
 
-        internal T GetScopeElement<T>() where T: ScopeElement
+        internal T GetScopeElement<T>() where T : ScopeElement
         {
-            var type = typeof (T);
+            var type = typeof(T);
             if (scopeElements.ContainsKey(type))
             {
                 return (T)scopeElements[type];
@@ -75,7 +81,7 @@ namespace Froggy
 
         private bool IsNewScopeRequired()
         {
-            bool existsActiveScope = scopeStack.Peek() != null;
+            bool existsActiveScope = scopeStack.Count > 0;
             if (!existsActiveScope)
             {
                 return true;
@@ -98,33 +104,28 @@ namespace Froggy
         #region Thread safe push and pop of scope stack
 
         [MethodImpl(MethodImplOptions.Synchronized)]
-        private static Scope CreateScopeIfNoneExists()
-        {
-            var scope = scopeStack.Peek();
-            if (scope == null)
-            {
-                scope = new Scope();
-            }
-            return scope;
-        }
-
-        [MethodImpl(MethodImplOptions.Synchronized)]
         private void PushInstanceInStack()
         {
             scopeStack.Push(this);
-        }
-
-        [MethodImpl(MethodImplOptions.Synchronized)]
-        private static void PopCurrentScopeFromStack()
-        {
-            scopeStack.Pop();
+            Current._InstanceCount = 1;
         }
 
         #endregion Thread safe push and pop of scope stack
 
         public void Dispose()
         {
-            throw new System.NotImplementedException();
+            if (--Current._InstanceCount == 0)
+            {
+                if (scopeStack.Count > 0)
+                {
+                    scopeStack.Pop();
+                }
+                foreach (var scopeElement in scopeElements.Values)
+                {
+                    scopeElement.Dispose();
+                }
+                GC.SuppressFinalize(this);
+            }
         }
     }
 }

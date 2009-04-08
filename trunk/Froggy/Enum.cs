@@ -5,9 +5,12 @@ using System.Text;
 
 namespace Froggy
 {
-    public enum TransactionNeed
+    public enum TransactionOption
     {
-        Automatic,
+        /// <summary>
+        /// Use a existing transacion, if exists, 
+        /// </summary>
+        Automatic, 
         Required
     }
 
