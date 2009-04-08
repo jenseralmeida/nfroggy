@@ -28,9 +28,9 @@ namespace Froggy
 
         #endregion Class Elements
 
-        public Scope(params ScopeElement[] elements)
+        public Scope(params ScopeContext[] elements)
         {
-            scopeElements = new Dictionary<Type, ScopeElement>();
+            scopeElements = new Dictionary<Type, ScopeContext>();
             if (IsNewScopeRequired())
             {
                 PushInstanceInStack();
@@ -46,11 +46,12 @@ namespace Froggy
             }
         }
 
-        private readonly Dictionary<Type, ScopeElement> scopeElements;
+        private readonly Dictionary<Type, ScopeContext> scopeElements;
         private int _InstanceCount;
 
         public void Complete()
         {
+            CheckDisposed();
             foreach (var scopeElement in scopeElements.Values)
             {
                 scopeElement.SetCompleted();
@@ -58,19 +59,20 @@ namespace Froggy
         }
 
 
-        private void AddScopeElement(ScopeElement newScopeElement)
+        private void AddScopeElement(ScopeContext newScopeElement)
         {
-            var scopeElementType = typeof(ScopeElement);
+            var scopeElementType = typeof(ScopeContext);
             if (scopeElements.ContainsKey(scopeElementType))
             {
                 var currentScopeElement = scopeElements[scopeElementType];
-                currentScopeElement.NewScopeElementIsCompatible(newScopeElement);
+                currentScopeElement.NewScopeContextIsCompatible(newScopeElement);
             }
             scopeElements.Add(scopeElementType, newScopeElement);
         }
 
-        internal T GetScopeElement<T>() where T : ScopeElement
+        internal T GetScopeElement<T>() where T : ScopeContext
         {
+            CheckDisposed();
             var type = typeof(T);
             if (scopeElements.ContainsKey(type))
             {
@@ -87,10 +89,10 @@ namespace Froggy
                 return true;
             }
             // Verify if any scope element vote for a new scope
-            bool anyElementVoteForNewScope = new List<ScopeElement>(scopeElements.Values).Exists(se => se.RequireNewScope);
+            bool anyElementVoteForNewScope = new List<ScopeContext>(scopeElements.Values).Exists(se => se.RequireNewScope);
             if (anyElementVoteForNewScope)
             {
-                bool anyElementsRefuseNewScope = new List<ScopeElement>(scopeElements.Values).Exists(se => se.RefuseNewScope);
+                bool anyElementsRefuseNewScope = new List<ScopeContext>(scopeElements.Values).Exists(se => se.RefuseNewScope);
                 if (anyElementsRefuseNewScope)
                 {
                     throw new InvalidOperationException(
@@ -112,9 +114,28 @@ namespace Froggy
 
         #endregion Thread safe push and pop of scope stack
 
+        #region IDisposable
+
+        private bool isDisposed;
+
+        private void CheckDisposed()
+        {
+            if (isDisposed)
+            {
+                throw new ObjectDisposedException("Scope object is already disposed");
+            }
+        }
+
         public void Dispose()
         {
-            if (--Current._InstanceCount == 0)
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected void Dispose(bool disposing)
+        {
+            bool canFinalize = (!isDisposed) && (--Current._InstanceCount < 1);
+            if (canFinalize)
             {
                 if (scopeStack.Count > 0)
                 {
@@ -124,8 +145,15 @@ namespace Froggy
                 {
                     scopeElement.Dispose();
                 }
-                GC.SuppressFinalize(this);
             }
+            isDisposed = true;
         }
+
+        ~Scope()
+        {
+            Dispose(false);
+        }
+
+        #endregion IDisposable
     }
 }

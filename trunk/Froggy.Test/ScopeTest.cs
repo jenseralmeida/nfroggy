@@ -38,7 +38,6 @@ namespace Froggy.Test
             }
         }
 
-
         private static void NestedMethod(Scope expected)
         {
             Assert.AreSame(expected, Scope.Current);

@@ -5,33 +5,33 @@ using System.Text;
 
 namespace Froggy
 {
-    public class TransactionScopeElement : ScopeElement
+    public class TransactionScopeContext : ScopeContext
     {
-        public static ScopeElement SetUp()
+        public static ScopeContext SetUp()
         {
-            return new TransactionScopeElement();
+            return new TransactionScopeContext();
         }
 
-        public static ScopeElement SetUp(TransactionOption transactionOption)
+        public static ScopeContext SetUp(TransactionOption transactionOption)
         {
-            return new TransactionScopeElement(transactionOption);
+            return new TransactionScopeContext(transactionOption);
         }
 
         private TransactionOption transactionOption;
 
-        public TransactionScopeElement()
+        public TransactionScopeContext()
         {
             
             
         }
 
-        public TransactionScopeElement(TransactionOption transactionOption)
+        public TransactionScopeContext(TransactionOption transactionOption)
         {
             this.transactionOption = transactionOption;
         }
 
         #region ScopeElement
-        public override bool NewScopeElementIsCompatible(ScopeElement newScopeElement)
+        public override bool NewScopeContextIsCompatible(ScopeContext newScopeElement)
         {
             throw new System.NotImplementedException(); 
         }
