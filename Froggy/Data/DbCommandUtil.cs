@@ -9,22 +9,38 @@ namespace Froggy.Data
         private const string RETURN_PARAMETER_NAME = "__return";
 
         private DAScopeContext _daScopeContext;
+        private DbDataAdapter _dataAdapter;
         private Dictionary<DataAdapterCommand, DbCommandWrapper> _CommandWrappersDataAdapter;
-        private DataAdapterCommand _OfDataAdapterCommand;
-        private int _UpdateBatchSize;
-        private DbDataAdapter _DataAdapter;
+        private DataAdapterCommand _dataAdapterCommand;
+        private int _updateBatchSize;
 
         #region IDisposable
+
         private bool _isDisposed;
+
+        private void CheckDisposed()
+        {
+            if (_isDisposed)
+            {
+                throw new ObjectDisposedException("DbCommandUtil");
+            }
+
+        }
 
         public void Dispose()
         {
-            throw new System.NotImplementedException();
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
-        private void Dipose(bool isDisposing)
+        private void Dispose(bool isDisposing)
         {
-            
+            bool canDispose = _isDisposed && isDisposing;
+            if (canDispose)
+            {
+                
+            }
+            _isDisposed = true;
         }
 
         #endregion IDisposable
