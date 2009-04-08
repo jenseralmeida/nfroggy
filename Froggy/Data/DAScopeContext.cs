@@ -7,7 +7,7 @@ namespace Froggy.Data
     /// <summary>
     /// Scope context to Data Access
     /// </summary>
-    public class DAScopeContext
+    public class DAScopeContext: IDisposable
     {
         public const string _DEFAULT_CONNECTION_NAME = "Default";
 
@@ -86,7 +86,7 @@ namespace Froggy.Data
         {
             if (isDisposed)
             {
-                throw new ObjectDisposedException("Scope object is already disposed");
+                throw new ObjectDisposedException("DAScopeContext object is already disposed");
             }
         }
 
