@@ -2,13 +2,13 @@
 
 namespace Froggy
 {
-    public abstract class ScopeElement : IDisposable
+    public abstract class ScopeContext : IDisposable
     {
         /// <summary>
         /// Indicate if this scope element vote for a new scope
         /// </summary>
         /// <returns></returns>
-        public abstract bool NewScopeElementIsCompatible(ScopeElement newScopeElement);
+        public abstract bool NewScopeContextIsCompatible(ScopeContext newScopeElement);
 
         /// <summary>
         /// Indicate if this scope element vote for a new scope

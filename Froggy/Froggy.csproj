@@ -70,12 +70,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\DAScopeContext.cs" />
+    <Compile Include="Data\DbCommandUtil.cs" />
     <Compile Include="Enum.cs" />
     <Compile Include="FroggyException.cs" />
-    <Compile Include="ScopeElement.cs" />
+    <Compile Include="ScopeContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scope.cs" />
-    <Compile Include="TransactionScopeElement.cs" />
+    <Compile Include="TransactionScopeContext.cs" />
     <Compile Include="Validation\BaseValidator\Enum.cs" />
     <Compile Include="Validation\BaseValidator\BasicValidatorUtil.cs" />
     <Compile Include="Validation\BaseValidator\ComparableValidator.cs" />
