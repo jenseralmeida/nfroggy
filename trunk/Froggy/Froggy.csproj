@@ -71,6 +71,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Data\DAScopeContext.cs" />
+    <Compile Include="Data\DbCommandUtil.Static.cs" />
+    <Compile Include="Data\DbCommandWrapper.cs" />
+    <Compile Include="Data\Enum.cs" />
     <Compile Include="Data\DbCommandUtil.cs" />
     <Compile Include="Enum.cs" />
     <Compile Include="FroggyException.cs" />
