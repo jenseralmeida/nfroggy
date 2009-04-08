@@ -10,13 +10,13 @@ namespace Froggy.Data
     /// </summary>
     internal class DbCommandWrapper
     {
-        internal const int COMMAND_TIMEOUT = 30;
+        internal const int DEFAULT_COMMAND_TIMEOUT = 30;
 
         #region Campos
 
         string _commandText;
         CommandType _commandType;
-        int _commandTimeout = COMMAND_TIMEOUT;
+        int _commandTimeout = DEFAULT_COMMAND_TIMEOUT;
         DbCommand _command;
         private Dictionary<String, DbParameter> _parametersOutputReturnValue;
 

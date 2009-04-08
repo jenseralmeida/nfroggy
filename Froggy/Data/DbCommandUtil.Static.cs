@@ -1,11 +1,67 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
+using System.Data.SqlClient;
+using Froggy.Validation;
 
 namespace Froggy.Data
 {
     public partial class DbCommandUtil
     {
+        public static bool IsParameterDirectionInputOutputOrReturnValue(ParameterDirection direction)
+        {
+            switch (direction)
+            {
+                case ParameterDirection.InputOutput:
+                case ParameterDirection.Output:
+                case ParameterDirection.ReturnValue:
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        internal static void OpenConnection(DbConnection connection, out ConnectionState originalState)
+        {
+            originalState = connection.State;
+            if (connection.State == ConnectionState.Closed)
+            {
+                connection.Open();
+                ConfigureSnapshotToSqlClientFactory(connection);
+            }
+        }
+
+        private static void ConfigureSnapshotToSqlClientFactory(DbConnection connection)
+        {
+            if (connection.GetType() == typeof(SqlConnection))
+            {
+                if (CanActivateSnapshotToSqlServerVersion(connection.ServerVersion))
+                {
+                    DbCommand comm = connection.CreateCommand();
+                    comm.CommandText = "SET TRANSACTION ISOLATION LEVEL SNAPSHOT";
+                    comm.UpdatedRowSource = UpdateRowSource.None;
+                    comm.ExecuteNonQuery();
+                }
+            }
+        }
+
+        private static bool CanActivateSnapshotToSqlServerVersion(string serverVersion)
+        {
+            string majorVersion = serverVersion.Split('.')[0];
+            if (Convert.ToInt32(majorVersion) > 8)
+                return true;
+            return false;
+        }
+
+        internal static void CloseConnection(DbConnection connection, ConnectionState estadoOriginal)
+        {
+            if ((connection != null) && (estadoOriginal == ConnectionState.Closed))
+            {
+                connection.Close();
+            }
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -17,7 +73,7 @@ namespace Froggy.Data
         public static DbCommand CreateCommand(DAScopeContext daScopeContext, string commandText, CommandType commandType, int commandTimeout)
         {
             if (daScopeContext == null)
-                throw new ArgumentNullException("DAScopeContext");
+                throw new ArgumentNullException("daScopeContext");
             DbCommand command = daScopeContext.ProviderFactory.CreateCommand();
             command.Connection = daScopeContext.Connection;
             command.CommandText = commandText;
@@ -30,5 +86,74 @@ namespace Froggy.Data
             return command;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="daScopeContext"></param>
+        /// <param name="command"></param>
+        /// <returns></returns>
+        public static DbDataAdapter CreateDataAdapter(DAScopeContext daScopeContext, DbCommand command)
+        {
+            if (daScopeContext == null)
+                throw new ArgumentNullException("daScopeContext");
+            DbDataAdapter dataAdapter = daScopeContext.ProviderFactory.CreateDataAdapter();
+            dataAdapter.SelectCommand = command;
+
+            return dataAdapter;
+        }
+
+        private static void ConfigTableMappings(DataAdapter adapter, string[] srcTables)
+        {
+            for (int i = 0; i < srcTables.Length; i++)
+            {
+                string tableName = "Table" + (i == 0 ? String.Empty : i.ToString());
+                adapter.TableMappings.Add(tableName, srcTables[i]);
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="daScopeContext"></param>
+        /// <param name="dataAdapterCommand"></param>
+        /// <param name="commandWrappersDataAdapter"></param>
+        /// <returns></returns>
+        internal static DbCommand GetDbCommand(DAScopeContext daScopeContext, DataAdapterCommand dataAdapterCommand, Dictionary<DataAdapterCommand, DbCommandWrapper> commandWrappersDataAdapter)
+        {
+            if (commandWrappersDataAdapter.ContainsKey(dataAdapterCommand))
+            {
+                DbCommandWrapper commandWrapper = commandWrappersDataAdapter[dataAdapterCommand];
+                return commandWrapper.GetDbCommand(daScopeContext);
+            }
+            return null;
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="daScopeContext"></param>
+        /// <param name="commandWrappers"></param>
+        /// <returns></returns>
+        internal static DbDataAdapter CreateDataAdapterFromCommandWrappers(DAScopeContext daScopeContext, Dictionary<DataAdapterCommand, DbCommandWrapper> commandWrappers)
+        {
+            if (daScopeContext == null)
+                throw new ArgumentNullException("daScopeContext");
+            DbCommand selectCommand = GetDbCommand(daScopeContext, DataAdapterCommand.SelectCommand, commandWrappers);
+            if (selectCommand == null)
+                throw new NullReferenceException("SelectCommand cannot be null");
+            DbDataAdapter dataAdapter = daScopeContext.ProviderFactory.CreateDataAdapter();
+            dataAdapter.SelectCommand = selectCommand;
+            dataAdapter.InsertCommand = GetDbCommand(daScopeContext, DataAdapterCommand.InsertCommand, commandWrappers);
+            dataAdapter.UpdateCommand = GetDbCommand(daScopeContext, DataAdapterCommand.UpdateCommand, commandWrappers);
+            dataAdapter.DeleteCommand = GetDbCommand(daScopeContext, DataAdapterCommand.DeleteCommand, commandWrappers);
+
+            return dataAdapter;
+        }
+
+        private static void SetParameterValue(IDataParameter parameter, object value)
+        {
+            parameter.Value = new Validator<object>().Convert(value); 
+        }
     }
 }

@@ -1,15 +1,23 @@
 ﻿using System;
 using System.Data;
 using System.Data.Common;
+using System.Configuration;
 
 namespace Froggy.Data
 {
+    public static class DAScopeContextExtension
+    {
+        public static DAScopeContext GetDAScopeContext(this Scope scope)
+		{
+            return scope.GetScopeElement<DAScopeContext>();
+		}
+    }
     /// <summary>
     /// Scope context to Data Access
     /// </summary>
-    public class DAScopeContext: IDisposable
+    public class DAScopeContext: ScopeContext, IDisposable
     {
-        public const string _DEFAULT_CONNECTION_NAME = "Default";
+        public const string DEFAULT_ConnectionStringSettingName = "Default";
 
         private string _connectionStringSettingName;
         private DbProviderFactory _providerFactory;
@@ -78,6 +86,54 @@ namespace Froggy.Data
 
         }
 
+        #region Constructor
+
+
+
+        /// <summary>
+        /// Construtor usando configuração de string de conexao customizada, independente de app.config
+        /// </summary>
+        /// <param name="providerName">Nome do provider a ser usado</param>
+        /// <param name="connectionString">String de conexao</param>
+        public DAScopeContext(string providerName, string connectionString)
+        {
+            if (String.IsNullOrEmpty(providerName) || String.IsNullOrEmpty(connectionString))
+            {
+                throw new InvalidOperationException("ProviderName e ConnectionString precisam conter um valor");
+            }
+            _providerFactory = DbProviderFactories.GetFactory(providerName);
+            _connectionStringSettingName = String.Empty;
+            _connection = ProviderFactory.CreateConnection();
+            _connection.ConnectionString = connectionString;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="connectionStringSettingName"></param>
+        public DAScopeContext(string connectionStringSettingName)
+        {
+            ConnectionStringSettings connectionStringSettings = ConfigurationManager.ConnectionStrings[connectionStringSettingName];
+            if (connectionStringSettings == null)
+            {
+                throw new InvalidOperationException("A conexão especificada não existe em <connectionString> em <configuration>. Se nenhum conexão foi especificada a conexão Geral precisa estar definida");
+            }
+            _providerFactory = DbProviderFactories.GetFactory(connectionStringSettings.ProviderName);
+            _connectionStringSettingName = connectionStringSettings.Name;
+            _connection = ProviderFactory.CreateConnection();
+            _connection.ConnectionString = connectionStringSettings.ConnectionString;
+        }
+
+        /// <summary>
+        /// Contrutor para string de conexão padrão
+        /// </summary>
+        public DAScopeContext()
+            : this(DEFAULT_ConnectionStringSettingName)
+        {
+        }
+
+        #endregion Constructor
+
         #region IDisposable
 
         private bool isDisposed;
@@ -90,13 +146,33 @@ namespace Froggy.Data
             }
         }
 
-        public void Dispose()
+        public override bool NewScopeContextIsCompatible(ScopeContext newScopeElement)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool RequireNewScope
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public override bool RefuseNewScope
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public override void SetCompleted()
+        {
+            throw new NotImplementedException();
+        }
+
+        public new void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
 
-        protected void Dispose(bool disposing)
+        protected override void Dispose(bool disposing)
         {
             bool canFinalize = (!isDisposed) && disposing;
             if (canFinalize)
