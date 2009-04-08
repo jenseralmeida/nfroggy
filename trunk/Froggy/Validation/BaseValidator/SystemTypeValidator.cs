@@ -1,7 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Text;
 
 namespace Froggy.Validation.BaseValidator
 {
@@ -12,20 +10,17 @@ namespace Froggy.Validation.BaseValidator
 
         public bool Execute(object value, out T result, out string errorMessageTemplate)
         {
-            if (SystemTypeValidator<T>.TryChangeType(value, IsNullable, out result))
+            if (TryChangeType(value, IsNullable, out result))
             {
                 errorMessageTemplate = "";
                 return true;
             }
-            else
-            {
-                errorMessageTemplate = "Invalid data type";
-                return false;
-            }
+            errorMessageTemplate = "Invalid data type";
+            return false;
         }
 
         #endregion ITypeValidator
-        private Type _RealType;
+        private readonly Type _RealType;
         private bool _IsNullable;
 
         public Type RealType
@@ -67,6 +62,7 @@ namespace Froggy.Validation.BaseValidator
         /// Try change type, validating if the value is null, with a custom restriction of null value
         /// </summary>
         /// <param name="value"></param>
+        /// <param name="isNullable"></param>
         /// <param name="result"></param>
         /// <returns></returns>
         public static bool TryChangeType(object value, bool isNullable, out T result)
@@ -84,7 +80,7 @@ namespace Froggy.Validation.BaseValidator
                 result = default(T);
                 return isNullable;
             }
-            else if ((value is String) && (value.ToString() == ""))
+            if ((value is String) && (value.ToString() == ""))
             {
                 result = default(T);
                 return isNullable;
@@ -139,10 +135,7 @@ namespace Froggy.Validation.BaseValidator
             {
                 return type.GetGenericTypeDefinition() == typeof(Nullable<>);
             }
-            else
-            {
-                return !type.IsValueType;
-            }
+            return !type.IsValueType;
         }
 
         #endregion ChangeType

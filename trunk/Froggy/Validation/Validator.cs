@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 using Froggy.Validation.BaseValidator;
 
 namespace Froggy.Validation
@@ -133,19 +132,19 @@ namespace Froggy.Validation
 
         public void Validate(object value)
         {
-            this.Convert(value);
+            Convert(value);
         }
 
         public bool IsValid(object value)
         {
             string errorMessage;
-            return this.IsValid(value, out errorMessage);
+            return IsValid(value, out errorMessage);
         }
 
         public bool IsValid(object value, out string errorMessage)
         {
             T result;
-            return this.TryConvert(value, out result, out errorMessage);
+            return TryConvert(value, out result, out errorMessage);
         }
 
         #endregion IValidation
@@ -156,7 +155,7 @@ namespace Froggy.Validation
         {
             T result;
             string errorMessage;
-            if (!this.TryConvert(value, out result, out errorMessage))
+            if (!TryConvert(value, out result, out errorMessage))
             {
                 throw new ValidateException(errorMessage);
             }
@@ -166,7 +165,7 @@ namespace Froggy.Validation
         public bool TryConvert(object value, out T result)
         {
             string errorMessage;
-            return this.TryConvert(value, out result, out errorMessage);
+            return TryConvert(value, out result, out errorMessage);
         }
 
         public bool TryConvert(object value, out T result, out string errorMessage)
@@ -178,7 +177,7 @@ namespace Froggy.Validation
             }
             foreach (ITestValidator testsValidator in _TestValidators.Values)
             {
-                if (!testsValidator.Execute<T>(result, out errorMessage))
+                if (!testsValidator.Execute(result, out errorMessage))
                 {
                     return false;
                 }
