@@ -12,12 +12,12 @@ namespace Froggy
             return new TransactionScopeElement();
         }
 
-        public static ScopeElement SetUp(TransactionNeed transactionNeed)
+        public static ScopeElement SetUp(TransactionOption transactionOption)
         {
-            return new TransactionScopeElement(transactionNeed);
+            return new TransactionScopeElement(transactionOption);
         }
 
-        private TransactionNeed transactionNeed;
+        private TransactionOption transactionOption;
 
         public TransactionScopeElement()
         {
@@ -25,9 +25,9 @@ namespace Froggy
             
         }
 
-        public TransactionScopeElement(TransactionNeed transactionNeed)
+        public TransactionScopeElement(TransactionOption transactionOption)
         {
-            this.transactionNeed = transactionNeed;
+            this.transactionOption = transactionOption;
         }
 
         #region ScopeElement
