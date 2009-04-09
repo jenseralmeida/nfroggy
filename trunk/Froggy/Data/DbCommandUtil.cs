@@ -167,6 +167,7 @@ namespace Froggy.Data
                     if (Scope.Current == null)
                     {
                         _daScopeContext = new DAScopeContext();
+                        _daScopeContext.Init();
                         _daScopeContextIsCreatedInThisInstance = true;
                     }
                     else
