@@ -9,7 +9,7 @@ namespace Froggy.Data
     {
         public static DAScopeContext GetDAScopeContext(this Scope scope)
 		{
-            return scope.GetScopeElement<DAScopeContext>();
+            return scope.GetScopeContext<DAScopeContext>();
 		}
     }
     /// <summary>
@@ -17,9 +17,13 @@ namespace Froggy.Data
     /// </summary>
     public class DAScopeContext: ScopeContext, IDisposable
     {
-        public const string DEFAULT_ConnectionStringSettingName = "Default";
+        public const string ConnectionStringSettingName_DEFAULT = "Default";
 
         private string _connectionStringSettingName;
+        private TransactionOption? _transactionOption;
+        private readonly string _providerName;
+        private readonly string _connectionString;
+        private IsolationLevel? _isolationLevel;
         private DbProviderFactory _providerFactory;
         private DbConnection _connection;
         private DbTransaction _transaction;
@@ -88,23 +92,12 @@ namespace Froggy.Data
 
         #region Constructor
 
-
-
         /// <summary>
-        /// Construtor usando configuração de string de conexao customizada, independente de app.config
+        /// Context to connection using <see cref="ConnectionStringSettingName_DEFAULT"/> and <see cref="TransactionOption.Automatic"/>  
         /// </summary>
-        /// <param name="providerName">Nome do provider a ser usado</param>
-        /// <param name="connectionString">String de conexao</param>
-        public DAScopeContext(string providerName, string connectionString)
+        public DAScopeContext()
+            : this(ConnectionStringSettingName_DEFAULT)
         {
-            if (String.IsNullOrEmpty(providerName) || String.IsNullOrEmpty(connectionString))
-            {
-                throw new InvalidOperationException("ProviderName e ConnectionString precisam conter um valor");
-            }
-            _providerFactory = DbProviderFactories.GetFactory(providerName);
-            _connectionStringSettingName = String.Empty;
-            _connection = ProviderFactory.CreateConnection();
-            _connection.ConnectionString = connectionString;
         }
 
         /// <summary>
@@ -112,27 +105,127 @@ namespace Froggy.Data
         /// </summary>
         /// <param name="connectionStringSettingName"></param>
         public DAScopeContext(string connectionStringSettingName)
+            : this(connectionStringSettingName, TransactionOption.Automatic, null)
         {
-            ConnectionStringSettings connectionStringSettings = ConfigurationManager.ConnectionStrings[connectionStringSettingName];
-            if (connectionStringSettings == null)
-            {
-                throw new InvalidOperationException("A conexão especificada não existe em <connectionString> em <configuration>. Se nenhum conexão foi especificada a conexão Geral precisa estar definida");
-            }
-            _providerFactory = DbProviderFactories.GetFactory(connectionStringSettings.ProviderName);
-            _connectionStringSettingName = connectionStringSettings.Name;
-            _connection = ProviderFactory.CreateConnection();
-            _connection.ConnectionString = connectionStringSettings.ConnectionString;
         }
 
         /// <summary>
-        /// Contrutor para string de conexão padrão
+        /// 
         /// </summary>
-        public DAScopeContext()
-            : this(DEFAULT_ConnectionStringSettingName)
+        /// <param name="connectionStringSettingName"></param>
+        /// <param name="transactionOption"></param>
+        public DAScopeContext(string connectionStringSettingName, TransactionOption transactionOption)
+            : this(connectionStringSettingName, transactionOption, null)
         {
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="isolationLevel"></param>
+        public DAScopeContext(IsolationLevel isolationLevel)
+            : this(ConnectionStringSettingName_DEFAULT, TransactionOption.Required, isolationLevel)
+        {
+            _isolationLevel = isolationLevel;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="connectionStringSettingName"></param>
+        /// <param name="isolationLevel"></param>
+        public DAScopeContext(string connectionStringSettingName, IsolationLevel isolationLevel)
+            : this(connectionStringSettingName, TransactionOption.Required, isolationLevel)
+        {
+            _isolationLevel = isolationLevel;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="providerName"></param>
+        /// <param name="connectionString"></param>
+        public DAScopeContext(string providerName, string connectionString)
+        {
+            if (String.IsNullOrEmpty(providerName) || String.IsNullOrEmpty(connectionString))
+            {
+                throw new InvalidOperationException("ProviderName and ConnectionString can't be null");
+            }
+            _providerName = providerName;
+            _connectionString = connectionString;
+            _connectionStringSettingName = String.Empty;
+        }
+
+        public DAScopeContext(string connectionStringSettingName, TransactionOption transactionOption, IsolationLevel? isolationLevel)
+        {
+            _connectionStringSettingName = connectionStringSettingName;
+            _transactionOption = transactionOption;
+            _isolationLevel = isolationLevel;
+        }
+
         #endregion Constructor
+
+        #region ScopeContext
+
+        public override void Init()
+        {
+            if (String.IsNullOrEmpty(_connectionStringSettingName))
+            {
+                _providerFactory = DbProviderFactories.GetFactory(_providerName);
+                _connectionStringSettingName = String.Empty;
+                _connection = ProviderFactory.CreateConnection();
+                _connection.ConnectionString = _connectionString;
+            }
+            else
+            {
+                ConnectionStringSettings connectionStringSettings = ConfigurationManager.ConnectionStrings[_connectionStringSettingName];
+                if (connectionStringSettings == null)
+                {
+                    throw new InvalidOperationException("The specified connection does not exists in <connectionString> in <configuration>");
+                }
+                _providerFactory = DbProviderFactories.GetFactory(connectionStringSettings.ProviderName);
+                _connectionStringSettingName = connectionStringSettings.Name;
+                _connection = ProviderFactory.CreateConnection();
+                _connection.ConnectionString = connectionStringSettings.ConnectionString;
+
+            }
+        }
+
+        public override bool NewScopeContextIsCompatible(ScopeContext currentScopeContext)
+        {
+            var currentDAScopeContext = currentScopeContext as DAScopeContext;
+            if (currentDAScopeContext == null)
+                return true;
+            bool useSameConnectionString = currentDAScopeContext.ConnectionStringSettingName == ConnectionStringSettingName;
+            return useSameConnectionString;
+        }
+
+        public override bool RequireNewScope
+        {
+            get
+            {
+                if (Scope.Current == null)
+                    return false;
+                bool currentScopeHasNotTransaction = Scope.Current.GetDAScopeContext().Transaction == null;
+                bool requireNewTransaction = _transactionOption.HasValue && _transactionOption == TransactionOption.Required;
+                return requireNewTransaction && currentScopeHasNotTransaction;
+            }
+        }
+
+        public override bool RefuseNewScope
+        {
+            get { return false; }
+        }
+
+        public override void CompletedNow(bool completed)
+        {
+            if (completed && _transaction != null)
+            {
+                _transaction.Commit();
+            }
+        }
+
+        #endregion ScopeContext
 
         #region IDisposable
 
@@ -144,26 +237,6 @@ namespace Froggy.Data
             {
                 throw new ObjectDisposedException("DAScopeContext object is already disposed");
             }
-        }
-
-        public override bool NewScopeContextIsCompatible(ScopeContext newScopeElement)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override bool RequireNewScope
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public override bool RefuseNewScope
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public override void SetCompleted()
-        {
-            throw new NotImplementedException();
         }
 
         public new void Dispose()
