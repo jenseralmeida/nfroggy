@@ -9,7 +9,7 @@ namespace Froggy.Data
 {
     public partial class DbCommandUtil
     {
-        public static bool IsParameterDirectionInputOutputOrReturnValue(ParameterDirection direction)
+        private static bool IsParameterDirectionInputOutputOrReturnValue(ParameterDirection direction)
         {
             switch (direction)
             {
@@ -22,13 +22,21 @@ namespace Froggy.Data
             }
         }
 
-        internal static void OpenConnection(DbConnection connection, out ConnectionState originalState)
+        private static void OpenConnection(DbConnection connection, out ConnectionState originalState)
         {
             originalState = connection.State;
             if (connection.State == ConnectionState.Closed)
             {
                 connection.Open();
                 ConfigureSnapshotToSqlClientFactory(connection);
+            }
+        }
+
+        private static void CloseConnection(DbConnection connection, ConnectionState estadoOriginal)
+        {
+            if ((connection != null) && (estadoOriginal == ConnectionState.Closed))
+            {
+                connection.Close();
             }
         }
 
@@ -54,14 +62,6 @@ namespace Froggy.Data
             return false;
         }
 
-        internal static void CloseConnection(DbConnection connection, ConnectionState estadoOriginal)
-        {
-            if ((connection != null) && (estadoOriginal == ConnectionState.Closed))
-            {
-                connection.Close();
-            }
-        }
-
         /// <summary>
         /// 
         /// </summary>
@@ -70,7 +70,7 @@ namespace Froggy.Data
         /// <param name="commandType"></param>
         /// <param name="commandTimeout"></param>
         /// <returns></returns>
-        public static DbCommand CreateCommand(DAScopeContext daScopeContext, string commandText, CommandType commandType, int commandTimeout)
+        internal static DbCommand CreateCommand(DAScopeContext daScopeContext, string commandText, CommandType commandType, int commandTimeout)
         {
             if (daScopeContext == null)
                 throw new ArgumentNullException("daScopeContext");
@@ -86,22 +86,6 @@ namespace Froggy.Data
             return command;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="daScopeContext"></param>
-        /// <param name="command"></param>
-        /// <returns></returns>
-        public static DbDataAdapter CreateDataAdapter(DAScopeContext daScopeContext, DbCommand command)
-        {
-            if (daScopeContext == null)
-                throw new ArgumentNullException("daScopeContext");
-            DbDataAdapter dataAdapter = daScopeContext.ProviderFactory.CreateDataAdapter();
-            dataAdapter.SelectCommand = command;
-
-            return dataAdapter;
-        }
-
         private static void ConfigTableMappings(DataAdapter adapter, string[] srcTables)
         {
             for (int i = 0; i < srcTables.Length; i++)
@@ -109,6 +93,11 @@ namespace Froggy.Data
                 string tableName = "Table" + (i == 0 ? String.Empty : i.ToString());
                 adapter.TableMappings.Add(tableName, srcTables[i]);
             }
+        }
+
+        private static void SetParameterValue(IDataParameter parameter, object value)
+        {
+            parameter.Value = new Validator<object>().Convert(value); 
         }
 
         /// <summary>
@@ -149,11 +138,6 @@ namespace Froggy.Data
             dataAdapter.DeleteCommand = GetDbCommand(daScopeContext, DataAdapterCommand.DeleteCommand, commandWrappers);
 
             return dataAdapter;
-        }
-
-        private static void SetParameterValue(IDataParameter parameter, object value)
-        {
-            parameter.Value = new Validator<object>().Convert(value); 
         }
     }
 }

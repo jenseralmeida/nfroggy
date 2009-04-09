@@ -1021,11 +1021,15 @@ namespace Froggy.Data
                 commandWrapper.CommandType = commandType;
                 commandWrapper.CommandTimeout = commandTimeout;
             }
-            // Se já existe DataAdapter criada entao atualiza o seu command
-            AtualizarCommandSeDataAdapterJaExiste(dataAdapterCommand, commandWrapper);
+            UpdateCommandOfDataAdapter(dataAdapterCommand, commandWrapper);
         }
 
-        private void AtualizarCommandSeDataAdapterJaExiste(DataAdapterCommand dataAdapterCommand, DbCommandWrapper commandWrapper)
+        /// <summary>
+        /// Update commands of DataAdater if the instance already exists
+        /// </summary>
+        /// <param name="dataAdapterCommand"></param>
+        /// <param name="commandWrapper"></param>
+        private void UpdateCommandOfDataAdapter(DataAdapterCommand dataAdapterCommand, DbCommandWrapper commandWrapper)
         {
             if (_dataAdapter != null)
             {
@@ -1047,7 +1051,7 @@ namespace Froggy.Data
             }
         }
 
-        #endregion Outras operações
+        #endregion 
 
         #region IDisposable
 
