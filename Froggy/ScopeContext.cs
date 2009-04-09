@@ -8,7 +8,7 @@ namespace Froggy
         /// Indicate if this scope element vote for a new scope
         /// </summary>
         /// <returns></returns>
-        public abstract bool NewScopeContextIsCompatible(ScopeContext newScopeElement);
+        public abstract bool NewScopeContextIsCompatible(ScopeContext currentScopeContext);
 
         /// <summary>
         /// Indicate if this scope element vote for a new scope
@@ -23,10 +23,9 @@ namespace Froggy
         public abstract bool RefuseNewScope { get; }
 
         /// <summary>
-        /// Code used when a Scope is setted as completed. The scope class will call the Complete of all ScopeElements, only when
-        /// the last Complete call is madeS
+        /// 
         /// </summary>
-        public abstract void SetCompleted();
+        public abstract void CompletedNow(bool completed);
 
         #region IDisposable
 
@@ -39,5 +38,7 @@ namespace Froggy
         protected abstract void Dispose(bool isDisposed);
 
         #endregion IDisposable
+
+        public abstract void Init();
     }
 }

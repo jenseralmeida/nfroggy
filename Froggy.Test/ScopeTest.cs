@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
 
 namespace Froggy.Test
 {
@@ -29,7 +30,7 @@ namespace Froggy.Test
             Assert.IsNull(Scope.Current);
         }
 
-        private void NestedScopeLevel1(Scope expected)
+        private static void NestedScopeLevel1(Scope expected)
         {
             using (var scope = new Scope())
             {
@@ -42,5 +43,143 @@ namespace Froggy.Test
         {
             Assert.AreSame(expected, Scope.Current);
         }
+
+        [Test]
+        public void CustomScopeContextBasicTest()
+        {
+            var csc = new CustomScopeContext(true, false, false);
+            Assert.IsFalse(csc.InitCalled);
+            Assert.IsFalse(csc.DisposeCalled);
+            Assert.IsFalse(csc.CompleteNowCalled);
+            Assert.IsFalse(csc.Completed);
+            using (var scope = new Scope(csc))
+            {
+                Assert.IsTrue(csc.InitCalled);
+                Assert.IsFalse(csc.DisposeCalled);
+                Assert.IsFalse(csc.CompleteNowCalled);
+                Assert.IsFalse(csc.Completed);
+                scope.Complete();
+                Assert.IsTrue(csc.InitCalled);
+                Assert.IsFalse(csc.DisposeCalled);
+                Assert.IsFalse(csc.CompleteNowCalled);
+                Assert.IsFalse(csc.Completed);
+            }
+            Assert.IsTrue(csc.InitCalled);
+            Assert.IsTrue(csc.DisposeCalled);
+            Assert.IsTrue(csc.CompleteNowCalled);
+            Assert.IsTrue(csc.Completed);
+        }
+
+        [Test]
+        public void CustomScopeContextNotCompleteTest()
+        {
+            var csc = new CustomScopeContext(true, false, false);
+            Assert.IsFalse(csc.InitCalled);
+            Assert.IsFalse(csc.DisposeCalled);
+            Assert.IsFalse(csc.CompleteNowCalled);
+            Assert.IsFalse(csc.Completed);
+            using (var scope = new Scope(csc))
+            {
+                Assert.IsTrue(csc.InitCalled);
+                Assert.IsFalse(csc.DisposeCalled);
+                Assert.IsFalse(csc.CompleteNowCalled);
+                Assert.IsFalse(csc.Completed);
+            }
+            Assert.IsTrue(csc.InitCalled);
+            Assert.IsTrue(csc.DisposeCalled);
+            Assert.IsTrue(csc.CompleteNowCalled);
+            Assert.IsFalse(csc.Completed);
+        }
+    }
+
+    public class CustomScopeContext: ScopeContext
+    {
+        private readonly bool _Compatible;
+        private readonly bool _RequireNewScope;
+        private readonly bool _RefuseNewScope;
+        private bool _InitCalled;
+        private bool _CompleteNowCalled;
+        private bool _Completed;
+        private bool _DisposeCalled;
+
+        public CustomScopeContext(bool compatible, bool requireNewScope, bool refuseNewScope)
+        {
+            _Compatible = compatible;
+            _RefuseNewScope = refuseNewScope;
+            _RequireNewScope = requireNewScope;
+        }
+
+        #region Overrides of ScopeContext
+
+        public bool DisposeCalled
+        {
+            get { return _DisposeCalled; }
+        }
+
+        public bool CompleteNowCalled
+        {
+            get { return _CompleteNowCalled; }
+        }
+
+        public bool InitCalled
+        {
+            get { return _InitCalled; }
+        }
+
+        /// <summary>
+        /// Indicate if this scope element vote for a new scope
+        /// </summary>
+        /// <returns></returns>
+        public override bool NewScopeContextIsCompatible(ScopeContext currentScopeContext)
+        {
+            return _Compatible;
+        }
+
+        /// <summary>
+        /// Indicate if this scope element vote for a new scope
+        /// </summary>
+        /// <returns></returns>
+        public override bool RequireNewScope
+        {
+            get { return _RequireNewScope; }
+        }
+
+        /// <summary>
+        /// Indicate if a new scope can be created
+        /// </summary>
+        /// <returns></returns>
+        public override bool RefuseNewScope
+        {
+            get { return _RefuseNewScope; }
+        }
+
+        public bool Completed
+        {
+            get { return _Completed; }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public override void CompletedNow(bool completed)
+        {
+            _CompleteNowCalled = true;
+            _Completed = completed;
+            Console.WriteLine("complete now call");
+        }
+
+        protected override void Dispose(bool isDisposed)
+        {
+            _DisposeCalled = true;
+            Console.WriteLine("Dispose call");
+        }
+
+        public override void Init()
+        {
+            _InitCalled = true;
+            Console.WriteLine("Init call");
+        }
+
+        #endregion
     }
 }
