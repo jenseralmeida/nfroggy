@@ -5965,16 +5965,6 @@
             <remarks>checks if the client is currently connected to a server.</remarks>
             <returns>true if the client is alive.</returns>
         </member>
-        <member name="M:Db4objects.Db4o.Ext.IExtClient.DispatchPendingMessages(System.Int64)">
-            <summary>
-            Dispatches any pending messages to
-            the currently configured
-            <see cref="T:Db4objects.Db4o.Messaging.IMessageRecipient">IMessageRecipient</see>
-            .
-            </summary>
-            <param name="maxTimeSlice">how long before the method returns leaving messages on the queue for later dispatching
-            	</param>
-        </member>
         <member name="T:Db4objects.Db4o.Ext.IExtObjectServer">
             <summary>extended functionality for the ObjectServer interface.</summary>
             <remarks>
@@ -6438,6 +6428,19 @@
             <see cref="T:Db4objects.Db4o.Ext.IStoredField">IStoredField</see>
             </returns>
         </member>
+        <member name="M:Db4objects.Db4o.Ext.IStoredClass.InstanceCount">
+            <summary>
+            Returns the number of instances of this class that have been persisted to the
+            database, as seen by the transaction (container) that produces this StoredClass
+            instance.
+            </summary>
+            <remarks>
+            Returns the number of instances of this class that have been persisted to the
+            database, as seen by the transaction (container) that produces this StoredClass
+            instance.
+            </remarks>
+            <returns>The number of instances</returns>
+        </member>
         <member name="T:Db4objects.Db4o.Ext.IStoredField">
             <summary>the internal representation of a field on a stored class.</summary>
             <remarks>the internal representation of a field on a stored class.</remarks>
@@ -6781,7 +6784,7 @@
             <exclude></exclude>
         </member>
         <member name="M:Db4objects.Db4o.Foundation.BitMap4.#ctor(System.Byte[],System.Int32,System.Int32)">
-            <summary>"readFrom  buffer" constructor *</summary>
+            <summary>"readFrom  buffer" constructor</summary>
         </member>
         <member name="T:Db4objects.Db4o.Foundation.BlockingQueue">
             <exclude></exclude>
@@ -8253,6 +8256,9 @@
         <member name="M:Db4objects.Db4o.Internal.ByteArrayBuffer.ReadEncrypt(Db4objects.Db4o.Internal.ObjectContainerBase,System.Int32)">
             <exception cref="T:Db4objects.Db4o.Ext.Db4oIOException"></exception>
         </member>
+        <member name="T:Db4objects.Db4o.Internal.CS.ClientAsynchronousMessageProcessor">
+            <exclude></exclude>
+        </member>
         <member name="T:Db4objects.Db4o.Internal.CS.ClientHeartbeat">
             <exclude></exclude>
         </member>
@@ -8642,9 +8648,6 @@
             <exclude></exclude>
         </member>
         <member name="T:Db4objects.Db4o.Internal.CS.Messages.IClientSideMessage">
-            <exclude></exclude>
-        </member>
-        <member name="T:Db4objects.Db4o.Internal.CS.Messages.IClientSideTask">
             <exclude></exclude>
         </member>
         <member name="T:Db4objects.Db4o.Internal.CS.Messages.IServerSideMessage">
@@ -10385,13 +10388,13 @@
             <exclude></exclude>
         </member>
         <member name="M:Db4objects.Db4o.Internal.ObjectReference.ContinueSet(Db4objects.Db4o.Internal.Transaction,System.Int32)">
-            <summary>return false if class not completely initialized, otherwise true *</summary>
+            <summary>return false if class not completely initialized, otherwise true</summary>
         </member>
         <member name="M:Db4objects.Db4o.Internal.ObjectReference.Hc_add(Db4objects.Db4o.Internal.ObjectReference)">
-            <summary>HCTREE ****</summary>
+            <summary>HCTREE</summary>
         </member>
         <member name="M:Db4objects.Db4o.Internal.ObjectReference.Id_add(Db4objects.Db4o.Internal.ObjectReference)">
-            <summary>IDTREE ****</summary>
+            <summary>IDTREE</summary>
         </member>
         <member name="T:Db4objects.Db4o.Internal.PartialEmbeddedClientObjectContainer">
             <exclude></exclude>
@@ -10727,8 +10730,17 @@
         <member name="T:Db4objects.Db4o.Internal.Query.Processor.QEStringCmp">
             <exclude></exclude>
         </member>
+        <member name="M:Db4objects.Db4o.Internal.Query.Processor.QEStringCmp.#ctor">
+            <summary>for C/S messaging only</summary>
+        </member>
+        <member name="M:Db4objects.Db4o.Internal.Query.Processor.QEContains.#ctor">
+            <summary>for C/S messaging only</summary>
+        </member>
         <member name="T:Db4objects.Db4o.Internal.Query.Processor.QEEndsWith">
             <exclude></exclude>
+        </member>
+        <member name="M:Db4objects.Db4o.Internal.Query.Processor.QEEndsWith.#ctor">
+            <summary>for C/S messaging only</summary>
         </member>
         <member name="T:Db4objects.Db4o.Internal.Query.Processor.QEEqual">
             <exclude></exclude>
@@ -10750,6 +10762,9 @@
         </member>
         <member name="T:Db4objects.Db4o.Internal.Query.Processor.QEStartsWith">
             <exclude></exclude>
+        </member>
+        <member name="M:Db4objects.Db4o.Internal.Query.Processor.QEStartsWith.#ctor">
+            <summary>for C/S messaging only</summary>
         </member>
         <member name="T:Db4objects.Db4o.Internal.Query.Processor.QField">
             <exclude></exclude>

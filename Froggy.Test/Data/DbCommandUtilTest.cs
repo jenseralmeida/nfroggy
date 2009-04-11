@@ -24,5 +24,18 @@ namespace Froggy.Test.Data
             comm.ExecuteNonQuery();
         }
 
+        [Test]
+        public void DbCommandUtilExecuteScalarTest()
+        {
+            var comm = new DbCommandUtil("IF NOT EXISTS(SELECT * FROM SYS.OBJECTS WHERE Name = 'Test') CREATE TABLE TEST (ID INT)");
+            var teste = comm.ExecuteScalar<int?>();
+            comm = new DbCommandUtil("SELECT * FROM TEST");
+            var dataTable = comm.GetDataTable();
+            Assert.AreEqual(1, dataTable.Columns.Count);
+            Assert.AreEqual("ID", dataTable.Columns[0].ColumnName);
+            comm = new DbCommandUtil("IF EXISTS(SELECT * FROM SYS.OBJECTS WHERE Name = 'Test') DROP TABLE TEST");
+            comm.ExecuteNonQuery();
+        }
+
     }
 }
