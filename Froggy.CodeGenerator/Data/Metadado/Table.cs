@@ -37,15 +37,11 @@ namespace Froggy.CodeGenerator.Data.Metadado
 
         private void BuildTable()
         {
-            string sql = String.Format("SELECT * FROM {0}", FullName);
+            string sql = String.Format("SELECT TOP 0 * FROM {0}", FullName);
             DataTable schemaTable;
             using (var comm = new DbCommandUtil(sql))
             {
-                // DbCommandUtil already dispose all objects created by then
-                var conn = comm.DAScopeContext.Connection;
-                conn.Open();
-                schemaTable = comm.DAScopeContext.Connection.GetSchema();
-                conn.Close();
+                schemaTable = comm.GetDataTable();
             }
             // Build columns
             foreach (DataColumn column in schemaTable.Columns)
@@ -58,7 +54,7 @@ namespace Froggy.CodeGenerator.Data.Metadado
                                           DataType = column.DataType,
                                           MaxLength = column.MaxLength
                                       };
-                _Columns.Add(tableColumn.Name, tableColumn);
+                Columns.Add(tableColumn.Name, tableColumn);
             }
             BuildIndexes();
         }
@@ -67,7 +63,8 @@ namespace Froggy.CodeGenerator.Data.Metadado
         {
             const string sql = @"SELECT DISTINCT
 	   index_name		= [index].name,
-	   column_name		= [columns].name
+	   column_name		= [columns].name,
+	   index_column_id  = [index_columns].index_column_id
 from sys.indexes [index]
           LEFT JOIN sys.objects [objects] ON ( [objects].object_id = [index].object_id )
           LEFT JOIN sys.index_columns [index_columns] ON ( [index_columns].index_id = [index].index_id )
@@ -80,26 +77,32 @@ WHERE ( [objects].schema_id = SCHEMA_ID(@schema_name) )
 ORDER BY [index].name, [index_columns].index_column_id";
             using (var comm = new DbCommandUtil(sql))
             {
-                comm.AddParameter("@schema_name", DbType.String, Schema);
-                comm.AddParameter("@object_name", DbType.String, Name);
+                comm.AddParameter("@schema_name", DbType.AnsiString, Schema);
+                comm.AddParameter("@object_name", DbType.AnsiString, Name);
                 var reader = comm.ExecuteReader(CommandBehavior.CloseConnection);
-                string previousIndexName = "";
+                var previousIndexName = "";
                 var indexColumns = new List<Column>();
+                var added = false;
                 while (reader.Read())
                 {
-                    string indexName = reader.GetString(0);
-                    if (previousIndexName != indexName)
+                    var indexName = reader.GetString(0);
+                    if (previousIndexName == "")
                     {
                         previousIndexName = indexName;
+                    }
+
+                    if (previousIndexName != indexName)
+                    {
+                        _Indexes.Add(new Index(previousIndexName, indexColumns));
                         indexColumns = new List<Column>();
                     }
-                    indexColumns.Add(_Columns[reader.GetString(1)]);
-                    _Indexes.Add(new Index(indexName, indexColumns));
+                    indexColumns.Add(Columns[reader.GetString(1)]);
+                    previousIndexName = indexName;
                 }
+                _Indexes.Add(new Index(previousIndexName, indexColumns));
+
                 reader.Close();
             }
-
-
         }
 
         private string _Schema;
@@ -122,6 +125,11 @@ ORDER BY [index].name, [index_columns].index_column_id";
         public string FullName
         {
             get { return String.Concat(_Schema, ".", _Name); }
+        }
+
+        public Dictionary<string, Column> Columns
+        {
+            get { return _Columns; }
         }
 
         public Index[] Indexes
