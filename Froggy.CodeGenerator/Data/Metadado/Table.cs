@@ -1,17 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using Froggy.Data;
 
 namespace Froggy.CodeGenerator.Data.Metadado
 {
     public class Table
     {
-        public PrimaryKey PrimaryKey
-        {
-            get { return _PrimaryKey; }
-        }
-
         public static Table[] GetAll()
         {
             var tables = new List<Table>();
@@ -64,39 +60,52 @@ namespace Froggy.CodeGenerator.Data.Metadado
                                       };
                 _Columns.Add(tableColumn.Name, tableColumn);
             }
-            BuildConstraints(schemaTable);
+            BuildIndexes();
         }
 
-        private void BuildConstraints(DataTable schemaTable)
+        private void BuildIndexes()
         {
-            bool hasPrimaryKey = schemaTable.PrimaryKey.Length > 0;
-            if (hasPrimaryKey)
+            const string sql = @"SELECT DISTINCT
+	   index_name		= [index].name,
+	   column_name		= [columns].name
+from sys.indexes [index]
+          LEFT JOIN sys.objects [objects] ON ( [objects].object_id = [index].object_id )
+          LEFT JOIN sys.index_columns [index_columns] ON ( [index_columns].index_id = [index].index_id )
+		    											 AND ( [index_columns].object_id  = [index].object_id )
+          LEFT JOIN sys.columns [columns] ON ( [index_columns].OBJECT_id = [columns].object_id )
+                                             AND ( [index_columns].Column_id = [columns].column_id )
+WHERE ( [objects].schema_id = SCHEMA_ID(@schema_name) )
+	  AND ( [objects].name = @object_name )
+	  AND ( [index].type = 2 )
+ORDER BY [index].name, [index_columns].index_column_id";
+            using (var comm = new DbCommandUtil(sql))
             {
-                var primaryKeyColumns = new List<Column>(schemaTable.PrimaryKey.Length);
-                foreach (var column in schemaTable.PrimaryKey)
+                comm.AddParameter("@schema_name", DbType.String, Schema);
+                comm.AddParameter("@object_name", DbType.String, Name);
+                var reader = comm.ExecuteReader(CommandBehavior.CloseConnection);
+                string previousIndexName = "";
+                var indexColumns = new List<Column>();
+                while (reader.Read())
                 {
-                    primaryKeyColumns.Add(_Columns[column.ColumnName]);
+                    string indexName = reader.GetString(0);
+                    if (previousIndexName != indexName)
+                    {
+                        previousIndexName = indexName;
+                        indexColumns = new List<Column>();
+                    }
+                    indexColumns.Add(_Columns[reader.GetString(1)]);
+                    _Indexes.Add(new Index(indexName, indexColumns));
                 }
-                var primaryKey = new PrimaryKey("", primaryKeyColumns);
-                AddConstraint(primaryKey);
+                reader.Close();
             }
+
 
         }
 
         private string _Schema;
         private string _Name;
         private readonly Dictionary<string, Column> _Columns = new Dictionary<string, Column>();
-        private readonly IList<Constraint> _Constraints = new List<Constraint>();
-        private PrimaryKey _PrimaryKey;
-
-        private void AddConstraint(Constraint constraint)
-        {
-            if (constraint is PrimaryKey)
-            {
-                _PrimaryKey = (PrimaryKey) constraint;
-            }
-            _Constraints.Add(constraint);
-        }
+        private readonly IList<Index> _Indexes = new List<Index>();
 
         public string Schema
         {
@@ -113,6 +122,11 @@ namespace Froggy.CodeGenerator.Data.Metadado
         public string FullName
         {
             get { return String.Concat(_Schema, ".", _Name); }
+        }
+
+        public Index[] Indexes
+        {
+            get { return _Indexes.ToArray(); }
         }
     }
 }
