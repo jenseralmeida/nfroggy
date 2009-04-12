@@ -28,7 +28,19 @@ namespace Froggy.CodeGenerator.Data.Metadado
             return tables.ToArray();
         }
 
+        public Table(string fullName)
+        {
+            string[] parts = fullName.Split('.');
+            string schema = parts[0];
+            string name = parts[1];
+            Init(schema, name);
+        }
         public Table(string schema, string name)
+        {
+            Init(schema, name);
+        }
+
+        private void Init(string schema, string name)
         {
             Schema = schema;
             Name = name;
@@ -38,13 +50,13 @@ namespace Froggy.CodeGenerator.Data.Metadado
         private void BuildTable()
         {
             string sql = String.Format("SELECT TOP 0 * FROM {0}", FullName);
-            DataTable schemaTable;
             using (var comm = new DbCommandUtil(sql))
             {
-                schemaTable = comm.GetDataTable();
+                _TableSchema = comm.GetDataTable();
+                _TableSchema.TableName = Name;
             }
             // Build columns
-            foreach (DataColumn column in schemaTable.Columns)
+            foreach (DataColumn column in _TableSchema.Columns)
             {
                 var tableColumn = new Column
                                       {
@@ -82,7 +94,6 @@ ORDER BY [index].name, [index_columns].index_column_id";
                 var reader = comm.ExecuteReader(CommandBehavior.CloseConnection);
                 var previousIndexName = "";
                 var indexColumns = new List<Column>();
-                var added = false;
                 while (reader.Read())
                 {
                     var indexName = reader.GetString(0);
@@ -105,6 +116,7 @@ ORDER BY [index].name, [index_columns].index_column_id";
             }
         }
 
+        private DataTable _TableSchema;
         private string _Schema;
         private string _Name;
         private readonly Dictionary<string, Column> _Columns = new Dictionary<string, Column>();
@@ -114,6 +126,12 @@ ORDER BY [index].name, [index_columns].index_column_id";
         {
             get { return _Schema; }
             set { _Schema = value; }
+        }
+
+        public DataTable DataTableSchema
+        {
+            get { return _TableSchema; }
+            set { _TableSchema = value; }
         }
 
         public string Name
