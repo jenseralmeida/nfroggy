@@ -55,5 +55,10 @@ namespace Froggy.CodeGenerator.Data.Metadado
         }
 
         public int MaxLength { get; set; }
+
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }

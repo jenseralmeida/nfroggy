@@ -22,5 +22,10 @@ namespace Froggy.CodeGenerator.Data.Metadado
         {
             get { return _Columns; }
         }
+
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }
