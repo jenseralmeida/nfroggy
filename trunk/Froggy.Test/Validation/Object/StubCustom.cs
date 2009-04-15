@@ -22,7 +22,7 @@ namespace Froggy.Test.Validation.Object
     {
         #region ITestValidator Members
 
-        public bool Execute<T>(T value, out string errorMessageTemplate)
+        public bool Execute<T>(T value, object orgValue, out string errorMessageTemplate)
         {
             switch (value.ToString())
             {

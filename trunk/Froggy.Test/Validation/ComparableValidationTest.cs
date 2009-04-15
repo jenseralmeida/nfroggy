@@ -11,13 +11,12 @@ namespace Froggy.Test.Validation
         public void SimpleDefaultInterval()
         {
             var validation = new Validator<int>()
-                .SetUpComparable(0, 10)
-                .SetUpLength(2);
+                .SetUpComparable(0, 10);
 
-            Assert.IsFalse(validation.IsValid(0));
-            Assert.IsFalse(validation.IsValid(2));
-            Assert.IsFalse(validation.IsValid(5));
-            Assert.IsFalse(validation.IsValid(7));
+            Assert.IsTrue(validation.IsValid(0));
+            Assert.IsTrue(validation.IsValid(2));
+            Assert.IsTrue(validation.IsValid(5));
+            Assert.IsTrue(validation.IsValid(7));
             Assert.IsTrue(validation.IsValid("00"));
             Assert.IsTrue(validation.IsValid("02"));
             Assert.IsTrue(validation.IsValid("05"));
