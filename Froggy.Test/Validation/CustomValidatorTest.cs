@@ -17,7 +17,7 @@ namespace Froggy.Test.Validation
 
         #region ITestValidator Members
 
-        public bool Execute<T>(T value, out string errorMessageTemplate)
+        public bool Execute<T>(T value, object orgValue, out string errorMessageTemplate)
         {
             if (value == null)
             {

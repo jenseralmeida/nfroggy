@@ -54,7 +54,7 @@ namespace Froggy.Validation.BaseValidator
 
         #region ITestValidator Members
 
-        public bool Execute<T>(T value, out string errorMessageTemplate)
+        public bool Execute<T>(T value, object orgValue, out string errorMessageTemplate)
         {
             IComparable comparable = (IComparable)value;
             errorMessageTemplate = "";

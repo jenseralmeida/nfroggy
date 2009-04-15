@@ -168,16 +168,16 @@ namespace Froggy.Validation
             return TryConvert(value, out result, out errorMessage);
         }
 
-        public bool TryConvert(object value, out T result, out string errorMessage)
+        public bool TryConvert(object orgValue, out T value, out string errorMessage)
         {
-            bool sucess = TypeValidator.Execute(value, out result, out errorMessage);
+            bool sucess = TypeValidator.Execute(orgValue, out value, out errorMessage);
             if (!sucess)
             {
                 return false;
             }
             foreach (ITestValidator testsValidator in _TestValidators.Values)
             {
-                if (!testsValidator.Execute(result, out errorMessage))
+                if (!testsValidator.Execute(value, orgValue, out errorMessage))
                 {
                     return false;
                 }

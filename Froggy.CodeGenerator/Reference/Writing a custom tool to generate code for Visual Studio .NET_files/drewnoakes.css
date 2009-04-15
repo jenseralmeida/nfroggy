@@ -1,0 +1,124 @@
+P, TD, BODY {
+  font-family: verdana, arial, san-serif;
+  text-decoration: none;
+  font-size: 9pt;
+  color:#000;
+}
+
+/* formatting for links */
+A {
+  text-decoration:none;
+  font-weight:bold;
+}
+
+A:hover {
+  color:#A00;
+  text-decoration:underline;
+}
+
+A.blue {
+  color:#00F;
+  text-decoration:underline;
+}
+
+H1 {
+  border-bottom: 1px dashed #BBB;
+  font-size: 2.7em;
+  font-weight: bold;
+  letter-spacing: -0.08em;
+  color: #333;
+}
+
+H2 {
+  font-size: 1.5em;
+  font-weight: bold;
+  padding-bottom: 0;
+  margin-bottom: 0;
+  border-bottom: 1px dotted #999;
+}
+
+A.external:link {
+    background: url(/images/icon-external-link.gif) right center no-repeat;
+    padding-right: 13px;
+}
+
+A.external:visited {
+    color: purple;
+    background: url(/images/icon-external-link.gif) right center no-repeat;
+    padding-right: 13px;
+}
+
+A.external:hover {
+    color: red;
+    background: url(/images/icon-external-link-hover.gif) right center no-repeat;
+    padding-right: 13px;
+}
+
+.box, .code { 
+    margin-top: 0.5em; 
+    margin-bottom: 0.5em; 
+    padding: 1em;
+    border: 1px dashed #888;
+    background-color: #FFD;
+}
+
+.code { 
+    font-family: courier new, courier, monospace;
+    white-space: pre;
+}
+
+/* Removes the default blue border from around images that are links */
+A IMG {
+  border: none;
+}
+
+UL.menuList LI {
+  padding-bottom: 0.8em;
+  list-style-type: circle;
+}
+
+HR {
+  border: none;
+  border-bottom: 1px dotted #999;  
+}
+
+UL.nobullets {list-style-type:none;padding-left:0;}
+
+UL.inline {margin:0;padding:0;}
+UL.inline LI {display:inline;margin:0;padding:0;}
+
+UL.collapse, OL.collapse {margin:0;padding:0;}
+UL.collapse LI, OL.collapse LI {margin:0;padding:0;float:left;}
+UL.collapse LI {list-style-type:none;}
+
+.highlightBlock { padding: 1em !important; border: 1px dashed #DD8; background-color: #FFD; }
+
+INPUT.hintTextbox { color: #888; }
+INPUT.hintTextboxActive { color: #000; }
+
+BR.clear { clear: both; }
+
+OL.spaced LI, UL.spaced LI { padding-bottom: 1em; }
+
+ul.bullets { margin-left:0; padding-left:0; padding-top:0.5em; padding-bottom:0.5em; }
+ul.bullets li {
+  list-style-type:none;
+  background: url(/images/icon-bullet.gif) left center no-repeat;
+  padding-left: 15px;
+  margin-left: 1em;
+  margin-bottom: 0.4em;
+}
+
+dl.bullets { padding-top:0.5em; padding-bottom:0.5em; }
+dl.bullets dt {
+  background: url(/images/icon-bullet.gif) left center no-repeat;
+  padding-left: 15px;
+  margin-left: 1em;
+}
+dl.bullets dd {
+  padding-left: 15px;
+  margin-left: 1em;
+  margin-bottom: 0.6em;
+}
+
+.indent { margin-left:1em; }

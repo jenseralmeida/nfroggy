@@ -1,0 +1,117 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<!-- saved from url=(0082)http://www.drewnoakes.com/snippets/WritingACustomCodeGeneratorToolForVisualStudio/ -->
+<HTML xmlns="http://www.w3.org/1999/xhtml"><HEAD><META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<TITLE>Writing a custom tool to generate code for Visual Studio .NET</TITLE>
+
+<LINK rel="stylesheet" href="./Writing a custom tool to generate code for Visual Studio .NET_files/drewnoakes.css" type="text/css">
+<SCRIPT src="./Writing a custom tool to generate code for Visual Studio .NET_files/xhtml-external-links.js" type="text/javascript"></SCRIPT>
+</HEAD><BODY>
+
+<H1>Writing a custom tool to generate code for Visual Studio .NET </H1>
+
+<P>
+<A href="http://www.drewnoakes.com/">home</A> | <A href="http://www.drewnoakes.com/snippets/">snippets</A> | code generation in visual studio .net
+</P>
+
+<P>Erik Doernenburg and I recently attempted to integrate his C# entity object code generator with Visual Studio.
+His tool is called Neo (.NET Entity Objects), is on SourceForge, and is worth <A href="http://neo.codehaus.org/" class="external" rel="external">checking out</A>.</P>
+<P>Two Custom Tools (also called Generators) come with VS.NET, MSDataSetGenerator for strongly-typed
+DataSets, and MSDiscoCodeGenerator for WebService proxy classes.
+If you have Crystal Reports installed, you'll have some extras too.</P>
+<P>Note that most command-line tools mentioned in this
+article aren't in the default path.  Either add the path (e.g. <CODE>C:\Program Files\Microsoft Visual Studio .NET 2003\SDK\v1.1\Bin</CODE>)
+or start a Visual Studio Command Prompt from the Start menu.</P>
+<H2>Writing the Generator</H2>
+<P>Download the <A href="http://www.gotdotnet.com/Community/UserSamples/Details.aspx?SampleGuid=4AA14341-24D5-45AB-AB18-B72351D0371C" class="external" rel="external">COM wrapping code</A>.
+The library provides a base class BaseCodeGeneratorWithSite from which you should derive your generator.
+Here's an outline that's ready to go.</P>
+
+<DIV class="code">using System;
+using System.Runtime.InteropServices;
+using CustomToolGenerator;
+
+namespace MyProject
+{
+	[Guid("828BA458-73EF-44E5-B6DA-91ACEC2F38FD")]
+	public class MyGenerator : BaseCodeGeneratorWithSite
+	{
+		public override byte[] GenerateCode(string file, string contents)
+		{
+			string code = "&lt;&lt;generated code&gt;&gt;";
+			return System.Text.Encoding.ASCII.GetBytes(code);
+		}
+	}
+}
+</DIV>
+<P> Some things to note:</P>
+<UL class="bullets">
+  <LI>The generator class must specify a Guid (a
+  randomly-generated unique identifier).  This is used for COM interop,
+  which we'll look at shortly.  Guids can be generated within Visual Studio
+  from the Tools menu (Create GUID).  Make sure you use 'Registry format'.</LI>
+  <LI>The contents of the generated file are returned from
+  the GenerateCode method as a byte array.  This implies that only a single
+  file will be generated.  Note that the COM interface used by
+  BaseCodeGeneratorWithSite includes SingleFile in it's name, so there may be an
+  approach that supports multiple files.  If you know of one, please let me
+  know.</LI>
+  <LI>The namespace can be whatever you like.  It has no bearing upon how
+  you use or refer to your generator in production.</LI>
+</UL>
+
+<H2>Register your Generator for COM interop</H2>
+<P>Visual Studio will communicate with your custom tool
+using COM, though you may still write the tool using managed code.  Your
+custom tool assembly must be registered for COM interop.</P>
+<P>First, extract a type libarary (.tlb file) using tlbexp.exe</P>
+<DIV class="code">tlbexp MyCustomTool.dll</DIV>
+<P>...this creates MyCustomTool.tlb.  Next, register
+your assembly for COM interop using regasm.exe</P>
+<DIV class="code">regasm /codebase MyCustomTool.dll</DIV>
+<P>If you haven't signed your assembly with a strong name,
+you'll receive a warning message at this point.  Your tool will work either
+way, though signing does solve other problems.  Strong names are managed
+using sn.exe.</P>
+
+<H2>Tell Visual Studio about your Generator</H2>
+<P> Visual Studio uses the registry to discover custom tools.  Using regedit, find the path:</P>
+<P class="indent"><CODE>My Computer\HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\VisualStudio\7.0\Generators</CODE> (for Visual Studio 7.0)</P>
+<P class="indent"><CODE>My Computer\HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\VisualStudio\7.1\Generators</CODE> (for Visual Studio 2003)</P>
+<P>We can see the following information:</P>
+<P style="text-align:center;"><IMG src="./Writing a custom tool to generate code for Visual Studio .NET_files/registry-settings.png" alt="Registry settings"></P>
+<P>In both cases, multiple Guids exist.  Use
+{FAE04EC1-301F-11d3-BF4B-00C04F79EFBC} for C# projects, and {164B10B9-B200-11D0-8C61-00A0C91E29D5} for VB.NET projects.</P>
+<P>You must create a new key, under the appropriate
+language.  The name of this key will be entered
+for the 'Custom Tool' property for your source file in a Visual Studio project.</P>
+<P>The values you need to create are:</P>
+<UL class="bullets">
+  <LI>(Default) - REG_SZ - A description of your tool.</LI>
+  <LI>CLSID - REG_SZ - The Guid from your .NET class attribute (don't forget to the braces { } around it).</LI>
+  <LI>GeneratesDesignTimeSource - REG_DWORD - Whether your Generator should create a file.  0x01 for true, 0x00 for false.</LI>
+</UL>
+
+<P>If you're creating an installer for your application, these registry settings can be scripted in a .reg file.</P>
+
+<H2>Using your Generator</H2>
+<P>View the properties for your source file (in our case, a Neo schema file).  The 'Custom Tool' field should be blank.  Enter the name you
+chose as the registry key name.</P>
+<P style="text-align:center;"><IMG src="./Writing a custom tool to generate code for Visual Studio .NET_files/dialog-properties.png" alt="Dialog properties"></P>
+<P>The tool should run automatically.  Check to make sure the output was created by opening the Solution Explorer, and enabling 'Show all files'.</P>
+<P style="text-align:center;"><IMG src="./Writing a custom tool to generate code for Visual Studio .NET_files/dialog-solution-explorer.png" alt="Solution explorer dialog"></P>
+<P>You can force the Generator to execute manually by
+right-clicking the 'input' file in the Solution Explorer and
+choosing 'Run Custom Tool'.  Output files are tucked away beneath the source file.</P>
+<P>If your project is under version control, Visual Studio will attempt to keep the generated file in the repository too.</P>
+
+<P style="float: right;"><A href="http://validator.w3.org/check?uri=referer"><IMG src="./Writing a custom tool to generate code for Visual Studio .NET_files/valid-xhtml11" alt="Valid XHTML 1.1" height="31" width="88"></A></P>
+
+<SCRIPT src="./Writing a custom tool to generate code for Visual Studio .NET_files/urchin.js" type="text/javascript"></SCRIPT>
+<SCRIPT type="text/javascript">
+_uacct = "UA-936661-1";
+urchinTracker();
+</SCRIPT>
+
+
+
+</BODY></HTML>

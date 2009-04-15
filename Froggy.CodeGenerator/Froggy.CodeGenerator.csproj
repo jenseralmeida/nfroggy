@@ -31,10 +31,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Froggy, Version=1.0.0.0, Culture=neutral, PublicKeyToken=a1604233f67aed41, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\bin-externo\Froggy.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -62,6 +58,33 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Data\Metadado\Metadado.cd" />
+    <None Include="Reference\Visual Studio .NET Code Generator Shim_files\valid-xhtml10" />
+    <None Include="Reference\Writing a custom tool to generate code for Visual Studio .NET_files\valid-xhtml11" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Reference\Visual Studio .NET Code Generator Shim.htm" />
+    <Content Include="Reference\Visual Studio .NET Code Generator Shim_files\abg-en-100c-000000.png" />
+    <Content Include="Reference\Visual Studio .NET Code Generator Shim_files\ads.htm" />
+    <Content Include="Reference\Visual Studio .NET Code Generator Shim_files\Delicious.css" />
+    <Content Include="Reference\Visual Studio .NET Code Generator Shim_files\expansion_embed.js" />
+    <Content Include="Reference\Visual Studio .NET Code Generator Shim_files\show_ads.js" />
+    <Content Include="Reference\Visual Studio .NET Code Generator Shim_files\sma6.js" />
+    <Content Include="Reference\Visual Studio .NET Code Generator Shim_files\StyleSheet.css" />
+    <Content Include="Reference\Visual Studio .NET Code Generator Shim_files\test_domain.js" />
+    <Content Include="Reference\Visual Studio .NET Code Generator Shim_files\urchin.js" />
+    <Content Include="Reference\Writing a custom tool to generate code for Visual Studio .NET.htm" />
+    <Content Include="Reference\Writing a custom tool to generate code for Visual Studio .NET_files\dialog-properties.png" />
+    <Content Include="Reference\Writing a custom tool to generate code for Visual Studio .NET_files\dialog-solution-explorer.png" />
+    <Content Include="Reference\Writing a custom tool to generate code for Visual Studio .NET_files\drewnoakes.css" />
+    <Content Include="Reference\Writing a custom tool to generate code for Visual Studio .NET_files\registry-settings.png" />
+    <Content Include="Reference\Writing a custom tool to generate code for Visual Studio .NET_files\urchin.js" />
+    <Content Include="Reference\Writing a custom tool to generate code for Visual Studio .NET_files\xhtml-external-links.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Froggy\Froggy.csproj">
+      <Project>{06D9B52F-9EC8-4A71-B529-B5DA7A124528}</Project>
+      <Name>Froggy</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

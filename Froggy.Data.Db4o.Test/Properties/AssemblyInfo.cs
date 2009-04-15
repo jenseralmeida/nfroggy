@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Froggy.Data.Db4o.Test")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Jenser")]
+[assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Froggy.Data.Db4o.Test")]
-[assembly: AssemblyCopyright("Copyright © Jenser 2008")]
+[assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

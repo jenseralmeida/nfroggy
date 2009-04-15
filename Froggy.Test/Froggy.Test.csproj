@@ -67,7 +67,8 @@
     <Compile Include="ScopeTest.cs" />
     <Compile Include="Validation\BasicValidationTest.cs" />
     <Compile Include="Validation\CustomValidatorTest.cs" />
-    <Compile Include="Validation\IntervalValidationTest.cs" />
+    <Compile Include="Validation\ComparableValidationTest.cs" />
+    <Compile Include="Validation\LengthValidationTest.cs" />
     <Compile Include="Validation\Object\Stub.cs" />
     <Compile Include="Validation\Object\StubCustom.cs" />
     <Compile Include="Validation\Object\StubTest.cs" />

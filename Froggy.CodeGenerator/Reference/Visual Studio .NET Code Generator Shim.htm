@@ -1,0 +1,329 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0051)http://www.raboof.com/projects/VsCodeGeneratorShim/ -->
+<HTML xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><HEAD id="ctl00_Head"><META http-equiv="Content-Type" content="text/html; charset=UTF-8"><TITLE>
+	Visual Studio .NET Code Generator Shim
+</TITLE><LINK href="./Visual Studio .NET Code Generator Shim_files/Delicious.css" type="text/css" rel="stylesheet"><LINK href="./Visual Studio .NET Code Generator Shim_files/StyleSheet.css" type="text/css" rel="stylesheet"></HEAD><BODY>
+    <DIV id="Page">
+        <DIV id="Main">
+            
+                <DIV id="SiteTitle">raboof.com</DIV>
+                <UL id="NavMenu">
+                    <LI><A href="http://www.raboof.com/">Home</A></LI>
+                    
+                    <LI><A href="http://www.raboof.com/Contact.aspx">Contact</A></LI>
+                    <LI><A href="http://www.raboof.com/Projects.aspx">Projects</A></LI>
+                    <LI><A href="http://www.raboof.com/Articles.aspx">Articles</A></LI>
+                    <LI><A href="http://www.raboof.com/WebClippings.aspx">Clippings</A></LI>
+                    <LI><A href="http://www.raboof.com/Speeches.aspx">Talks</A></LI>
+                </UL>
+                
+                <DIV id="GoogleAds">
+                    <SCRIPT type="text/javascript">//<!--
+                    google_ad_client = "pub-3496657350958305";
+                    google_alternate_ad_url = "http://www.raboof.com/google_adsense_script.htm";
+                    google_ad_width = 120;
+                    google_ad_height = 600;
+                    google_ad_format = "120x600_as";
+                    google_ad_type = "text";
+                    google_ad_channel ="";
+                    google_color_border = "CCCCCC";
+                    google_color_border = "FFFFFF";
+                    google_color_bg = "FFFFFF";
+                    google_color_link = "000000";
+                    google_color_url = "666666";
+                    google_color_text = "333333";
+                    //--></SCRIPT>
+                    <SCRIPT type="text/javascript" src="./Visual Studio .NET Code Generator Shim_files/show_ads.js">
+                    </SCRIPT><SCRIPT src="./Visual Studio .NET Code Generator Shim_files/expansion_embed.js"></SCRIPT><SCRIPT src="./Visual Studio .NET Code Generator Shim_files/test_domain.js"></SCRIPT><SCRIPT>window.google_render_ad();</SCRIPT><INS style="display:inline-table;border:none;height:600px;margin:0;padding:0;position:relative;visibility:visible;width:120px"><INS style="display:block;border:none;height:600px;margin:0;padding:0;position:relative;visibility:visible;width:120px"><IFRAME allowtransparency="true" frameborder="0" height="600" hspace="0" id="google_ads_frame1" marginheight="0" marginwidth="0" name="google_ads_frame" scrolling="no" src="./Visual Studio .NET Code Generator Shim_files/ads.htm" style="left:0;position:absolute;top:0" vspace="0" width="120"></IFRAME></INS></INS>           
+                </DIV>         
+                
+            
+            <DIV id="MainContent">
+                <H1>Visual Studio .NET Code Generator Shim</H1>
+                
+    <P>
+        Copyright © 2003 Atif Aziz, <A href="http://www.skybow.com/">Skybow AG</A></P>
+    <P>
+        This documentation applies to Visual Studio Code Generator Shim v1.0.4306.0 (BETA).</P>
+    <P>
+        <A href="http://www.gotdotnet.com/Community/Workspaces/workspace.aspx?id=ef3d0a73-0468-46da-8780-ede0f12b6f22">
+            Visit the GotDotNet Workspace of this project</A>.</P>
+    <!--@ProjectDescriptor Title="Visual Studio .NET Code Generator Shim"-->
+    <P>
+        The VS Code Generator Shim is a generic custom tool for <A href="http://msdn.microsoft.com/vstudio/">
+            Visual Studio .NET 2002 and 2003</A> that enables code generators to be written
+        easily and quickly in just about any .NET language and using familiar <A href="http://msdn.microsoft.com/net/">
+            .NET Framework</A> constructs. A standard custom tool designed for Visual Studio
+        must use <A href="http://msdn.microsoft.com/netframework/using/Understanding/interop/default.aspx">
+            COM interoperability</A> (when written in managed code) and register with the
+        IDE to be fully operational, but the shim helps eliminates these requirements entirely.
+        You only need to create a class and expose a single method to write a code generator
+        now. What is more, the code generator can be completely idependent of Visual Studio
+        releases.</P>
+    <!--@ProjectDescriptorEnd-->
+    <H2>
+        Introduction</H2>
+    <P>
+        Visual Studio .NET 2002 and 2003 allow code generators to be written for files in
+        a project. A code generator is responsible for taking an input file and transforming
+        it into source code in the language of the project. In Visual Studio .NET terminology,
+        these code generators are called <EM>custom tools</EM>. A good example of a custom tool is
+        the <CODE>MSDataSetGenerator</CODE> that ships with Visual Studio .NET. It takes
+        an <A href="http://www.w3.org/XML/Schema">XSD</A> file as its input and uses the
+        schema described within to generate a strongly-typed <CODE><A href="http://msdn.microsoft.com/library/en-us/cpref/html/frlrfSystemDataDataSetClassTopic.asp">
+            DataSet</A></CODE> class in either C# or VB .NET (or whatever happens to be
+        language of the project). To associate a custom tool with any file in a project,
+        you simply activate the <STRONG>Property</STRONG> window for the file and set the
+        tool's friendly name into the <A href="http://msdn.microsoft.com/library/en-us/vbcon/html/vxlrfCustomToolPropertyVSProjectItemObj.asp">
+            <STRONG>Custom Tool</STRONG> property</A>.</P>
+    <P>
+        <A href="http://msdn.microsoft.com/library/default.asp?url=/library/en-us/vbcon/html/vxlrfcustomtoolpropertyvsprojectitemobj.asp">
+            Custom tools are fundamentally COM objects that implement the <CODE>IVsSingleFileGenerator</CODE>
+            interface</A> and therefore can be written in a .NET language that supports
+        COM Interop. A custom tool must be registered as a COM compontent in the system
+        as well as a code generator with Visual Studio .NET.
+    </P>
+    <P>
+        The purpose of the VS Code Generator Shim is to simplify development of code generators
+        for Visual Studio .NET by providing a completely managed solution that does not
+        require COM Interop or registration with Visual Studio .NET. To achieve this, the
+        VS Code Generator Shim simply registers itself as the COM object and the custom
+        tool with the IDE and then delegates the real work to a downstream managed code
+        generator. The only requirement is that the input file must be in <A href="http://www.w3.org/XML/">
+            XML</A>.</P>
+    <H2>
+        Using the Shim</H2>
+    <P>
+        To tell the VS Code Generator Shim (referred to simply as shim from this point forth)
+        which downstream code generator to invoke, the input file must be in XML and contain
+        the following XML processing instruction:</P>
+    <PRE class="code">&lt;?codegen type="..."?&gt;</PRE>
+    <P>
+        The <CODE>codegen</CODE> processing instruction must appear somewhere before
+        the root element in the XML document, otherwise the shim throws an exception. And
+        although it can be specified more than once in the same document, only the first
+        one is ever used.</P>
+    <P>
+        The <CODE>type</CODE> parameter of the <CODE>codegen</CODE> processing instruction
+        specifies the assembly-qualified type name of the code generator to use. If the
+        assembly containing the code generator does not have a strong-name or it is not
+        installed in the <A href="http://msdn.microsoft.com/library/en-us/cpguide/html/cpconglobalassemblycache.asp">
+            Global Assembly Cache (GAC)</A> , then you can omit the assembly specification
+        from the <CODE>type</CODE> parameter and instead provide the fully-qualified
+        path of the assembly file in a separate parameter called <CODE>codeBase</CODE>.
+        The downside of this, however, is that the path gets hard-wired into the XML file.
+        The shim therefore allows the use environment paths. This is done leaving just the
+        assembly file name and extension in the <CODE>codeBase</CODE> and specifying
+        an additional boolean parameter on the processing instruction called <CODE>usePath</CODE>.
+        If the value of <CODE>usePath</CODE> is <CODE>1</CODE> or <CODE>true</CODE>
+        (instead of <CODE>0</CODE> or <CODE>false</CODE>; the deftault) then the
+        shim will try to locate the assembly by appending its files name to the list of
+        semi-colon delimited paths in the <CODE>CODEGENPATH</CODE> environment variable.</P>
+    <P>
+        Once the assembly is successfully loaded, the shim goes on to instaniate an instance
+        of the type. It then checks if the downstream code generator supports the <CODE>Skybow.CodeGeneration.ICodeGenerator</CODE>
+        interface. If it does, then it calls its sole <CODE>Generate</CODE> method,
+        passing in a context, a text reader to parse the input and a text writer to write
+        the code.</P>
+    <P>
+        The <CODE>ICodeGenerator</CODE> interface is defined as follows:</P>
+    <DIV class="langbar">
+        C#</DIV>
+    <PRE class="code">public interface ICodeGenerator
+{
+    void Generate(
+        IContext context, 
+        TextReader inputReader, 
+        TextWriter outputWriter);
+}</PRE>
+    <DIV class="langbar">
+        Visual Basic</DIV>
+    <PRE class="code">Public Interface ICodeGenerator
+
+    Sub Generate( _
+        ByVal context As IContext, _
+        ByVal inputReader As  TextReader, _ 
+        ByVal outputWriter As TextWriter)
+
+End Interface</PRE>
+    <P>
+        If the above interface is not implemented by the code generator, then the shim uses
+        late-binding. This latter scenario is designed to favor developers who wish to write
+        code generators with minimum dependencies. Implementing <CODE>Skybow.CodeGeneration.ICodeGenerator</CODE>
+        adds a dependency on the <CODE>SkybowVsCodeGenerator</CODE> assembly. When late-binding,
+        the shim looks for a public method called <CODE>Generate</CODE> that has the
+        following signature:</P>
+    <DIV class="langbar">
+        C#</DIV>
+    <PRE class="code">public void Generate(
+    IDictionary contextProperties, 
+    TextReader inputReader, 
+    TextWriter outputWriter)</PRE>
+    <DIV class="langbar">
+        Visual Basic</DIV>
+    <PRE class="code">Public Sub Generate( _
+    ByVal contextProperties As IDictionary, _
+    ByVal inputReader As TextReader, _
+    ByVal outputWriter As TextWriter)</PRE>
+    <P>
+        If the method is called differently, you can specify it using the <CODE>entryPoint</CODE>
+        parameter on the <CODE>codegen</CODE> instruction.</P>
+    <P>
+        To use the code generator from Visual Studio .NET, the input XML file must be associated
+        with the <CODE>Skybow.CodeGen</CODE> custom tool. Given this, writing a custom
+        tool or code generator is now as simple as creating a class that exposes the <CODE>
+            Generate</CODE> method (or alternatively implementing <CODE>Skybow.CodeGeneration.ICodeGenerator</CODE>).</P>
+    <P>
+        The parameters of the <CODE>Generate</CODE> method are as follows:</P>
+    <TABLE cellspacing="0" border="1">
+        <CAPTION>
+            Generate method parameters</CAPTION>
+        <TBODY><TR>
+            <TH>
+                Parameter</TH>
+            <TH>
+                Type</TH>
+            <TH>
+                Description</TH>
+        </TR>
+        <TR>
+            <TD>
+                <CODE>contextProperties</CODE></TD>
+            <TD>
+                <CODE><A href="http://msdn.microsoft.com/library/en-us/cpref/html/frlrfSystemCollectionsIDictionaryClassTopic.asp">
+                    IDictionary</A></CODE></TD>
+            <TD>
+                A name-value pair dictionary of context properties for the code generator.</TD>
+        </TR>
+        <TR>
+            <TD>
+                <CODE>context</CODE></TD>
+            <TD>
+                <CODE>IContext</CODE></TD>
+            <TD>
+                A name-value pair dictionary of context properties for the code generator. The <CODE>
+                    Properties</CODE> property contains the actual dictionary whereas the <CODE>context</CODE>
+                parameter itself is the context object.</TD>
+        </TR>
+        <TR>
+            <TD>
+                <CODE>inputReader</CODE></TD>
+            <TD>
+                <CODE><A href="http://msdn.microsoft.com/library/en-us/cpref/html/frlrfSystemIOTextReaderClassTopic.asp">
+                    TextReader</A></CODE></TD>
+            <TD>
+                The reader object for reading the input source text.</TD>
+        </TR>
+        <TR>
+            <TD>
+                <CODE>outputWriter</CODE></TD>
+            <TD>
+                <CODE><A href="http://msdn.microsoft.com/library/en-us/cpref/html/frlrfSystemIOTextWriterClassTopic.asp">
+                    TextWriter</A></CODE></TD>
+            <TD>
+                The writer object to be used by the generator to write the output source code text.</TD>
+        </TR>
+    </TBODY></TABLE>
+    <P>
+        The context properties dictionary is filled in by the shim for the code generator
+        in case it wishes to use any. The currently set of defined context properties are
+        show here:</P>
+    <TABLE cellspacing="0" border="1">
+        <CAPTION>
+            Context properties</CAPTION>
+        <TBODY><TR>
+            <TH>
+                Property (Key)</TH>
+            <TH>
+                Description</TH>
+        </TR>
+        <TR>
+            <TD>
+                <CODE>urn:schemas-skybow-com:codegen:DefaultNamespace</CODE></TD>
+            <TD>
+                A string containing that contains the default namespace associated with the Visual
+                Studio project.</TD>
+        </TR>
+        <TR>
+            <TD>
+                <CODE>urn:schemas-skybow-com:codegen:InputFilePath</CODE></TD>
+            <TD>
+                A string containing that specifies the path to the input file.</TD>
+        </TR>
+        <TR>
+            <TD>
+                <CODE>urn:schemas-skybow-com:codegen:Language</CODE></TD>
+            <TD>
+                A string that specifies the target language in which the code should be generated.
+                The currently recognized values are: <CODE>C#</CODE>, <CODE>VB</CODE> and
+                <CODE>VJ#</CODE>. This string is case-sensitive.</TD>
+        </TR>
+    </TBODY></TABLE>
+    <P>
+        To be completed ...</P>
+    <H2>
+        Samples</H2>
+    <P>
+        There are 5 sample code generators that ship with the shim, each showing a different
+        technique to leverage code generation:</P>
+    <DL>
+        <DT>HelloCodeGenerator</DT>
+        <DD>
+            A simple code generator that creates a class with a single method that calls <CODE>
+                <A href="http://msdn.microsoft.com/library/en-us/cpref/html/frlrfSystemConsoleClassWriteLineTopic.asp">Console.WriteLine</A></CODE> to output a message. The text of the message
+            is configurable and is taken from the input XML file. This generator uses <A href="http://msdn.microsoft.com/library/en-us/cpguide/html/cpconusingcodedom.asp">the CodeDom technology</A> to produce the code.</DD>
+        <DT>WebServiceClientGenerator</DT>
+        <DD>
+            This code generator does essentially the same as the <A href="http://msdn.microsoft.com/library/en-us/cptools/html/cpgrfwebservicesdescriptionlanguagetoolwsdlexe.asp">WSDL tool</A> that ships with the <A href="http://msdn.microsoft.com/library/en-us/dnanchor/html/netfxanchor.asp">.NET Framework SDK</A>. It uses the <A href="http://msdn.microsoft.com/library/en-us/cpref/html/frlrfSystemWebServicesDescriptionServiceDescriptionImporterClassTopic.asp">
+                        <CODE>ServiceDescriptionImporter</CODE></A> class from the .NET
+            Framework to do the real work. The location of the WSDL file for which to generate
+            the client proxy code is taken from the input XML file.</DD>
+        <DT>XsdClassesGenerator</DT>
+        <DD>
+            This code generator demonstrates how to call an external program to generate the
+            code. The input XML is assumed to be an <A href="http://www.w3.org/XML/Schema">XML Schema</A>
+            definition. To produce the final code, then code generator launches the <A href="http://msdn.microsoft.com/library/en-us/cptools/html/cpconxmlschemadefinitiontoolxsdexe.asp">XML Schema Definition Tool (XSD.EXE)</A> from the .NET Framework SDK and therefore
+            requires it to be installed. The output from XSD.EXE is piped back to the Visual
+            Studio output window or whatever happens to be the shell.</DD>
+        <DT>XsdDataSetGenerator</DT>
+        <DD>
+            This code generator does the same as <CODE>XsdClassesGenerator</CODE>, except
+            instead of passing the <CODE>/classes</CODE> switch to XSD.EXE, it passes <CODE>
+                /dataset</CODE> to generate a typed <CODE><A href="http://msdn.microsoft.com/library/en-us/cpref/html/frlrfSystemDataDataSetClassTopic.asp">DataSet</A></CODE> class.</DD>
+        <DT>SqlCodeGenerator</DT>
+        <DD>
+            This code generator uses SQL statements to generate code.</DD>
+    </DL>
+    <P>
+        All of the code generators can be run in Microsoft Visual Studio .NET 2002 or 2003.</P>
+    <H2>
+        Additional References</H2>
+    <P>
+        See discussion of Custom Tools in <A href="http://msdn.microsoft.com/msdnmag/issues/02/10/nettopten/default.aspx">
+            Top Ten Cool Features of Visual Studio .NET Help You Go From Geek to Guru</A>.</P>
+
+            </DIV>
+            <DIV id="Footer">
+                <HR>
+                
+                <P>
+                    DISCLAIMER - This site is by no means affiliated with <A href="http://www.skybow.com/">my present employer</A>.
+                    Copyright © 2003-2008 Atif Aziz. All rights reserved.
+                    Generated Monday, April 13, 2009 7:51:16 PM (UTC). 
+                </P>
+                <P>
+                    <A href="http://validator.w3.org/check?uri=referer"><IMG src="./Visual Studio .NET Code Generator Shim_files/valid-xhtml10" alt="Valid XHTML 1.0 Transitional" height="31" width="88"></A>
+                </P>
+            </DIV>
+        </DIV>
+    </DIV>
+    
+    <SCRIPT src="./Visual Studio .NET Code Generator Shim_files/urchin.js" type="text/javascript"></SCRIPT>
+    <SCRIPT type="text/javascript">
+        _uacct = "UA-527879-1";
+        urchinTracker();
+    </SCRIPT>
+    
+
+
+</BODY></HTML>

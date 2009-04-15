@@ -44,18 +44,15 @@ namespace Froggy.Validation.BaseValidator
 
         #region ITestValidator Members
 
-        public bool Execute<T>(T value, out string errorMessageTemplate)
+        public bool Execute<T>(T value, object orgValue, out string errorMessageTemplate)
         {
-            if (_Regex.IsMatch(value.ToString()))
+            if (_Regex.IsMatch(orgValue.ToString()))
             {
                 errorMessageTemplate = "";
                 return true;
             }
-            else
-            {
-                errorMessageTemplate = String.Concat("The input of {0} does not match with ", RegexTemplateMessage, ".");
-                return false;
-            }
+            errorMessageTemplate = String.Concat("The input of {0} does not match with ", RegexTemplateMessage, ".");
+            return false;
         }
 
         #endregion
