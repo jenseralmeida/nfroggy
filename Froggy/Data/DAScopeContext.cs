@@ -19,22 +19,29 @@ namespace Froggy.Data
     {
         public const string ConnectionStringSettingName_DEFAULT = "Default";
 
-        private string _connectionStringSettingName;
-        private TransactionOption? _transactionOption;
-        private readonly string _providerName;
-        private readonly string _connectionString;
-        private IsolationLevel? _isolationLevel;
-        private DbProviderFactory _providerFactory;
-        private DbConnection _connection;
-        private DbTransaction _transaction;
+        private readonly string _ConnectionStringSettingName;
+        private readonly TransactionOption? _TransactionOption;
+        private readonly string _ProviderName;
+        private readonly string _ConnectionString;
+        private readonly IsolationLevel? _IsolationLevel;
+        private DbProviderFactory _ProviderFactory;
+        private DbConnection _Connection;
+        private DbTransaction _Transaction;
+        private bool _Initialized;
 
         public string ConnectionStringSettingName
         {
             get
             {
                 CheckDisposed();
-                return _connectionStringSettingName;
+                TryInit();
+                return _ConnectionStringSettingName;
             }
+        }
+
+        public IsolationLevel? IsolationLevel
+        {
+            get { return _IsolationLevel; }
         }
 
         /// <summary>
@@ -45,12 +52,13 @@ namespace Froggy.Data
             get
             {
                 CheckDisposed();
-                return _providerFactory;
+                TryInit();
+                return _ProviderFactory;
             }
             set
             {
                 CheckDisposed();
-                _providerFactory = value;
+                    _ProviderFactory = value;
             }
 
         }
@@ -60,19 +68,13 @@ namespace Froggy.Data
             get
             {
                 CheckDisposed();
-                if (_connection == null && _providerFactory != null)
+                TryInit();
+                if (_Connection == null && _ProviderFactory != null)
                 {
-                    _connection = ProviderFactory.CreateConnection();
+                    _Connection = ProviderFactory.CreateConnection();
                 }
-                return _connection;
+                return _Connection;
             }
-            set
-            {
-                CheckDisposed();
-                _connectionStringSettingName = String.Empty;
-                _connection = value;
-            }
-
         }
 
         public DbTransaction Transaction
@@ -80,12 +82,14 @@ namespace Froggy.Data
             get 
             {
                 CheckDisposed();
-                return _transaction; 
+                TryInit();
+                return _Transaction; 
             }
             set
             {
                 CheckDisposed();
-                _transaction = value;
+                TryInit();
+                _Transaction = value;
             }
 
         }
@@ -126,7 +130,6 @@ namespace Froggy.Data
         public DAScopeContext(IsolationLevel isolationLevel)
             : this(ConnectionStringSettingName_DEFAULT, TransactionOption.Required, isolationLevel)
         {
-            _isolationLevel = isolationLevel;
         }
 
         /// <summary>
@@ -137,7 +140,6 @@ namespace Froggy.Data
         public DAScopeContext(string connectionStringSettingName, IsolationLevel isolationLevel)
             : this(connectionStringSettingName, TransactionOption.Required, isolationLevel)
         {
-            _isolationLevel = isolationLevel;
         }
 
         /// <summary>
@@ -151,16 +153,16 @@ namespace Froggy.Data
             {
                 throw new InvalidOperationException("ProviderName and ConnectionString can't be null");
             }
-            _providerName = providerName;
-            _connectionString = connectionString;
-            _connectionStringSettingName = String.Empty;
+            _ProviderName = providerName;
+            _ConnectionString = connectionString;
+            _ConnectionStringSettingName = String.Empty;
         }
 
         public DAScopeContext(string connectionStringSettingName, TransactionOption transactionOption, IsolationLevel? isolationLevel)
         {
-            _connectionStringSettingName = connectionStringSettingName;
-            _transactionOption = transactionOption;
-            _isolationLevel = isolationLevel;
+            _ConnectionStringSettingName = connectionStringSettingName;
+            _TransactionOption = transactionOption;
+            _IsolationLevel = isolationLevel;
         }
 
         #endregion Constructor
@@ -169,25 +171,48 @@ namespace Froggy.Data
 
         public override void Init()
         {
-            if (String.IsNullOrEmpty(_connectionStringSettingName))
+            if (String.IsNullOrEmpty(_ConnectionStringSettingName))
             {
-                _providerFactory = DbProviderFactories.GetFactory(_providerName);
-                _connectionStringSettingName = String.Empty;
-                _connection = ProviderFactory.CreateConnection();
-                _connection.ConnectionString = _connectionString;
+                _ProviderFactory = DbProviderFactories.GetFactory(_ProviderName);
+                _Connection = ProviderFactory.CreateConnection();
+                _Connection.ConnectionString = _ConnectionString;
+
             }
             else
             {
-                ConnectionStringSettings connectionStringSettings = ConfigurationManager.ConnectionStrings[_connectionStringSettingName];
+                ConnectionStringSettings connectionStringSettings = ConfigurationManager.ConnectionStrings[_ConnectionStringSettingName];
                 if (connectionStringSettings == null)
                 {
                     throw new InvalidOperationException("The specified connection does not exists in <connectionString> in <configuration>");
                 }
-                _providerFactory = DbProviderFactories.GetFactory(connectionStringSettings.ProviderName);
-                _connectionStringSettingName = connectionStringSettings.Name;
-                _connection = ProviderFactory.CreateConnection();
-                _connection.ConnectionString = connectionStringSettings.ConnectionString;
+                _ProviderFactory = DbProviderFactories.GetFactory(connectionStringSettings.ProviderName);
+                _Connection = ProviderFactory.CreateConnection();
+                _Connection.ConnectionString = connectionStringSettings.ConnectionString;
+            }
+            InitTransaction();
+            _Initialized = true;
+        }
 
+        private void InitTransaction()
+        {
+            if (_TransactionOption == TransactionOption.Required)
+            {
+                if (IsolationLevel.HasValue)
+                {
+                    _Transaction = Connection.BeginTransaction(IsolationLevel.Value);
+                }
+                else
+                {
+                    Transaction = Connection.BeginTransaction();
+                }
+            }
+        }
+
+        private void TryInit()
+        {
+            if (!_Initialized)
+            {
+                Init();
             }
         }
 
@@ -207,7 +232,7 @@ namespace Froggy.Data
                 if (Scope.Current == null)
                     return false;
                 bool currentScopeHasNotTransaction = Scope.Current.GetDAScopeContext().Transaction == null;
-                bool requireNewTransaction = _transactionOption.HasValue && _transactionOption == TransactionOption.Required;
+                bool requireNewTransaction = _TransactionOption.HasValue && _TransactionOption == TransactionOption.Required;
                 return requireNewTransaction && currentScopeHasNotTransaction;
             }
         }
@@ -219,9 +244,9 @@ namespace Froggy.Data
 
         public override void CompletedNow(bool completed)
         {
-            if (completed && _transaction != null)
+            if (completed && _Transaction != null)
             {
-                _transaction.Commit();
+                _Transaction.Commit();
             }
         }
 
