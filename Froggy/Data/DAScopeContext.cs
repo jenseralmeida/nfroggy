@@ -8,14 +8,14 @@ namespace Froggy.Data
     public static class DAScopeContextExtension
     {
         public static DAScopeContext GetDAScopeContext(this Scope scope)
-		{
+        {
             return scope.GetScopeContext<DAScopeContext>();
-		}
+        }
     }
     /// <summary>
     /// Scope context to Data Access
     /// </summary>
-    public class DAScopeContext: ScopeContext, IDisposable
+    public class DAScopeContext : ScopeContext, IDisposable
     {
         public const string ConnectionStringSettingName_DEFAULT = "Default";
 
@@ -27,6 +27,7 @@ namespace Froggy.Data
         private DbProviderFactory _ProviderFactory;
         private DbConnection _Connection;
         private DbTransaction _Transaction;
+        private bool _MaitainConnectionOpen;
         private bool _Initialized;
 
         public string ConnectionStringSettingName
@@ -58,7 +59,7 @@ namespace Froggy.Data
             set
             {
                 CheckDisposed();
-                    _ProviderFactory = value;
+                _ProviderFactory = value;
             }
 
         }
@@ -73,25 +74,23 @@ namespace Froggy.Data
                 {
                     _Connection = ProviderFactory.CreateConnection();
                 }
+                if (_Connection != null)
+                {
+                    if (_MaitainConnectionOpen && (_Connection.State != ConnectionState.Open))
+                        _Connection.Open();
+                }
                 return _Connection;
             }
         }
 
         public DbTransaction Transaction
         {
-            get 
+            get
             {
                 CheckDisposed();
                 TryInit();
-                return _Transaction; 
+                return _Transaction;
             }
-            set
-            {
-                CheckDisposed();
-                TryInit();
-                _Transaction = value;
-            }
-
         }
 
         #region Constructor
@@ -103,6 +102,15 @@ namespace Froggy.Data
             : this(ConnectionStringSettingName_DEFAULT)
         {
         }
+
+        /// <summary>
+        /// Context to connection using <see cref="ConnectionStringSettingName_DEFAULT"/> and <see cref="TransactionOption.Automatic"/>  
+        /// </summary>
+        public DAScopeContext(TransactionOption transactionOption)
+            : this(ConnectionStringSettingName_DEFAULT, transactionOption)
+        {
+        }
+
 
         /// <summary>
         /// 
@@ -171,10 +179,16 @@ namespace Froggy.Data
 
         public override void Init()
         {
+            Init(true);
+        }
+
+        private void Init(bool maitainConnectionOpen)
+        {
+            _MaitainConnectionOpen = maitainConnectionOpen;
             if (String.IsNullOrEmpty(_ConnectionStringSettingName))
             {
                 _ProviderFactory = DbProviderFactories.GetFactory(_ProviderName);
-                _Connection = ProviderFactory.CreateConnection();
+                _Connection = _ProviderFactory.CreateConnection();
                 _Connection.ConnectionString = _ConnectionString;
 
             }
@@ -186,8 +200,12 @@ namespace Froggy.Data
                     throw new InvalidOperationException("The specified connection does not exists in <connectionString> in <configuration>");
                 }
                 _ProviderFactory = DbProviderFactories.GetFactory(connectionStringSettings.ProviderName);
-                _Connection = ProviderFactory.CreateConnection();
+                _Connection = _ProviderFactory.CreateConnection();
                 _Connection.ConnectionString = connectionStringSettings.ConnectionString;
+            }
+            if (_MaitainConnectionOpen)
+            {
+                _Connection.Open();
             }
             InitTransaction();
             _Initialized = true;
@@ -197,14 +215,7 @@ namespace Froggy.Data
         {
             if (_TransactionOption == TransactionOption.Required)
             {
-                if (IsolationLevel.HasValue)
-                {
-                    _Transaction = Connection.BeginTransaction(IsolationLevel.Value);
-                }
-                else
-                {
-                    Transaction = Connection.BeginTransaction();
-                }
+                _Transaction = IsolationLevel.HasValue ? _Connection.BeginTransaction(IsolationLevel.Value) : _Connection.BeginTransaction();
             }
         }
 
@@ -212,7 +223,7 @@ namespace Froggy.Data
         {
             if (!_Initialized)
             {
-                Init();
+                Init(false);
             }
         }
 

@@ -234,7 +234,7 @@ namespace Froggy
 
         private void AddScopeContext(ScopeContext newScopeElement)
         {
-            var scopeElementType = typeof(ScopeContext);
+            var scopeElementType = newScopeElement.GetType();
             if (scopeContexts.ContainsKey(scopeElementType))
             {
                 var currentScopeElement = scopeContexts[scopeElementType];
@@ -305,7 +305,7 @@ namespace Froggy
 
         protected void Dispose(bool disposing)
         {
-            bool canFinalize = (!_isDisposed) && (--Current._InstanceCount < 1);
+            bool canFinalize = (!_isDisposed) &&  ( (Current == null) || (--Current._InstanceCount < 1) );
             if (canFinalize)
             {
                 bool thisIsCurrentScope = Current == this;
