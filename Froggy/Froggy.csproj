@@ -83,7 +83,7 @@
     <Compile Include="Scope.cs" />
     <Compile Include="Validation\BaseValidator\Enum.cs" />
     <Compile Include="Validation\BaseValidator\BasicValidatorUtil.cs" />
-    <Compile Include="Validation\BaseValidator\ComparableValidator.cs" />
+    <Compile Include="Validation\ComparableValidator.cs" />
     <Compile Include="Validation\BaseValidator\LengthValidator.cs" />
     <Compile Include="Validation\BaseValidator\RegexValidator.cs" />
     <Compile Include="Validation\ComparableValidatorExtension.cs" />
