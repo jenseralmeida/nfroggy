@@ -1,10 +1,9 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
+using Froggy.Validation.BaseValidator;
 
-namespace Froggy.Validation.BaseValidator
+namespace Froggy.Validation
 {
-	[Serializable]
+    [Serializable]
     public sealed class ComparableValidator : ITestValidator
     {
         public ComparableValidator(IComparable equal)
@@ -27,10 +26,10 @@ namespace Froggy.Validation.BaseValidator
             _ComparableValidatorType = comparableValidatorType;
         }
 
-        IComparable _Equal;
-        IComparable _Minimum;
-        IComparable _Maximum;
-        IntervalValidatorType _ComparableValidatorType;
+        readonly IComparable _Equal;
+        readonly IComparable _Minimum;
+        readonly IComparable _Maximum;
+        readonly IntervalValidatorType _ComparableValidatorType;
 
         public IComparable Equal
         {
@@ -56,18 +55,18 @@ namespace Froggy.Validation.BaseValidator
 
         public bool Execute<T>(T value, object orgValue, out string errorMessageTemplate)
         {
-            IComparable comparable = (IComparable)value;
+            var comparable = (IComparable)value;
             errorMessageTemplate = "";
             if (BasicValidatorUtil.ContainsValueInEnum((int)IntervalValidatorType.Equal, (int)ComparableValidatorType))
             {
-                if (comparable.CompareTo(this.Equal) != 0)
+                if (comparable.CompareTo(Equal) != 0)
                 {
                     errorMessageTemplate = "The value of {0} is not equal";
                 }
             }
             else if (BasicValidatorUtil.ContainsValueInEnum((int)IntervalValidatorType.IntervalInclusive, (int)ComparableValidatorType))
             {
-                if (comparable.CompareTo(_Minimum) < 0 || comparable.CompareTo(this._Maximum) > 0)
+                if (comparable.CompareTo(_Minimum) < 0 || comparable.CompareTo(_Maximum) > 0)
                 {
                     errorMessageTemplate = "The value of {0} is not in the defined inclusive interval";
                 }
@@ -88,7 +87,7 @@ namespace Froggy.Validation.BaseValidator
             }
             else if (BasicValidatorUtil.ContainsValueInEnum((int)IntervalValidatorType.IntervalExclusive, (int)ComparableValidatorType))
             {
-                if (comparable.CompareTo(_Minimum) <= 0 || comparable.CompareTo(this._Maximum) >= 0)
+                if (comparable.CompareTo(_Minimum) <= 0 || comparable.CompareTo(_Maximum) >= 0)
                 {
                     errorMessageTemplate = "The value of {0} is not in the defined exclusive interval";
                 }
