@@ -172,13 +172,15 @@ namespace Froggy.Validation
         {
             bool sucess = TypeValidator.Execute(orgValue, out value, out errorMessage);
             if (!sucess)
-            {
                 return false;
-            }
-            foreach (ITestValidator testsValidator in _TestValidators.Values)
+            bool isNullValue = (value == null);
+            foreach (var testsValidator in _TestValidators.Values)
             {
+                if (testsValidator.IgnoreNullValue && isNullValue)
+                    continue;
                 if (!testsValidator.Execute(value, orgValue, out errorMessage))
                 {
+                    errorMessage = String.Format(errorMessage, ErrorMessageLabel);
                     return false;
                 }
             }

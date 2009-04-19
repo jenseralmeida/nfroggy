@@ -27,6 +27,7 @@ namespace Froggy.Validation.BaseValidator
 
 	    int _Minimum;
         int _Maximum;
+        private NullValueLength _NullValueLength = NullValueLength.Ignore;
 
 	    public int Equal { get; set; }
 
@@ -46,9 +47,36 @@ namespace Froggy.Validation.BaseValidator
 
 	    #region ITestValidator Members
 
-        public bool Execute<T>(T value, object orgValue, out string errorMessageTemplate)
+	    public bool IgnoreNullValue
+	    {
+            get { return false;  }
+	    }
+
+	    public NullValueLength NullValueLength
+	    {
+	        get { return _NullValueLength; }
+	        set { _NullValueLength = value; }
+	    }
+
+	    public bool Execute<T>(T value, object orgValue, out string errorMessageTemplate)
         {
-            int lengthValue = orgValue.ToString().Length;
+	        int lengthValue;
+            if (orgValue == null)
+            {
+                switch (_NullValueLength)
+                {
+                    case NullValueLength.Zero:
+                        lengthValue = 0;
+                        break;
+                    default:
+                        errorMessageTemplate = "";
+                        return true;
+                }
+            }
+            else
+            {
+                lengthValue = orgValue.ToString().Length;
+            }
             errorMessageTemplate = "";
             if (BasicValidatorUtil.ContainsValueInEnum((int)IntervalValidatorType.Equal, (int)LengthValidatorType))
             {

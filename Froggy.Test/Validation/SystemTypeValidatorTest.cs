@@ -24,10 +24,17 @@ namespace Froggy.Test.Validation
         [Test]
         public void SimpleIsValidNullabeWithNullableTypeTest()
         {
-            Validator<int?> validationNullable = new Validator<int?>().SetUpNullable(true);
+            Validator<int?> validationNullableWithSetup = new Validator<int?>().SetUpNullable(true);
+            Assert.IsTrue(validationNullableWithSetup.IsValid(14), "14");
+            Assert.IsTrue(validationNullableWithSetup.IsValid(null), "null");
+            Validator<int?> validationWithSetup = new Validator<int?>().SetUpNullable(false);
+            Assert.IsTrue(validationWithSetup.IsValid(14), "14");
+            Assert.IsFalse(validationWithSetup.IsValid(null), "null");
+
+            var validationNullable = new Validator<int?>();
             Assert.IsTrue(validationNullable.IsValid(14), "14");
             Assert.IsTrue(validationNullable.IsValid(null), "null");
-            Validator<int?> validation = new Validator<int?>().SetUpNullable(false);
+            var validation = new Validator<int>();
             Assert.IsTrue(validation.IsValid(14), "14");
             Assert.IsFalse(validation.IsValid(null), "null");
         }
