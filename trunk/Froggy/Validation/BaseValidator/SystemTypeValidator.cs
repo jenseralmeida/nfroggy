@@ -102,12 +102,27 @@ namespace Froggy.Validation.BaseValidator
                 result = (T)Convert.ChangeType(value, realType, CultureInfo.CurrentCulture);
                 return true;
             }
-            catch (ArgumentOutOfRangeException)
+            catch (InvalidCastException)
             {
                 result = default(T);
                 return false;
             }
             catch (FormatException)
+            {
+                result = default(T);
+                return false;
+            }
+            catch (OverflowException)
+            {
+                result = default(T);
+                return false;
+            }
+            catch (ArgumentNullException)
+            {
+                result = default(T);
+                return false;
+            }
+            catch (ArgumentOutOfRangeException)
             {
                 result = default(T);
                 return false;

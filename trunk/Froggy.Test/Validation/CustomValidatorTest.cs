@@ -17,6 +17,11 @@ namespace Froggy.Test.Validation
 
         #region ITestValidator Members
 
+        public bool IgnoreNullValue
+        {
+            get { return false; }
+        }
+
         public bool Execute<T>(T value, object orgValue, out string errorMessageTemplate)
         {
             if (value == null)

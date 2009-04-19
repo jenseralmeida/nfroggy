@@ -22,6 +22,11 @@ namespace Froggy.Test.Validation.Object
     {
         #region ITestValidator Members
 
+        public bool IgnoreNullValue
+        {
+            get { return true;}
+        }
+
         public bool Execute<T>(T value, object orgValue, out string errorMessageTemplate)
         {
             switch (value.ToString())

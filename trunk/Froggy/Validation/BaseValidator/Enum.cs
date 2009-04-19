@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Froggy.Validation.BaseValidator
 {
@@ -16,5 +14,15 @@ namespace Froggy.Validation.BaseValidator
         MinimumExclusive = 8,
         MaximumExclusive = 16,
         IntervalExclusive = MinimumExclusive | MaximumExclusive
+    }
+
+    /// <summary>
+    /// Configure how null values are validated by LenghtValidator
+    /// </summary>
+    [Serializable]
+    public enum NullValueLength
+    {
+        Zero = 0,
+        Ignore = 1
     }
 }

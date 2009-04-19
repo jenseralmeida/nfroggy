@@ -32,5 +32,20 @@ namespace Froggy.Validation
 		{
 			return validator.SetUp(new LengthValidator(minimum, maximum, lengthValidatorType));
 		}
-	}
+
+        public static Validator<T> SetUpLength<T>(this Validator<T> validator, int equal, NullValueLength nullValueLength)
+        {
+            return validator.SetUp(new LengthValidator(equal) {NullValueLength = nullValueLength });
+        }
+
+        public static Validator<T> SetUpLength<T>(this Validator<T> validator, int minimum, int maximum, NullValueLength nullValueLength)
+        {
+            return validator.SetUp(new LengthValidator(minimum, maximum) { NullValueLength = nullValueLength });
+        }
+
+        public static Validator<T> SetUpLength<T>(this Validator<T> validator, int minimum, int maximum, IntervalValidatorType lengthValidatorType, NullValueLength nullValueLength)
+        {
+            return validator.SetUp(new LengthValidator(minimum, maximum, lengthValidatorType) { NullValueLength = nullValueLength });
+        }
+    }
 }

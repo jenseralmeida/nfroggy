@@ -44,7 +44,12 @@ namespace Froggy.Validation.BaseValidator
 
         #region ITestValidator Members
 
-        public bool Execute<T>(T value, object orgValue, out string errorMessageTemplate)
+	    public bool IgnoreNullValue
+	    {
+	        get { return true;}
+	    }
+
+	    public bool Execute<T>(T value, object orgValue, out string errorMessageTemplate)
         {
             if (_Regex.IsMatch(orgValue.ToString()))
             {

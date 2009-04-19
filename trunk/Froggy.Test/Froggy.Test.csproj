@@ -67,6 +67,7 @@
     </Compile>
     <Compile Include="ScopeTest.cs" />
     <Compile Include="Validation\BasicValidationTest.cs" />
+    <Compile Include="Validation\CombinedValidationTest.cs" />
     <Compile Include="Validation\CustomValidatorTest.cs" />
     <Compile Include="Validation\ComparableValidationTest.cs" />
     <Compile Include="Validation\LengthValidationTest.cs" />
