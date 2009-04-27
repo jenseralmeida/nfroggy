@@ -10,7 +10,7 @@ namespace Froggy
         #region Class Elements
 
         [ThreadStatic]
-        private static Stack<Scope> _scopeStack;
+        private static Stack<Scope> _ScopeStack;
 
         [ThreadStatic]
         private static Scope _Current;
@@ -18,11 +18,11 @@ namespace Froggy
         private static void Pop()
         {
             // Pop scope's from stack until find one not yet disposed
-            while ( (_scopeStack.Count > 0) && (Current._isDisposed) )
+            while ( (_ScopeStack.Count > 0) && (Current._IsDisposed) )
             {
-                _Current = _scopeStack.Pop();
+                _Current = _ScopeStack.Pop();
             }
-            if (_scopeStack.Count == 0)
+            if (_ScopeStack.Count == 0)
             {
                 _Current = null;
             }
@@ -30,7 +30,7 @@ namespace Froggy
 
         private static void Push(Scope scope)
         {
-            _scopeStack.Push(scope);
+            _ScopeStack.Push(scope);
             _Current = scope;
         }
 
@@ -45,19 +45,25 @@ namespace Froggy
         [MethodImpl(MethodImplOptions.Synchronized)]
         static Scope()
         {
-            _scopeStack = new Stack<Scope>();
+            _ScopeStack = new Stack<Scope>();
         }
 
         #endregion Class Elements
 
         public Scope(params ScopeContext[] contexts)
         {
-            scopeContexts = new Dictionary<Type, ScopeContext>();
             if (IsNewScopeRequired())
             {
-                foreach (var context in contexts)
+                _ScopeContexts = new Dictionary<Type, ScopeContext>();
+                foreach (var newScopeElement in contexts)
                 {
-                    AddScopeContext(context);
+                    var scopeElementType = newScopeElement.GetType();
+                    if (_ScopeContexts.ContainsKey(scopeElementType))
+                    {
+                        var currentScopeElement = _ScopeContexts[scopeElementType];
+                        currentScopeElement.NewScopeContextIsCompatible(newScopeElement);
+                    }
+                    _ScopeContexts.Add(scopeElementType, newScopeElement);
                 }
                 PushInstanceInStack();
             }
@@ -65,7 +71,7 @@ namespace Froggy
             {
                 // Supress destructor if this instance will not be used
                 GC.SuppressFinalize(true);
-                Current._InstanceCount = Current.InstanceCount + 1;
+                InstanceCount = Current.InstanceCount + 1;
             }
         }
 
@@ -178,20 +184,32 @@ namespace Froggy
         #endregion Construtores
 
 
-        private readonly Dictionary<Type, ScopeContext> scopeContexts;
+        private readonly Dictionary<Type, ScopeContext> _ScopeContexts;
         private int _InstanceCount;
 
-        internal int InstanceCount
+        private Dictionary<Type, ScopeContext> ScopeContexts
         {
-            get { return _InstanceCount; }
+            get { return Current._ScopeContexts; }
+        }
+
+        private int InstanceCount
+        {
+            get { return Current._InstanceCount; }
+            set { Current._InstanceCount = value; }
+        }
+
+        private bool Completed
+        {
+            get { return Current._Completed; }
+            set { Current._Completed = value; }
         }
 
         public void Complete()
         {
             CheckDisposed();
-            if (_InstanceCount == 1)
+            if (InstanceCount == 1)
             {
-                Current._Completed = true;
+                Completed = true;
             }
         }
 
@@ -217,7 +235,7 @@ namespace Froggy
             // Compare null values
             bool bothAreNull = leftNull && rightNull;
             if (bothAreNull) return true;
-            bool someIsNullButNotBoth = (leftNull || rightNull) && !bothAreNull;
+            bool someIsNullButNotBoth = (leftNull || rightNull);
             if (someIsNullButNotBoth) return false;
             // Compare values left to right and right to left, this is to make both order return the same logical value
             return left.Equals(right) && right.Equals(left);
@@ -232,22 +250,11 @@ namespace Froggy
 
         #region Scope control
 
-        private void AddScopeContext(ScopeContext newScopeElement)
-        {
-            var scopeElementType = newScopeElement.GetType();
-            if (scopeContexts.ContainsKey(scopeElementType))
-            {
-                var currentScopeElement = scopeContexts[scopeElementType];
-                currentScopeElement.NewScopeContextIsCompatible(newScopeElement);
-            }
-            scopeContexts.Add(scopeElementType, newScopeElement);
-        }
-
-        internal T GetScopeContext<T>() where T : ScopeContext
+        public T GetScopeContext<T>() where T : ScopeContext
         {
             CheckDisposed();
             var type = typeof(T);
-            return scopeContexts.ContainsKey(type) ? (T) scopeContexts[type] : null;
+            return ScopeContexts.ContainsKey(type) ? (T)ScopeContexts[type] : null;
         }
 
         private bool IsNewScopeRequired()
@@ -258,10 +265,10 @@ namespace Froggy
                 return true;
             }
             // Verify if any scope element vote for a new scope
-            bool anyElementVoteForNewScope = new List<ScopeContext>(scopeContexts.Values).Exists(se => se.RequireNewScope);
+            bool anyElementVoteForNewScope = new List<ScopeContext>(ScopeContexts.Values).Exists(se => se.RequireNewScope);
             if (anyElementVoteForNewScope)
             {
-                bool anyElementsRefuseNewScope = new List<ScopeContext>(scopeContexts.Values).Exists(se => se.RefuseNewScope);
+                bool anyElementsRefuseNewScope = new List<ScopeContext>(ScopeContexts.Values).Exists(se => se.RefuseNewScope);
                 if (anyElementsRefuseNewScope)
                 {
                     throw new InvalidOperationException(
@@ -276,9 +283,9 @@ namespace Froggy
         private void PushInstanceInStack()
         {
             Push(this);
-            Current._InstanceCount = 1;
+            InstanceCount = 1;
             //Iniyialize all scope contexts
-            Array.ForEach(scopeContexts.Values.ToArray(), (scopeContext => scopeContext.Init()) );
+            Array.ForEach(ScopeContexts.Values.ToArray(), (scopeContext => scopeContext.Init()) );
 
         }
 
@@ -286,12 +293,12 @@ namespace Froggy
 
         #region IDisposable
 
-        private bool _isDisposed;
+        private bool _IsDisposed;
         private bool _Completed;
 
         private void CheckDisposed()
         {
-            if (_isDisposed)
+            if (_IsDisposed)
             {
                 throw new ObjectDisposedException("Scope object is already disposed");
             }
@@ -305,17 +312,17 @@ namespace Froggy
 
         protected void Dispose(bool disposing)
         {
-            bool canFinalize = (!_isDisposed) &&  ( (Current == null) || (--Current._InstanceCount < 1) );
+            bool canFinalize = (!_IsDisposed) &&  ( (Current == null) || (--InstanceCount < 1) );
             if (canFinalize)
             {
                 bool thisIsCurrentScope = Current == this;
                 if (thisIsCurrentScope)
                 {
-                    _isDisposed = true;
+                    _IsDisposed = true;
                     // Dispose all scope contexts
-                    foreach (var scopeContext in scopeContexts.Values)
+                    foreach (var scopeContext in ScopeContexts.Values)
                     {
-                        scopeContext.CompletedNow(_Completed);
+                        scopeContext.CompletedNow(Completed);
                         scopeContext.Dispose();
                     }
                     Pop();
