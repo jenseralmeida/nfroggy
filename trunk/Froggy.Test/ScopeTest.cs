@@ -90,6 +90,92 @@ namespace Froggy.Test
             Assert.IsTrue(csc.CompleteNowCalled);
             Assert.IsFalse(csc.Completed);
         }
+
+        [Test]
+        public void CustomNestedScopeContextBasicTest()
+        {
+            var csc = new CustomScopeContext(true, false, false);
+            Assert.IsFalse(csc.InitCalled);
+            Assert.IsFalse(csc.DisposeCalled);
+            Assert.IsFalse(csc.CompleteNowCalled);
+            Assert.IsFalse(csc.Completed);
+            using (var scope = new Scope(csc))
+            {
+                CustomNestedScopeContextBasicLevel1(scope);
+                Assert.AreSame(scope, Scope.Current);
+                Assert.IsNotNull(Scope.Current.GetScopeContext<CustomScopeContext>());
+                Assert.AreSame(csc, Scope.Current.GetScopeContext<CustomScopeContext>());
+
+                Assert.IsTrue(csc.InitCalled);
+                Assert.IsFalse(csc.DisposeCalled);
+                Assert.IsFalse(csc.CompleteNowCalled);
+                Assert.IsFalse(csc.Completed);
+                scope.Complete();
+                Assert.IsTrue(csc.InitCalled);
+                Assert.IsFalse(csc.DisposeCalled);
+                Assert.IsFalse(csc.CompleteNowCalled);
+                Assert.IsFalse(csc.Completed);
+            }
+            Assert.IsTrue(csc.InitCalled);
+            Assert.IsTrue(csc.DisposeCalled);
+            Assert.IsTrue(csc.CompleteNowCalled);
+            Assert.IsTrue(csc.Completed);
+            Assert.IsNull(Scope.Current);
+        }
+
+
+        //[Test]
+        //public void CustomNestedScopeContextNotCompleteTest()
+        //{
+        //    var csc = new CustomScopeContext(true, false, false);
+        //    Assert.IsFalse(csc.InitCalled);
+        //    Assert.IsFalse(csc.DisposeCalled);
+        //    Assert.IsFalse(csc.CompleteNowCalled);
+        //    Assert.IsFalse(csc.Completed);
+        //    using (var scope = new Scope(csc))
+        //    {
+        //        Assert.IsTrue(csc.InitCalled);
+        //        Assert.IsFalse(csc.DisposeCalled);
+        //        Assert.IsFalse(csc.CompleteNowCalled);
+        //        Assert.IsFalse(csc.Completed);
+        //    }
+        //    Assert.IsTrue(csc.InitCalled);
+        //    Assert.IsTrue(csc.DisposeCalled);
+        //    Assert.IsTrue(csc.CompleteNowCalled);
+        //    Assert.IsFalse(csc.Completed);
+        //}
+
+        private static void CustomNestedScopeContextBasicLevel1(Scope expected)
+        {
+            var csc = new CustomScopeContext(true, false, false);
+            Assert.IsFalse(csc.InitCalled);
+            Assert.IsFalse(csc.DisposeCalled);
+            Assert.IsFalse(csc.CompleteNowCalled);
+            Assert.IsFalse(csc.Completed);
+            using (var scope = new Scope(csc))
+            {
+                Assert.AreNotSame(scope, Scope.Current);
+                Assert.AreEqual(scope, Scope.Current);
+                Assert.IsNotNull(Scope.Current.GetScopeContext<CustomScopeContext>());
+                csc = Scope.Current.GetScopeContext<CustomScopeContext>();
+
+                Assert.IsTrue(csc.InitCalled);
+                Assert.IsFalse(csc.DisposeCalled);
+                Assert.IsFalse(csc.CompleteNowCalled);
+                Assert.IsFalse(csc.Completed);
+                NestedMethod(expected);
+                scope.Complete();
+                Assert.IsTrue(csc.InitCalled);
+                Assert.IsFalse(csc.DisposeCalled);
+                Assert.IsFalse(csc.CompleteNowCalled);
+                Assert.IsFalse(csc.Completed);
+            }
+            Assert.IsTrue(csc.InitCalled);
+            Assert.IsFalse(csc.DisposeCalled);
+            Assert.IsFalse(csc.CompleteNowCalled);
+            Assert.IsFalse(csc.Completed);
+            Assert.IsNotNull(Scope.Current);
+        }
     }
 
     public class CustomScopeContext: ScopeContext

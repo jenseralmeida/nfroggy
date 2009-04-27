@@ -10,6 +10,30 @@ namespace Froggy.Test.Data
     public class DAScopeContextTest
     {
         [Test]
+        public void NestedWithTransactionTest()
+        {
+            using (var scope = new Scope(new DAScopeContext(TransactionOption.Required)))
+            {
+                Assert.IsNotNull(scope.GetDAScopeContext());
+                Assert.IsNotNull(scope.GetDAScopeContext().Connection);
+                Assert.IsNotNull(scope.GetDAScopeContext().Transaction);
+                NestedLevel1WithTransactionTest();
+                scope.Complete();
+            }
+        }
+
+        private static void NestedLevel1WithTransactionTest()
+        {
+            using (var scope = new Scope( new DAScopeContext(TransactionOption.Required) ))
+            {
+                Assert.IsNotNull(scope.GetDAScopeContext());
+                Assert.IsNotNull(scope.GetDAScopeContext().Connection);
+                Assert.IsNotNull(scope.GetDAScopeContext().Transaction);
+                scope.Complete();
+            }
+        }
+
+        [Test]
         public void WithTransactionTest()
         {
             using (var scope = new Scope(new DAScopeContext(TransactionOption.Required)))
