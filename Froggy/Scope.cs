@@ -12,17 +12,30 @@ namespace Froggy
         [ThreadStatic]
         private static Stack<Scope> _ScopeStack;
 
+
         [ThreadStatic]
         private static Scope _Current;
+
+        private static Stack<Scope> ScopeStack
+        {
+            get
+            {
+                if (_ScopeStack == null)
+                {
+                    _ScopeStack = new Stack<Scope>();
+                }
+                return _ScopeStack;
+            }
+        }
 
         private static void Pop()
         {
             // Pop scope's from stack until find one not yet disposed
-            while ( (_ScopeStack.Count > 0) && (Current._IsDisposed) )
+            while ((ScopeStack.Count > 0) && (Current._IsDisposed))
             {
-                _Current = _ScopeStack.Pop();
+                _Current = ScopeStack.Pop();
             }
-            if (_ScopeStack.Count == 0)
+            if (ScopeStack.Count == 0)
             {
                 _Current = null;
             }
@@ -30,7 +43,7 @@ namespace Froggy
 
         private static void Push(Scope scope)
         {
-            _ScopeStack.Push(scope);
+            ScopeStack.Push(scope);
             _Current = scope;
         }
 
@@ -40,12 +53,6 @@ namespace Froggy
             {
                 return _Current;
             }
-        }
-
-        [MethodImpl(MethodImplOptions.Synchronized)]
-        static Scope()
-        {
-            _ScopeStack = new Stack<Scope>();
         }
 
         #endregion Class Elements
@@ -74,115 +81,6 @@ namespace Froggy
                 InstanceCount = Current.InstanceCount + 1;
             }
         }
-
-        #region Construtores
-
-        ///// <summary>
-        ///// Copia o escopo informado para <see cref="Escopo.Atual"/>
-        ///// </summary>
-        ///// <remarks>
-        ///// Geralmente usado em casos onde o escopo atual é usado em outras Threads para aproveitar 
-        ///// a mesma transacao por exemplo.
-        ///// </remarks>
-        ///// <param name="escopo"></param>
-        //public Escopo(Escopo escopo)
-        //{
-        //    if (escopo.EstaFinalizado)
-        //        throw new ObjectDisposedException("Não posso inicializar um escopo a partir de outro escopo finalizado");
-        //    if (escopo == null)
-        //        throw new NullReferenceException();
-        //    this.AtribuirEscopoAtual();
-        //}
-
-        ///// <summary>
-        ///// Inicia um novo escopo de execução ou participa de um existente
-        ///// </summary>
-        ///// <param name="opcaoTransacao">Opcao da transacao. Se for <see cref="OpcaoTransacao.Requerido"/> 
-        ///// e ja existir um escopo, um novo escopo é criado de forma transparente</param>
-        //public Escopo(OpcaoTransacao opcaoTransacao)
-        //    : this(ContextoAcessoDado.NOME_CONEXAO_GERAL, opcaoTransacao)
-        //{
-        //}
-
-
-        ///// <summary>
-        ///// Inicia um novo escopo de execução ou participa de um existente
-        ///// </summary>
-        ///// <exception cref="InvalidOperationException"><see cref="OpcaoTransacao.Requerido"/> exige <see cref="OpcaoEscopo.Requerido"/></exception>
-        ///// se um escopo ja existir sem uma transação ativa
-        ///// <param name="opcaoEscopo">Configura a forma como esse escopo vai participar de um ja existente</param>
-        ///// <param name="opcaoTransacao">Configura a forma como esse escopo vai participar de uma transação</param>
-        //public Escopo(OpcaoEscopo opcaoEscopo, OpcaoTransacao opcaoTransacao)
-        //    : this(opcaoEscopo, ContextoAcessoDado.NOME_CONEXAO_GERAL, opcaoTransacao)
-        //{
-        //}
-
-        ///// <summary>
-        ///// Inicia um novo escopo de execução ou participa de um existente
-        ///// </summary>
-        ///// <exception cref="InvalidOperationException"><see cref="OpcaoTransacao.Requerido"/> exige <see cref="OpcaoEscopo.Requerido"/></exception>
-        ///// se um escopo ja existir sem uma transação ativa
-        ///// <param name="opcaoEscopo">Configura a forma como esse escopo vai participar de um ja existente</param>
-        ///// <param name="isolationLevel">Nivel de isolamento transacional. Quando esse construtor é usado <see cref="OpcaoTransacao.Requerido"/> 
-        ///// é usado automaticamente e se já existir um escopo, um novo escopo é criado de forma transparente</param>
-        //public Escopo(OpcaoEscopo opcaoEscopo, IsolationLevel isolationLevel)
-        //    : this(opcaoEscopo, ContextoAcessoDado.NOME_CONEXAO_GERAL, isolationLevel)
-        //{
-        //}
-
-        ///// <summary>
-        ///// Inicia um novo escopo de execução ou participa de um existente
-        ///// </summary>
-        ///// <exception cref="InvalidOperationException"><see cref="OpcaoTransacao.Requerido"/> exige <see cref="OpcaoEscopo.Requerido"/></exception>
-        ///// se um escopo ja existir sem uma transação ativa
-        ///// <param name="opcaoEscopo">Configura a forma como esse escopo vai participar de um ja existente</param>
-        ///// <param name="nomeConfigConexao">Nome da configuração de conexao em connectionStrings do arquivo de configuracao da aplicacao</param>
-        ///// <param name="opcaoTransacao">Configura a forma como esse escopo vai participar de uma transação</param>
-        //public Escopo(OpcaoEscopo opcaoEscopo, string nomeConfigConexao, OpcaoTransacao opcaoTransacao)
-        //{
-        //    // Se o usuario informou explicitamente opcoes de escopo e de transacao provoca erro
-        //    if (OpcaoTransacaoRequerNovoEscopo(opcaoTransacao) && opcaoEscopo == OpcaoEscopo.Requerido)
-        //        MensagemUtil.ThrowInvalidOperationException("ErroTransacaoRequerNovoEscopo");
-        //    InicializarEscopo(opcaoEscopo, nomeConfigConexao, opcaoTransacao, null);
-        //}
-
-        ///// <summary>
-        ///// Inicia um novo escopo de execução ou participa de um existente
-        ///// </summary>
-        ///// <exception cref="InvalidOperationException"><see cref="OpcaoTransacao.Requerido"/> exige <see cref="OpcaoEscopo.Requerido"/></exception>
-        ///// se um escopo ja existir sem uma transação ativa
-        ///// <param name="opcaoEscopo">Configura a forma como esse escopo vai participar de um ja existente</param>
-        ///// <param name="nomeConfigConexao">Nome da configuração de conexao em connectionStrings do arquivo de configuracao da aplicacao</param>
-        ///// <param name="isolationLevel">Nivel de isolamento transacional. Quando esse construtor é usado <see cref="OpcaoTransacao.Requerido"/> 
-        ///// é usado automaticamente e se já existir um escopo, um novo escopo é criado de forma transparente</param>
-        //public Escopo(OpcaoEscopo opcaoEscopo, string nomeConfigConexao, IsolationLevel isolationLevel)
-        //{
-        //    OpcaoTransacao opcaoTransacao = OpcaoTransacao.Requerido;
-        //    // Se o usuario informou explicitamente opcoes de escopo e de transacao provoca erro
-        //    if (OpcaoTransacaoRequerNovoEscopo(opcaoTransacao) && opcaoEscopo == OpcaoEscopo.Requerido)
-        //        MensagemUtil.ThrowInvalidOperationException("ErroTransacaoRequerNovoEscopo");
-        //    InicializarEscopo(opcaoEscopo, nomeConfigConexao, opcaoTransacao, isolationLevel);
-        //}
-
-        ///// <summary>
-        ///// Inicia um novo escopo de execução ou participa de um existente
-        ///// </summary>
-        ///// <exception cref="InvalidOperationException"><see cref="OpcaoTransacao.Requerido"/> exige <see cref="OpcaoEscopo.Requerido"/></exception>
-        ///// se um escopo ja existir sem uma transação ativa
-        ///// <param name="opcaoEscopo">Configura a forma como esse escopo vai participar de um ja existente</param>
-        ///// <param name="nomeConfigConexao">Nome da configuração de conexao em connectionStrings do arquivo de configuracao da aplicacao</param>
-        ///// <param name="opcaoTransacao">Configura a forma como esse escopo vai participar de uma transação</param>
-        //public Escopo(OpcaoEscopo opcaoEscopo, StringConexao nomeConfigConexao, OpcaoTransacao opcaoTransacao)
-        //{
-        //    // Se o usuario informou explicitamente opcoes de escopo e de transacao provoca erro
-        //    if (OpcaoTransacaoRequerNovoEscopo(opcaoTransacao) && opcaoEscopo == OpcaoEscopo.Requerido)
-        //        MensagemUtil.ThrowInvalidOperationException("ErroTransacaoRequerNovoEscopo");
-        //    InicializarEscopo(opcaoEscopo, nomeConfigConexao.ToString(), opcaoTransacao, null);
-        //}
-
-
-        #endregion Construtores
-
 
         private readonly Dictionary<Type, ScopeContext> _ScopeContexts;
         private int _InstanceCount;
@@ -338,4 +236,3 @@ namespace Froggy
         #endregion IDisposable
     }
 }
-
