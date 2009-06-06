@@ -97,7 +97,8 @@ namespace Froggy.Data
 
         private static void SetParameterValue(IDataParameter parameter, object value)
         {
-            parameter.Value = new Validator<object>().Convert(value); 
+            value = new Validator<object>().Convert(value);
+            parameter.Value = value == null ? DBNull.Value : value;
         }
 
         /// <summary>
