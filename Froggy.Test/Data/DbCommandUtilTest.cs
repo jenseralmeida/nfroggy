@@ -71,6 +71,18 @@ namespace Froggy.Test.Data
             Assert.AreEqual("ID", dataTable.Columns[0].ColumnName);
         }
 
+        [Test]
+        public void NullParameterTest() 
+        {
+            Insert();
+            var comm = new DbCommandUtil("SELECT * FROM TEST WHERE ID = @ID");
+            Assert.AreEqual(ConnectionState.Closed, comm.DAScopeContext.Connection.State);
+            comm.AddParameter("@ID", DbType.Int32, null);
+            Assert.AreEqual(0, comm.GetDataTable().Rows.Count);
+            comm.SetParameterValue("@ID", 0);
+            Assert.AreEqual(0, comm.GetDataTable().Rows.Count);
+        }
+
         private static void Insert()
         {
             var comm = new DbCommandUtil("INSERT INTO TEST(ID) VALUES(2)");
