@@ -7,16 +7,16 @@ using NUnit.Framework;
 namespace Froggy.Test.Data
 {
     [TestFixture]
-    public class DAScopeContextTest
+    public class DaScopeContextTest
     {
         [Test]
         public void NestedWithTransactionTest()
         {
-            using (var scope = new Scope(new DAScopeContext(TransactionOption.Required)))
+            using (var scope = new Scope(new DaScopeContext(TransactionOption.Required)))
             {
-                Assert.IsNotNull(scope.GetDAScopeContext());
-                Assert.IsNotNull(scope.GetDAScopeContext().Connection);
-                Assert.IsNotNull(scope.GetDAScopeContext().Transaction);
+                Assert.IsNotNull(scope.GetDaScopeContext());
+                Assert.IsNotNull(scope.GetDaScopeContext().Connection);
+                Assert.IsNotNull(scope.GetDaScopeContext().Transaction);
                 NestedLevel1WithTransactionTest(scope);
                 scope.Complete();
             }
@@ -24,16 +24,16 @@ namespace Froggy.Test.Data
 
         private static void NestedLevel1WithTransactionTest(Scope expected)
         {
-            using (var scope = new Scope( new DAScopeContext(TransactionOption.Required) ))
+            using (var scope = new Scope( new DaScopeContext(TransactionOption.Required) ))
             {
                 Assert.AreSame(expected, Scope.Current);
                 Assert.AreEqual(Scope.Current, scope);
-                Assert.IsNotNull(scope.GetDAScopeContext());
-                Assert.IsNotNull(scope.GetDAScopeContext().Connection);
-                Assert.IsNotNull(scope.GetDAScopeContext().Transaction);
-                Assert.AreSame(Scope.Current.GetDAScopeContext(), scope.GetDAScopeContext());
-                Assert.AreSame(Scope.Current.GetDAScopeContext().Connection, scope.GetDAScopeContext().Connection);
-                Assert.AreSame(Scope.Current.GetDAScopeContext().Transaction, scope.GetDAScopeContext().Transaction);
+                Assert.IsNotNull(scope.GetDaScopeContext());
+                Assert.IsNotNull(scope.GetDaScopeContext().Connection);
+                Assert.IsNotNull(scope.GetDaScopeContext().Transaction);
+                Assert.AreSame(Scope.Current.GetDaScopeContext(), scope.GetDaScopeContext());
+                Assert.AreSame(Scope.Current.GetDaScopeContext().Connection, scope.GetDaScopeContext().Connection);
+                Assert.AreSame(Scope.Current.GetDaScopeContext().Transaction, scope.GetDaScopeContext().Transaction);
 
                 scope.Complete();
             }
@@ -42,9 +42,9 @@ namespace Froggy.Test.Data
         [Test]
         public void WithTransactionTest()
         {
-            using (var scope = new Scope(new DAScopeContext(TransactionOption.Required)))
+            using (var scope = new Scope(new DaScopeContext(TransactionOption.Required)))
             {
-                var scopeContext = scope.GetDAScopeContext();
+                var scopeContext = scope.GetDaScopeContext();
                 Assert.IsNotNull(scopeContext);
                 var conn = (SqlConnection)scopeContext.Connection;
                 Assert.IsNotNull(conn);
@@ -58,9 +58,9 @@ namespace Froggy.Test.Data
         [Test]
         public void WithoutTransactionTest()
         {
-            using (var scope = new Scope(new DAScopeContext()))
+            using (var scope = new Scope(new DaScopeContext()))
             {
-                var scopeContext = scope.GetDAScopeContext();
+                var scopeContext = scope.GetDaScopeContext();
                 Assert.IsNotNull(scopeContext);
                 var conn = (SqlConnection)scopeContext.Connection;
                 Assert.IsNotNull(conn);

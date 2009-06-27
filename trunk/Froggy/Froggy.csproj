@@ -75,7 +75,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Data\DAScopeContext.cs" />
+    <Compile Include="Data\DaScopeContext.cs" />
+    <Compile Include="Data\DaScopeContextExtension.cs" />
     <Compile Include="Data\DbCommandUtil.Static.cs" />
     <Compile Include="Data\DbCommandWrapper.cs" />
     <Compile Include="Data\Enum.cs" />

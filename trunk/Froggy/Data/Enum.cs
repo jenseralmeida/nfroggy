@@ -3,7 +3,7 @@ using System.Data.Common;
 namespace Froggy.Data
 {
     /// <summary>
-    /// Options for transacions in <see cref="DAScopeContext"/>
+    /// Options for transacions in <see cref="DaScopeContext"/>
     /// </summary>
     public enum TransactionOption
     {

@@ -28,7 +28,7 @@ namespace Froggy.CodeGenerator.Data
             var codeNamespace = new CodeNamespace("Test");
             var codeProvider = new CSharpCodeProvider();
             codeUnit.Namespaces.Add(codeNamespace);
-            using (var dasc = new DAScopeContext())
+            using (var dasc = new DaScopeContext())
             {
                 TypedDataSetGenerator.Generate(sw.ToString(),
                                                codeUnit,
