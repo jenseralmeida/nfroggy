@@ -5,19 +5,12 @@ using System.Configuration;
 
 namespace Froggy.Data
 {
-    public static class DAScopeContextExtension
-    {
-        public static DAScopeContext GetDAScopeContext(this Scope scope)
-        {
-            return scope.GetScopeContext<DAScopeContext>();
-        }
-    }
     /// <summary>
     /// Scope context to Data Access
     /// </summary>
-    public class DAScopeContext : ScopeContext, IDisposable
+    public class DaScopeContext : ScopeContext, IDisposable
     {
-        public const string ConnectionStringSettingName_DEFAULT = "Default";
+        public const string ConnectionStringSettingNameDefault = "Default";
 
         private readonly string _ConnectionStringSettingName;
         private readonly TransactionOption? _TransactionOption;
@@ -96,18 +89,18 @@ namespace Froggy.Data
         #region Constructor
 
         /// <summary>
-        /// Context to connection using <see cref="ConnectionStringSettingName_DEFAULT"/> and <see cref="TransactionOption.Automatic"/>  
+        /// Context to connection using <see cref="ConnectionStringSettingNameDefault"/> and <see cref="TransactionOption.Automatic"/>  
         /// </summary>
-        public DAScopeContext()
-            : this(ConnectionStringSettingName_DEFAULT)
+        public DaScopeContext()
+            : this(ConnectionStringSettingNameDefault)
         {
         }
 
         /// <summary>
-        /// Context to connection using <see cref="ConnectionStringSettingName_DEFAULT"/> and <see cref="TransactionOption.Automatic"/>  
+        /// Context to connection using <see cref="ConnectionStringSettingNameDefault"/> and <see cref="TransactionOption.Automatic"/>  
         /// </summary>
-        public DAScopeContext(TransactionOption transactionOption)
-            : this(ConnectionStringSettingName_DEFAULT, transactionOption)
+        public DaScopeContext(TransactionOption transactionOption)
+            : this(ConnectionStringSettingNameDefault, transactionOption)
         {
         }
 
@@ -116,7 +109,7 @@ namespace Froggy.Data
         /// 
         /// </summary>
         /// <param name="connectionStringSettingName"></param>
-        public DAScopeContext(string connectionStringSettingName)
+        public DaScopeContext(string connectionStringSettingName)
             : this(connectionStringSettingName, TransactionOption.Automatic, null)
         {
         }
@@ -126,7 +119,7 @@ namespace Froggy.Data
         /// </summary>
         /// <param name="connectionStringSettingName"></param>
         /// <param name="transactionOption"></param>
-        public DAScopeContext(string connectionStringSettingName, TransactionOption transactionOption)
+        public DaScopeContext(string connectionStringSettingName, TransactionOption transactionOption)
             : this(connectionStringSettingName, transactionOption, null)
         {
         }
@@ -135,8 +128,8 @@ namespace Froggy.Data
         /// 
         /// </summary>
         /// <param name="isolationLevel"></param>
-        public DAScopeContext(IsolationLevel isolationLevel)
-            : this(ConnectionStringSettingName_DEFAULT, TransactionOption.Required, isolationLevel)
+        public DaScopeContext(IsolationLevel isolationLevel)
+            : this(ConnectionStringSettingNameDefault, TransactionOption.Required, isolationLevel)
         {
         }
 
@@ -145,7 +138,7 @@ namespace Froggy.Data
         /// </summary>
         /// <param name="connectionStringSettingName"></param>
         /// <param name="isolationLevel"></param>
-        public DAScopeContext(string connectionStringSettingName, IsolationLevel isolationLevel)
+        public DaScopeContext(string connectionStringSettingName, IsolationLevel isolationLevel)
             : this(connectionStringSettingName, TransactionOption.Required, isolationLevel)
         {
         }
@@ -155,7 +148,7 @@ namespace Froggy.Data
         /// </summary>
         /// <param name="providerName"></param>
         /// <param name="connectionString"></param>
-        public DAScopeContext(string providerName, string connectionString)
+        public DaScopeContext(string providerName, string connectionString)
         {
             if (String.IsNullOrEmpty(providerName) || String.IsNullOrEmpty(connectionString))
             {
@@ -166,7 +159,7 @@ namespace Froggy.Data
             _ConnectionStringSettingName = String.Empty;
         }
 
-        public DAScopeContext(string connectionStringSettingName, TransactionOption transactionOption, IsolationLevel? isolationLevel)
+        public DaScopeContext(string connectionStringSettingName, TransactionOption transactionOption, IsolationLevel? isolationLevel)
         {
             _ConnectionStringSettingName = connectionStringSettingName;
             _TransactionOption = transactionOption;
@@ -229,10 +222,10 @@ namespace Froggy.Data
 
         public override bool NewScopeContextIsCompatible(ScopeContext currentScopeContext)
         {
-            var currentDAScopeContext = currentScopeContext as DAScopeContext;
-            if (currentDAScopeContext == null)
+            var currentDaScopeContext = currentScopeContext as DaScopeContext;
+            if (currentDaScopeContext == null)
                 return true;
-            bool useSameConnectionString = currentDAScopeContext.ConnectionStringSettingName == ConnectionStringSettingName;
+            bool useSameConnectionString = currentDaScopeContext.ConnectionStringSettingName == ConnectionStringSettingName;
             return useSameConnectionString;
         }
 
@@ -242,8 +235,8 @@ namespace Froggy.Data
             {
                 if (Scope.Current == null)
                     return false;
-                bool currentScopeHasNotTransaction = Scope.Current.GetDAScopeContext().Transaction == null;
-                bool requireNewTransaction = _TransactionOption.HasValue && _TransactionOption == TransactionOption.Required;
+                var currentScopeHasNotTransaction = Scope.Current.GetDaScopeContext().Transaction == null;
+                var requireNewTransaction = _TransactionOption.HasValue && _TransactionOption == TransactionOption.Required;
                 return requireNewTransaction && currentScopeHasNotTransaction;
             }
         }
@@ -271,7 +264,7 @@ namespace Froggy.Data
         {
             if (isDisposed)
             {
-                throw new ObjectDisposedException("DAScopeContext object is already disposed");
+                throw new ObjectDisposedException("DaScopeContext object is already disposed");
             }
         }
 
@@ -311,7 +304,7 @@ namespace Froggy.Data
             isDisposed = true;
         }
 
-        ~DAScopeContext()
+        ~DaScopeContext()
         {
             Dispose(false);
         }

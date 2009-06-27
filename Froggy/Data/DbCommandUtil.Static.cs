@@ -70,7 +70,7 @@ namespace Froggy.Data
         /// <param name="commandType"></param>
         /// <param name="commandTimeout"></param>
         /// <returns></returns>
-        internal static DbCommand CreateCommand(DAScopeContext daScopeContext, string commandText, CommandType commandType, int commandTimeout)
+        internal static DbCommand CreateCommand(DaScopeContext daScopeContext, string commandText, CommandType commandType, int commandTimeout)
         {
             if (daScopeContext == null)
                 throw new ArgumentNullException("daScopeContext");
@@ -108,7 +108,7 @@ namespace Froggy.Data
         /// <param name="dataAdapterCommand"></param>
         /// <param name="commandWrappersDataAdapter"></param>
         /// <returns></returns>
-        internal static DbCommand GetDbCommand(DAScopeContext daScopeContext, DataAdapterCommand dataAdapterCommand, Dictionary<DataAdapterCommand, DbCommandWrapper> commandWrappersDataAdapter)
+        internal static DbCommand GetDbCommand(DaScopeContext daScopeContext, DataAdapterCommand dataAdapterCommand, Dictionary<DataAdapterCommand, DbCommandWrapper> commandWrappersDataAdapter)
         {
             if (commandWrappersDataAdapter.ContainsKey(dataAdapterCommand))
             {
@@ -125,7 +125,7 @@ namespace Froggy.Data
         /// <param name="daScopeContext"></param>
         /// <param name="commandWrappers"></param>
         /// <returns></returns>
-        internal static DbDataAdapter CreateDataAdapterFromCommandWrappers(DAScopeContext daScopeContext, Dictionary<DataAdapterCommand, DbCommandWrapper> commandWrappers)
+        internal static DbDataAdapter CreateDataAdapterFromCommandWrappers(DaScopeContext daScopeContext, Dictionary<DataAdapterCommand, DbCommandWrapper> commandWrappers)
         {
             if (daScopeContext == null)
                 throw new ArgumentNullException("daScopeContext");

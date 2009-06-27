@@ -108,7 +108,7 @@ namespace Froggy.Data
             }
         }
 
-        public DbCommand GetDbCommand(DAScopeContext daScopeContext)
+        public DbCommand GetDbCommand(DaScopeContext daScopeContext)
         {
             CheckDisposed();
             if (_command == null)

@@ -11,7 +11,7 @@ namespace Froggy.Data
     {
         private const string RETURN_PARAMETER_NAME = "__return";
 
-        private DAScopeContext _daScopeContext;
+        private DaScopeContext _daScopeContext;
         private DbDataAdapter _dataAdapter;
         private readonly Dictionary<DataAdapterCommand, DbCommandWrapper> _commandWrappersDataAdapter;
         private DataAdapterCommand _dataAdapterCommand;
@@ -64,7 +64,7 @@ namespace Froggy.Data
         public DbCommandUtil(string commandText, string connectionStringSettingName, DataAdapterCommand _dataAdapterCommand)
             : this(commandText, CommandType.Text)
         {
-            _daScopeContext = new DAScopeContext(connectionStringSettingName);
+            _daScopeContext = new DaScopeContext(connectionStringSettingName);
             this._dataAdapterCommand = _dataAdapterCommand;
         }
 
@@ -90,7 +90,7 @@ namespace Froggy.Data
                     ConfigCommand(dataAdapterCommand, String.Empty);
                 }
                 DbCommandWrapper commandWrapper = _commandWrappersDataAdapter[dataAdapterCommand];
-                return commandWrapper.GetDbCommand(DAScopeContext);
+                return commandWrapper.GetDbCommand(DaScopeContext);
             }
         }
 
@@ -152,12 +152,12 @@ namespace Froggy.Data
             {
                 CheckDisposed();
                 if (_dataAdapter == null)
-                    _dataAdapter = CreateDataAdapterFromCommandWrappers(DAScopeContext, _commandWrappersDataAdapter);
+                    _dataAdapter = CreateDataAdapterFromCommandWrappers(DaScopeContext, _commandWrappersDataAdapter);
                 return _dataAdapter;
             }
         }
 
-        public DAScopeContext DAScopeContext
+        public DaScopeContext DaScopeContext
         {
             get
             {
@@ -166,12 +166,12 @@ namespace Froggy.Data
                 {
                     if (Scope.Current == null)
                     {
-                        _daScopeContext = new DAScopeContext();
+                        _daScopeContext = new DaScopeContext();
                         _daScopeContextIsCreatedInThisInstance = true;
                     }
                     else
                     {
-                        _daScopeContext = Scope.Current.GetDAScopeContext();
+                        _daScopeContext = Scope.Current.GetDaScopeContext();
                     }
                 }
                 return _daScopeContext;
@@ -321,7 +321,7 @@ namespace Froggy.Data
         public DbParameter NewParameter(string parameterName, DbType dbType, int size, ParameterDirection direction, string sourceColumn)
         {
             CheckDisposed();
-            DbParameter parameter = DAScopeContext.ProviderFactory.CreateParameter();
+            DbParameter parameter = DaScopeContext.ProviderFactory.CreateParameter();
             parameter.ParameterName = parameterName;
             parameter.DbType = dbType;
             parameter.Direction = direction;
@@ -710,7 +710,7 @@ namespace Froggy.Data
         {
             CheckDisposed();
             ConnectionState originalState;
-            OpenConnection(DAScopeContext.Connection, out originalState);
+            OpenConnection(DaScopeContext.Connection, out originalState);
             try
             {
                 RegisterLog();
@@ -718,7 +718,7 @@ namespace Froggy.Data
             }
             finally
             {
-                CloseConnection(DAScopeContext.Connection, originalState);
+                CloseConnection(DaScopeContext.Connection, originalState);
             }
         }
 
@@ -730,7 +730,7 @@ namespace Froggy.Data
         {
             CheckDisposed();
             ConnectionState originalState;
-            OpenConnection(DAScopeContext.Connection, out originalState);
+            OpenConnection(DaScopeContext.Connection, out originalState);
             RegisterLog();
             return Command.ExecuteReader();
         }
@@ -744,7 +744,7 @@ namespace Froggy.Data
         {
             CheckDisposed();
             ConnectionState originalState;
-            OpenConnection(DAScopeContext.Connection, out originalState);
+            OpenConnection(DaScopeContext.Connection, out originalState);
             RegisterLog();
             return Command.ExecuteReader(behavior);
         }
@@ -757,7 +757,7 @@ namespace Froggy.Data
         {
             CheckDisposed();
             ConnectionState originalState;
-            OpenConnection(DAScopeContext.Connection, out originalState);
+            OpenConnection(DaScopeContext.Connection, out originalState);
             try
             {
                 RegisterLog();
@@ -765,7 +765,7 @@ namespace Froggy.Data
             }
             finally
             {
-                CloseConnection(DAScopeContext.Connection, originalState);
+                CloseConnection(DaScopeContext.Connection, originalState);
             }
         }
 
@@ -778,7 +778,7 @@ namespace Froggy.Data
         {
             CheckDisposed();
             ConnectionState originalState;
-            OpenConnection(DAScopeContext.Connection, out originalState);
+            OpenConnection(DaScopeContext.Connection, out originalState);
             try
             {
                 object value = ExecuteScalar();
@@ -790,7 +790,7 @@ namespace Froggy.Data
             }
             finally
             {
-                CloseConnection(DAScopeContext.Connection, originalState);
+                CloseConnection(DaScopeContext.Connection, originalState);
             }
         }
 
@@ -808,7 +808,7 @@ namespace Froggy.Data
             CheckDisposed();
             RegisterLog();
             ConnectionState originalState;
-            OpenConnection(DAScopeContext.Connection, out originalState);
+            OpenConnection(DaScopeContext.Connection, out originalState);
             try
             {
                 int returnValue = DataAdapter.Fill(dataSet);
@@ -816,7 +816,7 @@ namespace Froggy.Data
             }
             finally
             {
-                CloseConnection(DAScopeContext.Connection, originalState);
+                CloseConnection(DaScopeContext.Connection, originalState);
             }
         }
 
@@ -831,7 +831,7 @@ namespace Froggy.Data
             CheckDisposed();
             RegisterLog();
             ConnectionState originalState;
-            OpenConnection(DAScopeContext.Connection, out originalState);
+            OpenConnection(DaScopeContext.Connection, out originalState);
             try
             {
                 int returnValue;
@@ -855,7 +855,7 @@ namespace Froggy.Data
             }
             finally
             {
-                CloseConnection(DAScopeContext.Connection, originalState);
+                CloseConnection(DaScopeContext.Connection, originalState);
             }
         }
 
@@ -869,7 +869,7 @@ namespace Froggy.Data
             CheckDisposed();
             RegisterLog();
             ConnectionState originalState;
-            OpenConnection(DAScopeContext.Connection, out originalState);
+            OpenConnection(DaScopeContext.Connection, out originalState);
             try
             {
                 int returnValue = DataAdapter.Fill(dataTable);
@@ -877,7 +877,7 @@ namespace Froggy.Data
             }
             finally
             {
-                CloseConnection(DAScopeContext.Connection, originalState);
+                CloseConnection(DaScopeContext.Connection, originalState);
             }
         }
 
@@ -948,7 +948,7 @@ namespace Froggy.Data
         public int Update(DataSet dataSet, TransactionOption transactionOption)
         {
             throw new NotImplementedException();
-            //using (Scope scope = new Scope(new DAScopeContext(transactionOption)))
+            //using (Scope scope = new Scope(new DaScopeContext(transactionOption)))
             //{
             //    int returnValue = DataAdapter.Update(dataSet);
             //    scope.Complete();
@@ -968,7 +968,7 @@ namespace Froggy.Data
         public int Update(DataTable dataTable, TransactionOption transactionOption)
         {
             throw new NotImplementedException();
-            //using (var scope = new Scope(new DAScopeContext(transactionOption)))
+            //using (var scope = new Scope(new DaScopeContext(transactionOption)))
             //{
             //    int returnValue = DataAdapter.Update(dataTable);
             //    scope.Complete();
@@ -984,7 +984,7 @@ namespace Froggy.Data
         public int Update(DataRow[] dataRows, TransactionOption transactionOption)
         {
             throw new NotImplementedException();
-            //using (var scope = new Scope(new DAScopeContext(transactionOption)))
+            //using (var scope = new Scope(new DaScopeContext(transactionOption)))
             //{
             //    var returnValue = DataAdapter.Update(dataRows);
             //    scope.Complete();
@@ -1036,16 +1036,16 @@ namespace Froggy.Data
                 switch (dataAdapterCommand)
                 {
                     case DataAdapterCommand.SelectCommand:
-                        DataAdapter.SelectCommand = commandWrapper.GetDbCommand(DAScopeContext);
+                        DataAdapter.SelectCommand = commandWrapper.GetDbCommand(DaScopeContext);
                         break;
                     case DataAdapterCommand.InsertCommand:
-                        DataAdapter.InsertCommand = commandWrapper.GetDbCommand(DAScopeContext);
+                        DataAdapter.InsertCommand = commandWrapper.GetDbCommand(DaScopeContext);
                         break;
                     case DataAdapterCommand.UpdateCommand:
-                        DataAdapter.UpdateCommand = commandWrapper.GetDbCommand(DAScopeContext);
+                        DataAdapter.UpdateCommand = commandWrapper.GetDbCommand(DaScopeContext);
                         break;
                     case DataAdapterCommand.DeleteCommand:
-                        DataAdapter.DeleteCommand = commandWrapper.GetDbCommand(DAScopeContext);
+                        DataAdapter.DeleteCommand = commandWrapper.GetDbCommand(DaScopeContext);
                         break;
                 }
             }
