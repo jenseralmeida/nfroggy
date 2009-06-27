@@ -2,7 +2,7 @@
 
 = Introduction =
 
-Why one more data access layer? The answer is: I use this filosofy by seven years, thats incredibly simple work and the learning curve is almost nome.
+Why one more data access layer? The answer is: I use this filosofy by seven years, thats incredibly simple, works and the learning curve is almost none.
 
 = Details =
 
