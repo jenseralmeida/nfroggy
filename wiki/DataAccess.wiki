@@ -17,6 +17,11 @@ public void NestedWithTransactionTest()
         Assert.IsNotNull(scope.GetDAScopeContext());
         Assert.IsNotNull(scope.GetDAScopeContext().Connection);
         Assert.IsNotNull(scope.GetDAScopeContext().Transaction);
+        // Integrated with scope: use the same connection and have automatic 
+        // enlistment with local transaction
+        var comm = new DbCommandUtil("SELECT * FROM TEST WHERE id = @id");
+        comm.AddParameter("@id", DbType.Int32, 5);
+        var testDT = comm.GetDataTable();
         NestedLevel1WithTransactionTest(scope);
         scope.Complete();
     }
