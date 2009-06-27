@@ -4,9 +4,20 @@
 
 Why one more data access layer? The answer is: I use this filosofy by seven years, thats incredibly simple, works and the learning curve is almost none.
 
+There is no penallity of performance, and it is stable and do not have the hell that some technologies bug us.
+
+
 = Details =
 
-There is one example:
+== DbCommandUtil ==
+Simplify the use of DbCommand and DbDataAdapter and try to not compete with both, only facilitate they use.
+
+
+== Scope ==
+Allow reuse of connection and transacions, between call stacks of distinct methods.
+
+
+== Example == 
 
 {{{
 [Test]
