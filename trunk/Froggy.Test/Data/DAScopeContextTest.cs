@@ -17,18 +17,24 @@ namespace Froggy.Test.Data
                 Assert.IsNotNull(scope.GetDAScopeContext());
                 Assert.IsNotNull(scope.GetDAScopeContext().Connection);
                 Assert.IsNotNull(scope.GetDAScopeContext().Transaction);
-                NestedLevel1WithTransactionTest();
+                NestedLevel1WithTransactionTest(scope);
                 scope.Complete();
             }
         }
 
-        private static void NestedLevel1WithTransactionTest()
+        private static void NestedLevel1WithTransactionTest(Scope expected)
         {
             using (var scope = new Scope( new DAScopeContext(TransactionOption.Required) ))
             {
+                Assert.AreSame(expected, Scope.Current);
+                Assert.AreEqual(Scope.Current, scope);
                 Assert.IsNotNull(scope.GetDAScopeContext());
                 Assert.IsNotNull(scope.GetDAScopeContext().Connection);
                 Assert.IsNotNull(scope.GetDAScopeContext().Transaction);
+                Assert.AreSame(Scope.Current.GetDAScopeContext(), scope.GetDAScopeContext());
+                Assert.AreSame(Scope.Current.GetDAScopeContext().Connection, scope.GetDAScopeContext().Connection);
+                Assert.AreSame(Scope.Current.GetDAScopeContext().Transaction, scope.GetDAScopeContext().Transaction);
+
                 scope.Complete();
             }
         }

@@ -1,19 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Froggy
+﻿namespace Froggy
 {
-    public enum TransactionOption
+    /// <summary>
+    /// Options to determine the use of a existing, or creation of a new, to <see cref="Scope"/>
+    /// </summary>
+    public enum ScopeOption
     {
         /// <summary>
-        /// Use a existing transacion, if exists, 
+        /// Use a existing scope, or create a new one if none exists. This is the Default
         /// </summary>
-        Automatic, 
-        Required
+        Automatic,
+        /// <summary>
+        /// Create a new scope, always
+        /// </summary>
+        RequireNew
     }
 
+    /// <summary>
+    /// Determines how a new <see cref="Scope"/> will be created, when the new <see cref="ScopeContext"/> is added
+    /// </summary>
     internal enum ScopeCompatibility
     {
         /// <summary>

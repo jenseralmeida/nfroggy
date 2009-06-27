@@ -35,16 +35,10 @@ namespace Froggy
             {
                 _Current = ScopeStack.Pop();
             }
-            if (ScopeStack.Count == 0)
+            if (_Current != null && _Current._IsDisposed)
             {
                 _Current = null;
             }
-        }
-
-        private static void Push(Scope scope)
-        {
-            ScopeStack.Push(scope);
-            _Current = scope;
         }
 
         public static Scope Current
@@ -57,9 +51,10 @@ namespace Froggy
 
         #endregion Class Elements
 
-        public Scope(params ScopeContext[] contexts)
+        public Scope(ScopeOption scopeOption, params ScopeContext[] contexts)
         {
-            if (IsNewScopeRequired())
+            _ScopeOption = scopeOption;
+            if (IsNewScopeRequired(scopeOption))
             {
                 _ScopeContexts = new Dictionary<Type, ScopeContext>();
                 foreach (var newScopeElement in contexts)
@@ -72,28 +67,58 @@ namespace Froggy
                     }
                     _ScopeContexts.Add(scopeElementType, newScopeElement);
                 }
-                PushInstanceInStack();
+                ConfigCurrentScope();
             }
             else
             {
                 // Supress destructor if this instance will not be used
                 GC.SuppressFinalize(true);
-                InstanceCount = Current.InstanceCount + 1;
+                InstanceCount = InstanceCount + 1;
             }
+            // At end of ctor the current static instance, is the scope used to equality
+            _CurrentScopeToThisInstance = Current;
+        }
+
+        public Scope(params ScopeContext[] contexts)
+            : this(ScopeOption.Automatic, contexts)
+        {
+            
         }
 
         private readonly Dictionary<Type, ScopeContext> _ScopeContexts;
         private int _InstanceCount;
+        private readonly ScopeOption _ScopeOption;
+
+        public ScopeOption ScopeOption
+        {
+            get 
+            { 
+                CheckDisposed();
+                return Current._ScopeOption; 
+            }
+        }
 
         private Dictionary<Type, ScopeContext> ScopeContexts
         {
-            get { return Current._ScopeContexts; }
+            get
+            {
+                CheckDisposed();
+                return Current._ScopeContexts;
+            }
         }
 
         private int InstanceCount
         {
-            get { return Current._InstanceCount; }
-            set { Current._InstanceCount = value; }
+            get
+            {
+                CheckDisposed();
+                return Current._InstanceCount;
+            }
+            set
+            {
+                CheckDisposed();
+                Current._InstanceCount = value;
+            }
         }
 
         private bool Completed
@@ -116,7 +141,13 @@ namespace Froggy
         public override bool Equals(object obj)
         {
             CheckDisposed();
-            return ReferenceEquals(Current, obj);
+            var currentScopeToThisInstanceNull = ReferenceEquals(_CurrentScopeToThisInstance, null);
+            if (currentScopeToThisInstanceNull)
+                throw new InvalidOperationException("A unexpected status in scope was found, please contact us in http://code.google.com/p/nfroggy and open a issue with a test code to reproduce the trouble.");
+            var objNull = ReferenceEquals(obj, null);
+            if (objNull) // _CurrentScopeToThisInstance always will be not null, if obj is null then return false
+                return false;
+            return (obj is Scope) && ReferenceEquals(_CurrentScopeToThisInstance, ((Scope)obj)._CurrentScopeToThisInstance);
         }
 
         public override int GetHashCode()
@@ -124,7 +155,7 @@ namespace Froggy
             CheckDisposed();
             return Current.GetHashCode();
         }
-
+        
         public static bool operator ==(Scope left, Scope right)
         {
             // Use ReferenceEqual to do not generate recursive call
@@ -155,13 +186,14 @@ namespace Froggy
             return ScopeContexts.ContainsKey(type) ? (T)ScopeContexts[type] : null;
         }
 
-        private bool IsNewScopeRequired()
+        private bool IsNewScopeRequired(ScopeOption scopeOption)
         {
             bool existsActiveScope = _Current != null;
-            if (!existsActiveScope)
+            if (!existsActiveScope || scopeOption == ScopeOption.RequireNew)
             {
                 return true;
             }
+
             // Verify if any scope element vote for a new scope
             bool anyElementVoteForNewScope = new List<ScopeContext>(ScopeContexts.Values).Exists(se => se.RequireNewScope);
             if (anyElementVoteForNewScope)
@@ -178,9 +210,14 @@ namespace Froggy
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
-        private void PushInstanceInStack()
+        private void ConfigCurrentScope()
         {
-            Push(this);
+            if (_Current != null)
+            {
+                // if exists current scope, push it in stack
+                ScopeStack.Push(_Current);
+            }
+            _Current = this;
             InstanceCount = 1;
             //Iniyialize all scope contexts
             Array.ForEach(ScopeContexts.Values.ToArray(), (scopeContext => scopeContext.Init()) );
@@ -193,6 +230,7 @@ namespace Froggy
 
         private bool _IsDisposed;
         private bool _Completed;
+        private readonly Scope _CurrentScopeToThisInstance;
 
         private void CheckDisposed()
         {
@@ -216,13 +254,13 @@ namespace Froggy
                 bool thisIsCurrentScope = Current == this;
                 if (thisIsCurrentScope)
                 {
-                    _IsDisposed = true;
                     // Dispose all scope contexts
                     foreach (var scopeContext in ScopeContexts.Values)
                     {
                         scopeContext.CompletedNow(Completed);
                         scopeContext.Dispose();
                     }
+                    _IsDisposed = true;
                     Pop();
                 }
             }
