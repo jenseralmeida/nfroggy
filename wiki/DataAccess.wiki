@@ -9,8 +9,8 @@ There is no penallity of performance, and it is stable and do not have the hell 
 
 = Details =
 
-== DbCommandUtil ==
-Simplify the use of DbCommand and DbDataAdapter and try to not compete with both, only facilitate they use.
+== !DbCommandUtil ==
+Simplify the use of !DbCommand and !DbDataAdapter and try to not compete with both, only facilitate they use.
 
 
 == Scope ==
