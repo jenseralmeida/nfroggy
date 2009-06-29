@@ -81,6 +81,7 @@
     <Compile Include="Data\DbCommandWrapper.cs" />
     <Compile Include="Data\Enum.cs" />
     <Compile Include="Data\DbCommandUtil.cs" />
+    <Compile Include="Diagnostics\MailTraceListener.cs" />
     <Compile Include="Enum.cs" />
     <Compile Include="FroggyException.cs" />
     <Compile Include="ScopeContext.cs" />
