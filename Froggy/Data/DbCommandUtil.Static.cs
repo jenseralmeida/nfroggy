@@ -32,7 +32,7 @@ namespace Froggy.Data
             }
         }
 
-        private static void CloseConnection(DbConnection connection, ConnectionState estadoOriginal)
+        private static void CloseConnection(IDbConnection connection, ConnectionState estadoOriginal)
         {
             if ((connection != null) && (estadoOriginal == ConnectionState.Closed))
             {
@@ -98,7 +98,7 @@ namespace Froggy.Data
         private static void SetParameterValue(IDataParameter parameter, object value)
         {
             value = new Validator<object>().Convert(value);
-            parameter.Value = value == null ? DBNull.Value : value;
+            parameter.Value = value ?? DBNull.Value;
         }
 
         /// <summary>

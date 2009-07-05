@@ -10,7 +10,7 @@ namespace Froggy.Test.Data
         [SetUp]
         public void SetUp()
         {
-            var comm = new DbCommandUtil("IF NOT EXISTS(SELECT * FROM SYS.OBJECTS WHERE Name = 'Test') CREATE TABLE TEST (ID INT)");
+            var comm = new DbCommandUtil("IF NOT EXISTS(SELECT * FROM SYS.OBJECTS WHERE Name = 'Test') CREATE TABLE TEST (ID INT, VALUE NUMERIC(4,2))");
             Assert.AreEqual(ConnectionState.Closed, comm.DaScopeContext.Connection.State);
             comm.ExecuteNonQuery();
             Assert.AreEqual(ConnectionState.Closed, comm.DaScopeContext.Connection.State);
@@ -34,8 +34,19 @@ namespace Froggy.Test.Data
             Assert.AreEqual(ConnectionState.Closed, comm.DaScopeContext.Connection.State);
             var dataTable = comm.GetDataTable();
             Assert.AreEqual(ConnectionState.Closed, comm.DaScopeContext.Connection.State);
-            Assert.AreEqual(1, dataTable.Columns.Count);
+            Assert.AreEqual(2, dataTable.Columns.Count);
             Assert.AreEqual("ID", dataTable.Columns[0].ColumnName);
+        }
+
+        [Test]
+        public void ParameterPrecisionTest()
+        {
+            Insert();
+            var comm = new DbCommandUtil("SELECT ID FROM TEST WHERE Value = @Value");
+            Assert.AreEqual(ConnectionState.Closed, comm.DaScopeContext.Connection.State);
+            comm.AddParameter("@Value", DbType.Double, 4, 2, 35.4);
+            var idValue = comm.ExecuteScalar<int?>();
+            Assert.AreEqual(3, idValue);
         }
 
         [Test]
@@ -65,9 +76,12 @@ namespace Froggy.Test.Data
             Assert.AreEqual(ConnectionState.Closed, comm.DaScopeContext.Connection.State);
             var dataTable = comm.GetDataTable();
             Assert.AreEqual(ConnectionState.Closed, comm.DaScopeContext.Connection.State);
-            Assert.AreEqual(1, dataTable.Columns.Count);
-            Assert.AreEqual(1, dataTable.Rows.Count);
+            Assert.AreEqual(2, dataTable.Columns.Count);
+            Assert.AreEqual(2, dataTable.Rows.Count);
             Assert.AreEqual(2, dataTable.Rows[0][0]);
+            Assert.AreEqual(1.2, dataTable.Rows[0][1]);
+            Assert.AreEqual(3, dataTable.Rows[1][0]);
+            Assert.AreEqual(35.4, dataTable.Rows[1][1]);
             Assert.AreEqual("ID", dataTable.Columns[0].ColumnName);
         }
 
@@ -85,10 +99,16 @@ namespace Froggy.Test.Data
 
         private static void Insert()
         {
-            var comm = new DbCommandUtil("INSERT INTO TEST(ID) VALUES(2)");
-            Assert.AreEqual(ConnectionState.Closed, comm.DaScopeContext.Connection.State);
-            comm.ExecuteNonQuery();
-            Assert.AreEqual(ConnectionState.Closed, comm.DaScopeContext.Connection.State);
+            // INSERT 1
+            var insert1Comm = new DbCommandUtil("INSERT INTO TEST(ID,VALUE) VALUES(2, 1.2)");
+            Assert.AreEqual(ConnectionState.Closed, insert1Comm.DaScopeContext.Connection.State);
+            insert1Comm.ExecuteNonQuery();
+            Assert.AreEqual(ConnectionState.Closed, insert1Comm.DaScopeContext.Connection.State);
+            // INSERT 2
+            var insert2Comm = new DbCommandUtil("INSERT INTO TEST(ID,VALUE) VALUES(3, 35.4)");
+            Assert.AreEqual(ConnectionState.Closed, insert2Comm.DaScopeContext.Connection.State);
+            insert2Comm.ExecuteNonQuery();
+            Assert.AreEqual(ConnectionState.Closed, insert2Comm.DaScopeContext.Connection.State);
         }
     }
 }
