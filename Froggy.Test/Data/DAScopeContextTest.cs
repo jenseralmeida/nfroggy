@@ -10,6 +10,19 @@ namespace Froggy.Test.Data
     public class DaScopeContextTest
     {
         [Test]
+        public void GetDaScopeContextWhenItDoesNotExist()
+        {
+            var daScopeContextWithoutScope = Scope.Current.GetDaScopeContext();
+
+            using (var scope = new Scope())
+            {
+                var daScopeContextWithScope = scope.GetDaScopeContext();
+                Assert.IsNull(daScopeContextWithScope);
+                scope.Complete();
+            }
+        }
+
+        [Test]
         public void NestedWithTransactionTest()
         {
             using (var scope = new Scope(new DaScopeContext(TransactionOption.Required)))
