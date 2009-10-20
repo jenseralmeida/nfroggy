@@ -1,11 +1,33 @@
 ﻿using System;
 using NUnit.Framework;
+using System.Threading;
 
 namespace Froggy.Test
 {
     [TestFixture]
     public class ScopeTest
     {
+        [Test]
+        public void ScopeDispose()
+        {
+            var thread = new Thread(ScopeDisposeThreadStart);
+            thread.Start();
+            Thread.Sleep(500);
+            thread.Abort();
+        }
+        
+        private void ScopeDisposeThreadStart()
+        {
+            using (var scope = new Scope())
+            {
+            	NestedMethod(scope);
+            	Thread.Sleep(2000);
+                // Operations
+                scope.Complete();
+            }
+            Assert.IsNull(Scope.Current);
+        }
+
         [Test]
         public void BasicScope()
         {
@@ -156,7 +178,7 @@ namespace Froggy.Test
             Assert.IsFalse(csc.DisposeCalled);
             Assert.IsFalse(csc.CompleteNowCalled);
             Assert.IsFalse(csc.Completed);
-            using (var scope = new Scope(csc))
+            using (new Scope(csc))
             {
                 Assert.IsTrue(csc.InitCalled);
                 Assert.IsFalse(csc.DisposeCalled);

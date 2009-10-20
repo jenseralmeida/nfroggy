@@ -28,19 +28,6 @@ namespace Froggy
             }
         }
 
-        private static void Pop()
-        {
-            // Pop scope's from stack until find one not yet disposed
-            while ((ScopeStack.Count > 0) && (Current._IsDisposed))
-            {
-                _Current = ScopeStack.Pop();
-            }
-            if (_Current != null && _Current._IsDisposed)
-            {
-                _Current = null;
-            }
-        }
-
         public static Scope Current
         {
             get
@@ -254,17 +241,48 @@ namespace Froggy
                 bool thisIsCurrentScope = Current == this;
                 if (thisIsCurrentScope)
                 {
+                    var scopeContexts = ScopeContexts.Values;
+                    var completed = Completed;
+                    ConfigScopeToPrevious();
+                    _IsDisposed = true;
                     // Dispose all scope contexts
-                    foreach (var scopeContext in ScopeContexts.Values)
+                    foreach (var scopeContext in scopeContexts)
                     {
-                        scopeContext.CompletedNow(Completed);
+                        scopeContext.CompletedNow(completed);
                         scopeContext.Dispose();
                     }
-                    _IsDisposed = true;
-                    Pop();
                 }
             }
         }
+
+        private static void ConfigScopeToPrevious()
+        {
+            // If there is no scope in stack, then clear _Current scope only
+            if (ScopeStack.Count == 0)
+            {
+                _Current = null;
+                return;
+            }
+            // Pop from stack and make then the Current scope
+            _Current = ScopeStack.Pop();
+            // Continue pop scope's from stack until find one not yet disposed
+            while ((ScopeStack.Count > 0) && (_Current._IsDisposed))
+            {
+                _Current = ScopeStack.Pop();
+            }
+        }
+        //private static void Pop()
+        //{
+        //    // Pop scope's from stack until find one not yet disposed
+        //    while ((ScopeStack.Count > 0) && (Current._IsDisposed))
+        //    {
+        //        _Current = ScopeStack.Pop();
+        //    }
+        //    if (_Current != null && _Current._IsDisposed)
+        //    {
+        //        _Current = null;
+        //    }
+        //}
 
         ~Scope()
         {
