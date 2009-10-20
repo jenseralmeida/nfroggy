@@ -283,7 +283,7 @@ namespace Froggy.Data
         public void SetParameterValue(string parameterName, object value)
         {
             CheckDisposed();
-            DbParameter parameter = Command.Parameters[parameterName];
+            var parameter = Command.Parameters[parameterName];
             SetParameterValue(parameter, value);
         }
 
@@ -316,9 +316,9 @@ namespace Froggy.Data
             return GetParameterValue<T>(RETURN_PARAMETER_NAME);
         }
 
-        #region New parameters
+        #region Create parameters
 
-        public DbParameter NewParameter(string parameterName, DbType dbType, int size, ParameterDirection direction, string sourceColumn)
+        public DbParameter CreateParameter(string parameterName, DbType dbType, int size, ParameterDirection direction, string sourceColumn)
         {
             CheckDisposed();
             DbParameter parameter = DaScopeContext.ProviderFactory.CreateParameter();
@@ -348,20 +348,17 @@ namespace Froggy.Data
         /// <param name="direction"></param>
         /// <param name="sourceColumn"></param>
         /// <returns></returns>
-        public DbParameter NewParameter(string parameterName, DbType dbType, byte precision, byte scale, ParameterDirection direction, string sourceColumn)
+        public DbParameter CreateParameter(string parameterName, DbType dbType, byte precision, byte scale, ParameterDirection direction, string sourceColumn)
         {
-            DbParameter parameter = NewParameter(parameterName, dbType, 0, direction, sourceColumn);
+            var parameter = CreateParameter(parameterName, dbType, 0, direction, sourceColumn);
             var sqlParameter = parameter as SqlParameter;
             if (sqlParameter == null)
             {
                 throw new NotSupportedException("The specifed provider does not suporte precision and scale");
             }
-            else
-            {
-                sqlParameter.Precision = precision;
-                sqlParameter.Scale = scale;
-                return parameter;
-            }
+            sqlParameter.Precision = precision;
+            sqlParameter.Scale = scale;
+            return parameter;
         }
 
         /// <summary>
@@ -373,9 +370,9 @@ namespace Froggy.Data
         /// <param name="scale"></param>
         /// <param name="sourceColumn"></param>
         /// <returns></returns>
-        public DbParameter NewParameter(string parameterName, DbType dbType, byte precision, byte scale, string sourceColumn)
+        public DbParameter CreateParameter(string parameterName, DbType dbType, byte precision, byte scale, string sourceColumn)
         {
-            return NewParameter(parameterName, dbType, precision, scale, ParameterDirection.Input, sourceColumn);
+            return CreateParameter(parameterName, dbType, precision, scale, ParameterDirection.Input, sourceColumn);
         }
 
         /// <summary>
@@ -386,9 +383,9 @@ namespace Froggy.Data
         /// <param name="size"></param>
         /// <param name="sourceColumn"></param>
         /// <returns></returns>
-        public DbParameter NewParameter(string name, DbType dbType, int size, string sourceColumn)
+        public DbParameter CreateParameter(string name, DbType dbType, int size, string sourceColumn)
         {
-            return NewParameter(name, dbType, size, ParameterDirection.Input, sourceColumn);
+            return CreateParameter(name, dbType, size, ParameterDirection.Input, sourceColumn);
         }
 
         /// <summary>
@@ -398,9 +395,9 @@ namespace Froggy.Data
         /// <param name="dbType"></param>
         /// <param name="sourceColumn"></param>
         /// <returns></returns>
-        public DbParameter NewParameter(string name, DbType dbType, string sourceColumn)
+        public DbParameter CreateParameter(string name, DbType dbType, string sourceColumn)
         {
-            return NewParameter(name, dbType, -1, sourceColumn);
+            return CreateParameter(name, dbType, -1, sourceColumn);
         }
 
         /// <summary>
@@ -413,7 +410,7 @@ namespace Froggy.Data
         /// <returns></returns>
         public DbParameter CreateInputOutputParameter(string name, DbType dbType, int size, string sourceColumn)
         {
-            return NewParameter(name, dbType, size, ParameterDirection.InputOutput, sourceColumn);
+            return CreateParameter(name, dbType, size, ParameterDirection.InputOutput, sourceColumn);
         }
 
         /// <summary>
@@ -438,7 +435,7 @@ namespace Froggy.Data
         /// <returns></returns>
         public DbParameter CreateOutputParameter(string name, DbType dbType, int size, string sourceColumn)
         {
-            return NewParameter(name, dbType, size, ParameterDirection.Output, sourceColumn);
+            return CreateParameter(name, dbType, size, ParameterDirection.Output, sourceColumn);
         }
 
         /// <summary>
@@ -462,7 +459,7 @@ namespace Froggy.Data
         /// <returns></returns>
         public DbParameter CreateReturnParameter(DbType dbType, int size, string sourceColumn)
         {
-            return NewParameter(RETURN_PARAMETER_NAME, dbType, size, ParameterDirection.ReturnValue, sourceColumn);
+            return CreateParameter(RETURN_PARAMETER_NAME, dbType, size, ParameterDirection.ReturnValue, sourceColumn);
         }
 
         /// <summary>
@@ -485,9 +482,9 @@ namespace Froggy.Data
         /// <param name="scale"></param>
         /// <param name="direction"></param>
         /// <returns></returns>
-        public DbParameter NewParameter(string parameterName, DbType dbType, byte precision, byte scale, ParameterDirection direction)
+        public DbParameter CreateParameter(string parameterName, DbType dbType, byte precision, byte scale, ParameterDirection direction)
         {
-            return NewParameter(parameterName, dbType, precision, scale, direction, null);
+            return CreateParameter(parameterName, dbType, precision, scale, direction, null);
         }
 
         /// <summary>
@@ -498,9 +495,9 @@ namespace Froggy.Data
         /// <param name="precision"></param>
         /// <param name="scale"></param>
         /// <returns></returns>
-        public DbParameter NewParameter(string parameterName, DbType dbType, byte precision, byte scale)
+        public DbParameter CreateParameter(string parameterName, DbType dbType, byte precision, byte scale)
         {
-            return NewParameter(parameterName, dbType, precision, scale, ParameterDirection.Input);
+            return CreateParameter(parameterName, dbType, precision, scale, ParameterDirection.Input);
         }
 
         /// <summary>
@@ -510,9 +507,9 @@ namespace Froggy.Data
         /// <param name="dbType"></param>
         /// <param name="size"></param>
         /// <returns></returns>
-        public DbParameter NewParameter(string name, DbType dbType, int size)
+        public DbParameter CreateParameter(string name, DbType dbType, int size)
         {
-            return NewParameter(name, dbType, size, ParameterDirection.Input, null);
+            return CreateParameter(name, dbType, size, ParameterDirection.Input, null);
         }
 
         /// <summary>
@@ -521,9 +518,9 @@ namespace Froggy.Data
         /// <param name="name"></param>
         /// <param name="dbType"></param>
         /// <returns></returns>
-        public DbParameter NewParameter(string name, DbType dbType)
+        public DbParameter CreateParameter(string name, DbType dbType)
         {
-            return NewParameter(name, dbType, -1);
+            return CreateParameter(name, dbType, -1);
         }
 
         /// <summary>
@@ -535,7 +532,7 @@ namespace Froggy.Data
         /// <returns></returns>
         public DbParameter CreateInputOutputParameter(string name, DbType dbType, int size)
         {
-            return NewParameter(name, dbType, size, ParameterDirection.InputOutput, null);
+            return CreateParameter(name, dbType, size, ParameterDirection.InputOutput, null);
         }
 
         /// <summary>
@@ -558,7 +555,7 @@ namespace Froggy.Data
         /// <returns></returns>
         public DbParameter CreateOutputParameter(string name, DbType dbType, int size)
         {
-            return NewParameter(name, dbType, size, ParameterDirection.Output, null);
+            return CreateParameter(name, dbType, size, ParameterDirection.Output, null);
         }
 
         /// <summary>
@@ -580,7 +577,7 @@ namespace Froggy.Data
         /// <returns></returns>
         public DbParameter CreateReturnParameter(DbType dbType, int size)
         {
-            return NewParameter(RETURN_PARAMETER_NAME, dbType, size, ParameterDirection.ReturnValue, null);
+            return CreateParameter(RETURN_PARAMETER_NAME, dbType, size, ParameterDirection.ReturnValue, null);
         }
 
         /// <summary>
@@ -593,7 +590,7 @@ namespace Froggy.Data
             return CreateReturnParameter(dbType, -1);
         }
 
-        #endregion New parameters
+        #endregion Create parameters
 
         #region Add parameters
 
@@ -608,7 +605,7 @@ namespace Froggy.Data
         /// <returns></returns>
         public DbParameter AddParameter(string parameterName, DbType dbType, int size, ParameterDirection direction, object value)
         {
-            DbParameter parameter = NewParameter(parameterName, dbType, size, direction, null);
+            DbParameter parameter = CreateParameter(parameterName, dbType, size, direction, null);
             SetParameterValue(parameter, value);
             return parameter;
         }
@@ -625,7 +622,7 @@ namespace Froggy.Data
         /// <returns></returns>
         public DbParameter AddParameter(string parameterName, DbType dbType, byte precision, byte scale, ParameterDirection direction, object value)
         {
-            DbParameter parameter = NewParameter(parameterName, dbType, precision, scale, direction, null);
+            DbParameter parameter = CreateParameter(parameterName, dbType, precision, scale, direction, null);
             SetParameterValue(parameter, value);
             return parameter;
         }
@@ -641,7 +638,7 @@ namespace Froggy.Data
         /// <returns></returns>
         public DbParameter AddParameter(string parameterName, DbType dbType, byte precision, byte scale, object value)
         {
-            DbParameter parameter = NewParameter(parameterName, dbType, precision, scale, null);
+            DbParameter parameter = CreateParameter(parameterName, dbType, precision, scale, null);
             SetParameterValue(parameter, value);
             return parameter;
         }
@@ -1092,9 +1089,7 @@ namespace Froggy.Data
 
         private void RegisterLog()
         {
-            //throw new NotImplementedException();
-            Console.WriteLine(this._isDisposed);
+            Console.WriteLine(_isDisposed);
         }
-
     }
 }
