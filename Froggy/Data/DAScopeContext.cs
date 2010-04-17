@@ -159,6 +159,13 @@ namespace Froggy.Data
             _ConnectionStringSettingName = String.Empty;
         }
 
+        public DaScopeContext(string providerName, string connectionString, TransactionOption transactionOption, IsolationLevel? isolationLevel)
+            : this(providerName, connectionString)
+        {
+            _TransactionOption = transactionOption;
+            _IsolationLevel = isolationLevel;
+        }
+
         public DaScopeContext(string connectionStringSettingName, TransactionOption transactionOption, IsolationLevel? isolationLevel)
         {
             _ConnectionStringSettingName = connectionStringSettingName;

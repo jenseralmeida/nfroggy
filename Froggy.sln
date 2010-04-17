@@ -1,16 +1,13 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
-# SharpDevelop 3.1.0.4977
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{56C12E2D-28D2-4E5F-BBB6-D434D898E3FD}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Froggy", "Froggy\Froggy.csproj", "{06D9B52F-9EC8-4A71-B529-B5DA7A124528}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Froggy.Data.Db4o", "Froggy.Data.Db4o\Froggy.Data.Db4o.csproj", "{0EFFABBA-282E-4436-AD61-6F360E09C764}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Froggy.CodeGenerator", "Froggy.CodeGenerator\Froggy.CodeGenerator.csproj", "{89FE5569-22A8-4591-9DAC-EE2C4BFF5241}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{56C12E2D-28D2-4E5F-BBB6-D434D898E3FD}"
-	ProjectSection(SolutionItems) = postProject
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Froggy.CodeGenerator.Test", "Tests\Froggy.CodeGenerator.Test\Froggy.CodeGenerator.Test.csproj", "{0304461C-4471-46F2-896E-2E80A0E17131}"
 EndProject
@@ -26,10 +23,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{C94C17CA-117E-4CC9-8254-F697A0F38528}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C94C17CA-117E-4CC9-8254-F697A0F38528}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C94C17CA-117E-4CC9-8254-F697A0F38528}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C94C17CA-117E-4CC9-8254-F697A0F38528}.Release|Any CPU.Build.0 = Release|Any CPU
 		{06D9B52F-9EC8-4A71-B529-B5DA7A124528}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{06D9B52F-9EC8-4A71-B529-B5DA7A124528}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{06D9B52F-9EC8-4A71-B529-B5DA7A124528}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -46,12 +39,16 @@ Global
 		{0304461C-4471-46F2-896E-2E80A0E17131}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0304461C-4471-46F2-896E-2E80A0E17131}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0304461C-4471-46F2-896E-2E80A0E17131}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C94C17CA-117E-4CC9-8254-F697A0F38528}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C94C17CA-117E-4CC9-8254-F697A0F38528}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C94C17CA-117E-4CC9-8254-F697A0F38528}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C94C17CA-117E-4CC9-8254-F697A0F38528}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{C94C17CA-117E-4CC9-8254-F697A0F38528} = {56C12E2D-28D2-4E5F-BBB6-D434D898E3FD}
 		{0304461C-4471-46F2-896E-2E80A0E17131} = {56C12E2D-28D2-4E5F-BBB6-D434D898E3FD}
+		{C94C17CA-117E-4CC9-8254-F697A0F38528} = {56C12E2D-28D2-4E5F-BBB6-D434D898E3FD}
 	EndGlobalSection
 EndGlobal

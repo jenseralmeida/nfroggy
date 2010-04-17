@@ -1089,7 +1089,6 @@ namespace Froggy.Data
 
         private void RegisterLog()
         {
-            Console.WriteLine(_isDisposed);
         }
     }
 }
