@@ -138,7 +138,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Froggy.snk" />
-    <None Include="Migrated rules for Froggy.ruleset" />
     <None Include="Validation\Validator.cd" />
   </ItemGroup>
   <ItemGroup>

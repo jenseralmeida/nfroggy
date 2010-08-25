@@ -1,8 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<RuleSet Name="Migrated rules for Froggy.ruleset" Description="This rule set was created from the CodeAnalysisRules property for the &quot;Debug (Any CPU)&quot; configuration in project &quot;C:\Users\Jenser\Desenvolvimento\Codigo\Froggy\googlecode - nfroggy\Froggy\Froggy.csproj&quot;." ToolsVersion="10.0">
-  <IncludeAll Action="Warning" />
-  <Rules AnalyzerId="Microsoft.Analyzers.ManagedCodeAnalysis" RuleNamespace="Microsoft.Rules.Managed">
-    <Rule Id="CA1000" Action="None" />
-    <Rule Id="CA1021" Action="None" />
-  </Rules>
-</RuleSet>
