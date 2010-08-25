@@ -944,13 +944,12 @@ namespace Froggy.Data
 
         public int Update(DataSet dataSet, TransactionOption transactionOption)
         {
-            throw new NotImplementedException();
-            //using (Scope scope = new Scope(new DaScopeContext(transactionOption)))
-            //{
-            //    int returnValue = DataAdapter.Update(dataSet);
-            //    scope.Complete();
-            //    return returnValue;
-            //}
+            using (var scope = new Scope(new DaScopeContext(transactionOption)))
+            {
+                var returnValue = DataAdapter.Update(dataSet);
+                scope.Complete();
+                return returnValue;
+            }
         }
 
         public int Update(DataSet dataSet, string srcTable)
@@ -962,15 +961,15 @@ namespace Froggy.Data
         {
             return Update(dataTable, TransactionOption.Required);
         }
+
         public int Update(DataTable dataTable, TransactionOption transactionOption)
         {
-            throw new NotImplementedException();
-            //using (var scope = new Scope(new DaScopeContext(transactionOption)))
-            //{
-            //    int returnValue = DataAdapter.Update(dataTable);
-            //    scope.Complete();
-            //    return returnValue;
-            //}
+            using (var scope = new Scope(new DaScopeContext(transactionOption)))
+            {
+                var returnValue = DataAdapter.Update(dataTable);
+                scope.Complete();
+                return returnValue;
+            }
         }
 
         public int Update(DataRow[] dataRows)
@@ -980,13 +979,12 @@ namespace Froggy.Data
 
         public int Update(DataRow[] dataRows, TransactionOption transactionOption)
         {
-            throw new NotImplementedException();
-            //using (var scope = new Scope(new DaScopeContext(transactionOption)))
-            //{
-            //    var returnValue = DataAdapter.Update(dataRows);
-            //    scope.Complete();
-            //    return returnValue;
-            //}
+            using (var scope = new Scope(new DaScopeContext(transactionOption)))
+            {
+                var returnValue = DataAdapter.Update(dataRows);
+                scope.Complete();
+                return returnValue;
+            }
         }
 
         #endregion Consulta DataSet e DataTable

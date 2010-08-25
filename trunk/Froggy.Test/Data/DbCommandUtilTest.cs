@@ -110,5 +110,38 @@ namespace Froggy.Test.Data
             insert2Comm.ExecuteNonQuery();
             Assert.AreEqual(ConnectionState.Closed, insert2Comm.DaScopeContext.Connection.State);
         }
+
+        [Test]
+        private static void UpdateDataAdapter()
+        {
+            Insert();
+
+            #region Config DataAdapater
+            var comm = new DbCommandUtil("SELECT * FROM TEST");
+            const string sqlIns = "INSERT INTO TEST(ID,VALUE) VALUES(@ID, @VALUES)";
+            comm.ChangeToDataAdaterCommand(DataAdapterCommand.InsertCommand, sqlIns);
+            comm.CreateParameter("@ID", DbType.Int32);
+            comm.CreateParameter("@VALUE", DbType.Decimal, 4, 2);
+            const string sqlUpd = "UPDATE TEST SET VALUE = @VALUE) WHERE ID=@ID";
+            comm.ChangeToDataAdaterCommand(DataAdapterCommand.InsertCommand, sqlUpd);
+            comm.CreateParameter("@ID", DbType.Int32);
+            comm.CreateParameter("@VALUE", DbType.Decimal, 4, 2);
+            const string sqlDel = "DELETE TEST WHERE ID=original_ID";
+            comm.ChangeToDataAdaterCommand(DataAdapterCommand.DeleteCommand, sqlDel);
+            comm.CreateParameter("@ID", DbType.Int32);
+            #endregion Config DataAdapater
+
+            var dt = comm.GetDataTable();
+            dt.Rows.Add(new[] { 3, 100.1 });
+            dt.Rows[0].Delete();
+            dt.Rows[1]["VALOR"] = 100.2;
+            comm.Update(dt);
+            dt = comm.GetDataTable();
+            Assert.AreEqual(dt.Rows.Count, 2);
+            Assert.AreEqual(dt.Rows[0][0], 2);
+            Assert.AreEqual(dt.Rows[0][1], 100.2);
+            Assert.AreEqual(dt.Rows[1][0], 3);
+            Assert.AreEqual(dt.Rows[1][1], 100.1);
+        }
     }
 }
