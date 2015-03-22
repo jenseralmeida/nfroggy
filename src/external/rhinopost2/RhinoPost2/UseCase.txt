@@ -1,0 +1,30 @@
+We are testing shopping cart component with next properties:
+a) UserId - represents the id of the shopping cart user 
+b) CartAmount - represents the total amount to be charged to user for shoosen cart items 
+
+Shopping cart uses components implementing:
+a) IUserRepository 
+	- to retreive the user from database. 
+	- to store the successfult payment amount into the payment history
+	User type has properties: Name, Age, Bank account number
+b) IPaymentProcessor duties
+	- to check the state of users bank account 
+	- to make payment from use rbank account
+	- to raise an event once transaction would be completed successfully
+
+We need to test that:
+1) In case user repository couldn't find an user for a given user id, 
+	cart should throw argument exception
+2) In case user is having less money on account then the cart value, 
+	the payment method should not be called 
+	and the cart amount should stay unchanged
+3) In case payment attempt would failed due to time out, 
+	cart component should recover gracefully and 
+	the cart value should stay untouched
+4) We need to verify that the performance is optimal by 
+	verifying that the retreiving of user data occured only once
+5) We need to verify that once payment processor raised an event 
+	and signalized that the payment is completed 
+	the cart value would be reset to zero and
+	the user repository would add that payment to payment history
+6)
