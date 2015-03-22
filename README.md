@@ -16,4 +16,4 @@ This project is made by 3 main funcionalities:
 
 Got to the [Start](Start.md) wiki page for more details of the API. Below is a diagram of one part of the project, the base [Validator](Validator.md) tool.
 
-![Validator Diagram](https://raw.githubusercontent.com/jenseralmeida/nfroggy/master/doc/wiki/assets/img/Validator.pngg)
+![Validator Diagram](https://raw.githubusercontent.com/jenseralmeida/nfroggy/master/doc/wiki/assets/img/Validator.png)
