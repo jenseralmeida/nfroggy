@@ -16,4 +16,4 @@ This project is made by 3 main funcionalities:
 
 Got to the [Start](Start.md) wiki page for more details of the API. Below is a diagram of one part of the project, the base [Validator](Validator.md) tool.
 
-![http://nfroggy.googlecode.com/svn/site/images/Diagram/Validator.png](http://nfroggy.googlecode.com/svn/site/images/Diagram/Validator.png)
+![Validator Diagram](https://raw.githubusercontent.com/jenseralmeida/nfroggy/wiki/assets/img/Validator.png)
