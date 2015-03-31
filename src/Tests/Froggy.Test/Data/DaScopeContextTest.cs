@@ -1,5 +1,4 @@
-﻿using System;
-using System.Data;
+﻿using System.Data;
 using System.Data.SqlClient;
 using Froggy.Data;
 using Xunit;
@@ -7,13 +6,12 @@ using Xunit;
 namespace Froggy.Test.Data
 {
 
-    public class DaScopeContextTest
+    public class DaScopeContextTest : DabaseTestsBase
     {
         [Fact]
         public void GetDaScopeContextWhenItDoesNotExist()
         {
             var daScopeContextWithoutScope = Scope.Current.GetDaScopeContext();
-
             using (var scope = new Scope())
             {
                 var daScopeContextWithScope = scope.GetDaScopeContext();

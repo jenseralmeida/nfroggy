@@ -36,7 +36,7 @@ namespace Froggy.Data
         public DbCommandUtil(string commandText, CommandType commandType)
             : this()
         {
-            ChangeToDataAdaterCommand(DataAdapterCommand.SelectCommand, commandText, commandType);
+            ChangeToDataAdaterCommand(DataAdapterCommand.Select, commandText, commandType);
         }
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace Froggy.Data
         public DbCommandUtil(string commandText, CommandType commandType, DataAdapterCommand dataAdapterCommand)
             : this()
         {
-            ChangeToDataAdaterCommand(DataAdapterCommand.SelectCommand, commandText, commandType);
+            ChangeToDataAdaterCommand(DataAdapterCommand.Select, commandText, commandType);
             _dataAdapterCommand = dataAdapterCommand;
         }
 
@@ -249,7 +249,7 @@ namespace Froggy.Data
 
         #endregion Properties
 
-        public void ChangeToDataAdaterCommand(DataAdapterCommand value, string commandText)
+        public void ChangeDataAdaterCommand(DataAdapterCommand value, string commandText)
         {
             ChangeToDataAdaterCommand(value, commandText, CommandType.Text);
         }
@@ -1030,16 +1030,16 @@ namespace Froggy.Data
             {
                 switch (dataAdapterCommand)
                 {
-                    case DataAdapterCommand.SelectCommand:
+                    case DataAdapterCommand.Select:
                         DataAdapter.SelectCommand = commandWrapper.GetDbCommand(DaScopeContext);
                         break;
-                    case DataAdapterCommand.InsertCommand:
+                    case DataAdapterCommand.Insert:
                         DataAdapter.InsertCommand = commandWrapper.GetDbCommand(DaScopeContext);
                         break;
-                    case DataAdapterCommand.UpdateCommand:
+                    case DataAdapterCommand.Update:
                         DataAdapter.UpdateCommand = commandWrapper.GetDbCommand(DaScopeContext);
                         break;
-                    case DataAdapterCommand.DeleteCommand:
+                    case DataAdapterCommand.Delete:
                         DataAdapter.DeleteCommand = commandWrapper.GetDbCommand(DaScopeContext);
                         break;
                 }

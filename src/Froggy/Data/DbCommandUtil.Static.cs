@@ -129,14 +129,14 @@ namespace Froggy.Data
         {
             if (daScopeContext == null)
                 throw new ArgumentNullException("daScopeContext");
-            DbCommand selectCommand = GetDbCommand(daScopeContext, DataAdapterCommand.SelectCommand, commandWrappers);
+            DbCommand selectCommand = GetDbCommand(daScopeContext, DataAdapterCommand.Select, commandWrappers);
             if (selectCommand == null)
                 throw new NullReferenceException("SelectCommand cannot be null");
             DbDataAdapter dataAdapter = daScopeContext.ProviderFactory.CreateDataAdapter();
             dataAdapter.SelectCommand = selectCommand;
-            dataAdapter.InsertCommand = GetDbCommand(daScopeContext, DataAdapterCommand.InsertCommand, commandWrappers);
-            dataAdapter.UpdateCommand = GetDbCommand(daScopeContext, DataAdapterCommand.UpdateCommand, commandWrappers);
-            dataAdapter.DeleteCommand = GetDbCommand(daScopeContext, DataAdapterCommand.DeleteCommand, commandWrappers);
+            dataAdapter.InsertCommand = GetDbCommand(daScopeContext, DataAdapterCommand.Insert, commandWrappers);
+            dataAdapter.UpdateCommand = GetDbCommand(daScopeContext, DataAdapterCommand.Update, commandWrappers);
+            dataAdapter.DeleteCommand = GetDbCommand(daScopeContext, DataAdapterCommand.Delete, commandWrappers);
 
             return dataAdapter;
         }

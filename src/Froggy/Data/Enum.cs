@@ -23,20 +23,20 @@ namespace Froggy.Data
     public enum DataAdapterCommand
     {
         /// <summary>
-        /// Any change in <see cref="DbCommandUtil"/> affect <see cref="DataAdapterCommand.SelectCommand"/> of the <see cref="DataAdapter"/> in <see cref="DbCommandUtil"/>
+        /// Any change in <see cref="DbCommandUtil"/> affect <see cref="DataAdapterCommand.Select"/> of the <see cref="DataAdapter"/> in <see cref="DbCommandUtil"/>
         /// </summary>
-        SelectCommand,
+        Select,
         /// <summary>
-        /// Any change in <see cref="DbCommandUtil"/> affect <see cref="DataAdapterCommand.InsertCommand"/> of the <see cref="DataAdapter"/> in <see cref="DbCommandUtil"/>
+        /// Any change in <see cref="DbCommandUtil"/> affect <see cref="DataAdapterCommand.Insert"/> of the <see cref="DataAdapter"/> in <see cref="DbCommandUtil"/>
         /// </summary>
-        InsertCommand,
+        Insert,
         /// <summary>
-        /// Any change in <see cref="DbCommandUtil"/> affect <see cref="DataAdapterCommand.UpdateCommand"/> of the <see cref="DataAdapter"/> in <see cref="DbCommandUtil"/>
+        /// Any change in <see cref="DbCommandUtil"/> affect <see cref="DataAdapterCommand.Update"/> of the <see cref="DataAdapter"/> in <see cref="DbCommandUtil"/>
         /// </summary>
-        UpdateCommand,
+        Update,
         /// <summary>
-        /// Any change in <see cref="DbCommandUtil"/> affect <see cref="DataAdapterCommand.DeleteCommand"/> of the <see cref="DataAdapter"/> in <see cref="DbCommandUtil"/>
+        /// Any change in <see cref="DbCommandUtil"/> affect <see cref="DataAdapterCommand.Delete"/> of the <see cref="DataAdapter"/> in <see cref="DbCommandUtil"/>
         /// </summary>
-        DeleteCommand
+        Delete
     }
 }

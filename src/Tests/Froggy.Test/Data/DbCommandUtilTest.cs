@@ -6,7 +6,7 @@ using System;
 namespace Froggy.Test.Data
 {
 
-    public class DbCommandUtilTest : IDisposable
+    public class DbCommandUtilTest : DabaseTestsBase
     {
         public DbCommandUtilTest()
         {
@@ -107,24 +107,29 @@ namespace Froggy.Test.Data
             Insert();
 
             #region Config DataAdapater
+
             var comm = new DbCommandUtil("SELECT * FROM TEST");
-            const string sqlIns = "INSERT INTO TEST(ID,VALUE) VALUES(@ID, @VALUES)";
-            comm.ChangeToDataAdaterCommand(DataAdapterCommand.InsertCommand, sqlIns);
-            comm.CreateParameter("@ID", DbType.Int32);
-            comm.CreateParameter("@VALUE", DbType.Decimal, 4, 2);
-            const string sqlUpd = "UPDATE TEST SET VALUE = @VALUE) WHERE ID=@ID";
-            comm.ChangeToDataAdaterCommand(DataAdapterCommand.InsertCommand, sqlUpd);
-            comm.CreateParameter("@ID", DbType.Int32);
-            comm.CreateParameter("@VALUE", DbType.Decimal, 4, 2);
-            const string sqlDel = "DELETE TEST WHERE ID=original_ID";
-            comm.ChangeToDataAdaterCommand(DataAdapterCommand.DeleteCommand, sqlDel);
-            comm.CreateParameter("@ID", DbType.Int32);
+
+            const string insertSql = "INSERT INTO TEST(ID,VALUE) VALUES(@ID, @VALUES)";
+            comm.ChangeDataAdaterCommand(DataAdapterCommand.Insert, insertSql);
+            comm.CreateParameter("@ID", DbType.Int32, "ID");
+            comm.CreateParameter("@VALUE", DbType.Decimal, 4, 2, "VALUE");
+
+            const string updateSql = "UPDATE TEST SET VALUE = @VALUE) WHERE ID=@ID";
+            comm.ChangeDataAdaterCommand(DataAdapterCommand.Update, updateSql);
+            comm.CreateParameter("@ID", DbType.Int32, "ID");
+            comm.CreateParameter("@VALUE", DbType.Decimal, 4, 2, "VALUE");
+
+            const string deleteSql = "DELETE TEST WHERE ID=@ID";
+            comm.ChangeDataAdaterCommand(DataAdapterCommand.Delete, deleteSql);
+            comm.CreateParameter("@ID", DbType.Int32, "ID");
+            
             #endregion Config DataAdapater
 
             var dt = comm.GetDataTable();
-            dt.Rows.Add(new[] { 3, 100.1 });
+            dt.Rows.Add(3, 100.1);
             dt.Rows[0].Delete();
-            dt.Rows[1]["VALOR"] = 100.2;
+            dt.Rows[1]["VALUE"] = 100.2;
             comm.Update(dt);
             dt = comm.GetDataTable();
             Assert.Equal(dt.Rows.Count, 2);
@@ -133,45 +138,5 @@ namespace Froggy.Test.Data
             Assert.Equal(dt.Rows[1][0], 3);
             Assert.Equal(dt.Rows[1][1], 100.1);
         }
-
-        #region IDisposable Support
-        private bool disposedValue = false; // To detect redundant calls
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!disposedValue)
-            {
-                if (disposing)
-                {
-
-                    // Drop
-                    var comm = new DbCommandUtil("IF EXISTS(SELECT * FROM SYS.OBJECTS WHERE Name = 'Test') DROP TABLE TEST");
-                    Assert.Equal(ConnectionState.Closed, comm.DaScopeContext.Connection.State);
-                    comm.ExecuteNonQuery();
-                    Assert.Equal(ConnectionState.Closed, comm.DaScopeContext.Connection.State);
-                }
-
-                // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
-                // TODO: set large fields to null.
-
-                disposedValue = true;
-            }
-        }
-
-        // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources. 
-        // ~DbCommandUtilTest() {
-        //   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
-        //   Dispose(false);
-        // }
-
-        // This code added to correctly implement the disposable pattern.
-        public void Dispose()
-        {
-            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
-            Dispose(true);
-            // TODO: uncomment the following line if the finalizer is overridden above.
-            // GC.SuppressFinalize(this);
-        }
-        #endregion
     }
 }
