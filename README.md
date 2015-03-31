@@ -1,5 +1,3 @@
-Toy project for learn TDD, DDD, Rhino Mocks and IoC.
-
 The central ideia of all API is:
 
   * be simple, but be util and
