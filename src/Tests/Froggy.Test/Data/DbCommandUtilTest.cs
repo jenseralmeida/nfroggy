@@ -131,12 +131,13 @@ namespace Froggy.Test.Data
             dt.Rows[0].Delete();
             dt.Rows[1]["VALUE"] = 100.2;
             comm.Update(dt);
+
             dt = comm.GetDataTable();
-            Assert.Equal(dt.Rows.Count, 2);
-            Assert.Equal(dt.Rows[0][0], 2);
-            Assert.Equal(dt.Rows[0][1], 100.2);
-            Assert.Equal(dt.Rows[1][0], 3);
-            Assert.Equal(dt.Rows[1][1], 100.1);
+            Assert.Equal(2, dt.Rows.Count);
+            Assert.Equal(2, dt.Rows[0][0]);
+            Assert.Equal(100.2, dt.Rows[0][1]);
+            Assert.Equal(3, dt.Rows[1][0]);
+            Assert.Equal(100.1, dt.Rows[1][1]);
         }
     }
 }
